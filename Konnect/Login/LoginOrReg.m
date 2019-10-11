@@ -269,10 +269,18 @@
         dispatch_async(dispatch_get_main_queue(), ^(){
             [self->delegate stopLoading];
             if ([[data objectForKey:@"rc"] intValue]==0) {
+
+                [self->delegate.preferences setObject:[data objectForKey:K_USER_OPENID] forKey:K_USER_OPENID];
+                [self->delegate.preferences setObject:[data objectForKey:K_USER_PHONE] forKey:K_USER_PHONE];
+                [self->delegate.preferences setObject:[data objectForKey:K_USER_NAME] forKey:K_USER_NAME];
+                [self->delegate.preferences setObject:[data objectForKey:K_USER_GENDER] forKey:K_USER_GENDER];
+                [self->delegate.preferences setObject:[data objectForKey:K_USER_EMAIL] forKey:K_USER_EMAIL];
+                [self->delegate.preferences synchronize];
                 [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
+                [self->password setText:@""];
                 [self->delegate makeToast:@"登入成功" duration:5 inView:self->delegate.window.rootViewController.view];
             } else {
-                [errMsg setText:[data objectForKey:@"errmsg"]];
+                [self->errMsg setText:[data objectForKey:@"errmsg"]];
             }
             
         });

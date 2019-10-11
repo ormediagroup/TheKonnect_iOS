@@ -422,7 +422,7 @@
     
 }
 -(UIImage *) getImage:(NSString *)key callback:(void (^)(UIImage *image))callback {
-    
+    if (![key isKindOfClass:[NSString class]]) return nil;
     NSArray *parts = [key componentsSeparatedByString:@"/"];
     NSString *filename = [parts lastObject];
     if (filename != nil && ![filename isEqual:[NSNull null]]) {

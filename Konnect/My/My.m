@@ -28,6 +28,7 @@
 }
 -(void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@"我的"];
+    [super viewWillAppear:animated];
 }
 #pragma mark - Table view data source
 
@@ -109,7 +110,11 @@
         } else if (indexPath.row==2) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MY_WALLET]] forKeys:@[@"type"]]];
+        } else if (indexPath.row==3) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_POINT_HISTORY]] forKeys:@[@"type"]]];
         }
+        
     } if (indexPath.section==2) {
         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"你確定要退出登錄?"
                                                                        message:@""

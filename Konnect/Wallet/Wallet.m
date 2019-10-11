@@ -17,7 +17,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    viewType = VIEW_TYPE_QRCODE;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -32,26 +31,24 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@"我的錢包"];
     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-transaction",K_API_ENDPOINT] param:
      [[NSDictionary alloc] initWithObjects:@[
-                                             @"get-transaction",
-                                             [delegate.preferences objectForKey:K_USER_NAME],
-                                             [delegate.preferences objectForKey:K_USER_GENDER],
-                                             [delegate.preferences objectForKey:K_USER_EMAIL]
+                                             @"get-balance"
                                              ]
                                    forKeys:@[
-                                             @"action",
-                                             @"username",
-                                             @"usergender",
-                                             @"useremail"]]
+                                             @"action"
+                                            ]]
      
                                      interation:0 callback:^(NSDictionary *data) {
-                                         NSLog(@"Wallet %@",data);
+                                         //NSLog(@"Wallet %@",data);
                                          if ([[data objectForKey:@"rc"] intValue]==0) {
-                                             self->dataSrc = [data objectForKey:@"data"];
+                                             self->balance = [[data objectForKey:@"balance"] floatValue];
                                              [self.tableView reloadData];
+                                              [super viewWillAppear:animated];
+                                         } else if ([[data objectForKey:@"rc"] intValue]==1) {
                                          } else {
                                              [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
                                          }
                                      }];
+   
     
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -59,11 +56,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (viewType==VIEW_TYPE_QRCODE) {
-        return 1;
-    } else {
-        return [dataSrc count];
-    }
+    return [dataSrc count];
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 250;
@@ -78,6 +71,7 @@
     [gold setClipsToBounds:YES];
     [gold setContentMode:UIViewContentModeScaleAspectFill];
     [bg addSubview:gold];
+    [gold setUserInteractionEnabled:YES];
     [v addSubview:bg];
     
     
@@ -88,12 +82,14 @@
     [pttitle setTextAlignment:NSTextAlignmentLeft];
     [gold addSubview:pttitle];
     
+    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
     
     UILabel *points = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,50,gold.frame.size.width-SIDE_PAD_2,100)];
     [points setFont:[UIFont boldSystemFontOfSize:46]];
     [points setTextColor:[UIColor whiteColor]];
     [points setTextAlignment:NSTextAlignmentLeft];
-    [points setText:@"400,000"];
+    [points setText:[numberFormatter stringFromNumber:[NSNumber numberWithFloat:balance]]];
     [gold addSubview:points];
     
     UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -153,75 +149,14 @@
     }];
 }
 -(void) topup {
+    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOP_UP]] forKeys:@[@"type"]]];
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (viewType==VIEW_TYPE_QRCODE) {
-        return delegate.screenHeight-250-delegate.footerHeight;
-    } else {
-        return 60;
-    }
+    return 60;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"wallet"];
-    if (viewType==VIEW_TYPE_QRCODE) {
-        UIView *v = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD,SIDE_PAD,delegate.screenWidth-SIDE_PAD_2,delegate.screenHeight-250-delegate.footerHeight-SIDE_PAD_2-SIDE_PAD_2)];
-        [v setBackgroundColor:[UIColor whiteColor]];
-        v.layer.borderWidth = 0.5f;
-        v.layer.borderColor = [UICOLOR_LIGHT_GREY CGColor];
-        [cell addSubview:v];
-        
-        NSString *qrString = [NSString stringWithFormat:@"%@",[delegate.preferences objectForKey:K_USER_OPENID]];
-        NSData *stringData = [qrString dataUsingEncoding: NSUTF8StringEncoding];
-        
-        UIImageView *qrImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,v.frame.size.height-v.frame.size.width-SIDE_PAD_2,v.frame.size.width-SIDE_PAD_2,v.frame.size.width-SIDE_PAD_2)];
-        qrImageView.layer.borderColor = [UICOLOR_GOLD CGColor];
-        qrImageView.layer.borderWidth = 0.5f;
-        CIFilter *qrFilter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
-        [qrFilter setValue:stringData forKey:@"inputMessage"];
-        [qrFilter setValue:@"H" forKey:@"inputCorrectionLevel"];
-        
-        CIImage *qrImage = qrFilter.outputImage;
-        float scaleX = qrImageView.frame.size.width / qrImage.extent.size.width;
-        float scaleY = qrImageView.frame.size.height / qrImage.extent.size.height;
-        
-        qrImage = [qrImage imageByApplyingTransform:CGAffineTransformMakeScale(scaleX, scaleY)];
-        
-        qrImageView.image = [UIImage imageWithCIImage:qrImage
-                                                     scale:[UIScreen mainScreen].scale
-                                               orientation:UIImageOrientationUp];
-        [v addSubview:qrImageView];
-        
-        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,v.frame.size.height-50,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2,50)];
-        [l setText:@"付款之前請不要將二維碼向他人展示 以免造成不必要的損失"];
-        [l setNumberOfLines:-1];
-        [l setFont:[UIFont systemFontOfSize:FONT_XS]];
-        [l setTextAlignment:NSTextAlignmentCenter];
-        [v addSubview:l];
-
-    } else {
-        [cell setBackgroundColor:[UIColor whiteColor]];
-        // Configure the cell...
-        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth-SIDE_PAD_2,30)];
-        [title setFont:[UIFont systemFontOfSize:FONT_M]];
-        [title setTextColor:[UIColor darkTextColor]];
-        [title setTextAlignment:NSTextAlignmentLeft];
-        [title setText:[[dataSrc objectAtIndex:indexPath.row] objectForKey:@"name_zh"]];
-        [cell addSubview:title];
-        UILabel *ts = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,30,delegate.screenWidth-SIDE_PAD_2,20)];
-        [ts setFont:[UIFont systemFontOfSize:FONT_S]];
-        [ts setTextColor:UICOLOR_LIGHT_GREY];
-        [ts setTextAlignment:NSTextAlignmentLeft];
-        [ts setText:[[dataSrc objectAtIndex:indexPath.row] objectForKey:@"transaction_time"]];
-        [cell addSubview:ts];
-        
-        
-        UILabel *amount = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth-SIDE_PAD_2,50)];
-        [amount setFont:[UIFont boldSystemFontOfSize:FONT_XL]];
-        [amount setTextColor:UICOLOR_GOLD];
-        [amount setTextAlignment:NSTextAlignmentRight];
-        [amount setText:[NSString stringWithFormat:@"%.02f",[[[dataSrc objectAtIndex:indexPath.row] objectForKey:@"amount"] floatValue]]];
-        [cell addSubview:amount];
-    }
     return cell;
 }
 

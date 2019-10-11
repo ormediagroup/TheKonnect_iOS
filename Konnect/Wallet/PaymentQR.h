@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PaymentQR : ORViewController {
     UIImageView *qrImageView;
+
 }
 
 @end

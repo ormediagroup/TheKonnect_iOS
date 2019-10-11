@@ -10,14 +10,10 @@
 #import "ORTableViewController.h"
 @class PaymentQR;
 NS_ASSUME_NONNULL_BEGIN
-typedef enum {
-    VIEW_TYPE_QRCODE = 1,
-    VIEW_TYPE_HISTORY = 2
-} VIEW_TYPE;
 @interface Wallet : ORTableViewController {
     NSArray *dataSrc;
-    VIEW_TYPE viewType;
     PaymentQR *paymentQR;
+    CGFloat balance;
 }
 
 @end

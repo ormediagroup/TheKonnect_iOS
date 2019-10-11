@@ -26,7 +26,7 @@
     [bg setBackgroundColor:UICOLOR_PURPLE];
     [scroll addSubview:bg];
     
-    int y = delegate.headerHeight;
+    int y = 0;
     UIButton *submit = [UIButton buttonWithType:UIButtonTypeCustom];
     [submit setImage:[UIImage imageNamed:@"goldbutton.png"] forState:UIControlStateNormal];
     [submit setFrame:CGRectMake(SIDE_PAD, y, delegate.screenWidth-SIDE_PAD_2, 34)];
@@ -34,7 +34,11 @@
     [scroll addSubview:submit];
     
     nameLbl = [[UILabel alloc] initWithFrame:CGRectMake(10,0,submit.frame.size.width, submit.frame.size.height)];
-    [nameLbl setText:[delegate.preferences objectForKey:K_USER_NAME]];
+    if ([[delegate.preferences objectForKey:K_USER_NAME] isKindOfClass:[NSString class]]) {
+        [nameLbl setText:[delegate.preferences objectForKey:K_USER_NAME]];
+    } else if ([[delegate.preferences objectForKey:K_USER_PHONE] isKindOfClass:[NSString class]]){
+        [nameLbl setText:[delegate.preferences objectForKey:K_USER_PHONE]];
+    }
     
     [nameLbl setTextColor:UICOLOR_DARK_GREY];
     [nameLbl setFont:[UIFont systemFontOfSize:FONT_M]];
@@ -42,7 +46,6 @@
     [nameLbl setTextAlignment:NSTextAlignmentCenter];
     [nameLbl sizeToFit];
     [nameLbl setFrame:CGRectMake(10,0,nameLbl.frame.size.width,submit.frame.size.height)];
-    
     
     UIImageView *rightArrow = [[UIImageView alloc] initWithFrame:CGRectMake(submit.frame.size.width-30,0,20,submit.frame.size.height)];
     [rightArrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
@@ -155,7 +158,11 @@
      */
     [[NSNotificationCenter defaultCenter] postNotificationName:HIDE_BACK_BTN object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@""];
-    [nameLbl setText:[delegate.preferences objectForKey:K_USER_NAME]];
+    if ([[delegate.preferences objectForKey:K_USER_NAME] isKindOfClass:[NSString class]]) {
+        [nameLbl setText:[delegate.preferences objectForKey:K_USER_NAME]];
+    } else if ([[delegate.preferences objectForKey:K_USER_PHONE] isKindOfClass:[NSString class]]){
+        [nameLbl setText:[delegate.preferences objectForKey:K_USER_PHONE]];
+    }    
     [nameLbl sizeToFit];    
     [nameLbl setFrame:CGRectMake(10,0,nameLbl.frame.size.width,34)];
     [memberTier setFrame:CGRectMake(30+nameLbl.frame.size.width,6,80,22)];

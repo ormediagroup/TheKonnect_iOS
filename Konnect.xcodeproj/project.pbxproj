@@ -65,6 +65,14 @@
 		4EC621342349CC1800F4DCD9 /* barcode.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EC621332349CC1800F4DCD9 /* barcode.png */; };
 		4EC621362349D7FB00F4DCD9 /* dollaricon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EC621352349D7FB00F4DCD9 /* dollaricon.png */; };
 		4EC62139234B038900F4DCD9 /* PaymentQR.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EC62138234B038900F4DCD9 /* PaymentQR.m */; };
+		4EE24A2D234C7E7C00E2C651 /* PointsHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EE24A2C234C7E7C00E2C651 /* PointsHistory.m */; };
+		4EE24A30234DBF6300E2C651 /* TopUp.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EE24A2F234DBF6300E2C651 /* TopUp.m */; };
+		4EE24A33234DD26B00E2C651 /* paybywechat.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EE24A31234DD26A00E2C651 /* paybywechat.png */; };
+		4EE24A34234DD26B00E2C651 /* paybyali.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EE24A32234DD26B00E2C651 /* paybyali.png */; };
+		4EE24A37234EE10100E2C651 /* ChargeQR.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EE24A36234EE10100E2C651 /* ChargeQR.m */; };
+		4EE24A3A234F331E00E2C651 /* PaymentCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EE24A39234F331E00E2C651 /* PaymentCode.m */; };
+		4EE24A3D234F34A600E2C651 /* PaymentCodeDigit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EE24A3C234F34A600E2C651 /* PaymentCodeDigit.m */; };
+		4EE24A3F23502EF200E2C651 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4EE24A3E23502EF200E2C651 /* GoogleService-Info.plist */; };
 		4EEB8447233B5D8200853E76 /* Home.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEB8446233B5D8100853E76 /* Home.m */; };
 		4EEB844A233CB36C00853E76 /* Header.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEB8449233CB36C00853E76 /* Header.m */; };
 		4EEB844D233DE0E200853E76 /* Footer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEB844C233DE0E200853E76 /* Footer.m */; };
@@ -181,6 +189,19 @@
 		4EC621352349D7FB00F4DCD9 /* dollaricon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dollaricon.png; sourceTree = "<group>"; };
 		4EC62137234B038900F4DCD9 /* PaymentQR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaymentQR.h; sourceTree = "<group>"; };
 		4EC62138234B038900F4DCD9 /* PaymentQR.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaymentQR.m; sourceTree = "<group>"; };
+		4EE24A2B234C7E7C00E2C651 /* PointsHistory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PointsHistory.h; sourceTree = "<group>"; };
+		4EE24A2C234C7E7C00E2C651 /* PointsHistory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PointsHistory.m; sourceTree = "<group>"; };
+		4EE24A2E234DBF6300E2C651 /* TopUp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopUp.h; sourceTree = "<group>"; };
+		4EE24A2F234DBF6300E2C651 /* TopUp.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopUp.m; sourceTree = "<group>"; };
+		4EE24A31234DD26A00E2C651 /* paybywechat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paybywechat.png; sourceTree = "<group>"; };
+		4EE24A32234DD26B00E2C651 /* paybyali.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paybyali.png; sourceTree = "<group>"; };
+		4EE24A35234EE10100E2C651 /* ChargeQR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChargeQR.h; sourceTree = "<group>"; };
+		4EE24A36234EE10100E2C651 /* ChargeQR.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChargeQR.m; sourceTree = "<group>"; };
+		4EE24A38234F331E00E2C651 /* PaymentCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaymentCode.h; sourceTree = "<group>"; };
+		4EE24A39234F331E00E2C651 /* PaymentCode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaymentCode.m; sourceTree = "<group>"; };
+		4EE24A3B234F34A600E2C651 /* PaymentCodeDigit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaymentCodeDigit.h; sourceTree = "<group>"; };
+		4EE24A3C234F34A600E2C651 /* PaymentCodeDigit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaymentCodeDigit.m; sourceTree = "<group>"; };
+		4EE24A3E23502EF200E2C651 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4EEB8445233B5D8100853E76 /* Home.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Home.h; sourceTree = "<group>"; };
 		4EEB8446233B5D8100853E76 /* Home.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Home.m; sourceTree = "<group>"; };
 		4EEB8448233CB36C00853E76 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
@@ -249,6 +270,7 @@
 		4E065727231E7F9300884D79 = {
 			isa = PBXGroup;
 			children = (
+				4EE24A3E23502EF200E2C651 /* GoogleService-Info.plist */,
 				4E065732231E7F9300884D79 /* Konnect */,
 				4E065731231E7F9300884D79 /* Products */,
 				17698170654677E1CE5CBBD1 /* Pods */,
@@ -315,6 +337,8 @@
 		4E12D79923229C1400D4A545 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4EE24A32234DD26B00E2C651 /* paybyali.png */,
+				4EE24A31234DD26A00E2C651 /* paybywechat.png */,
 				4EC621312349A47200F4DCD9 /* 300goldbg.png */,
 				4E18D7BA23472D0F00039811 /* appointments.png */,
 				4E18D7B923472D0F00039811 /* coupons.png */,
@@ -395,6 +419,8 @@
 			children = (
 				4E18D7A8234700B400039811 /* ScanQR.h */,
 				4E18D7A9234700B400039811 /* ScanQR.m */,
+				4EE24A35234EE10100E2C651 /* ChargeQR.h */,
+				4EE24A36234EE10100E2C651 /* ChargeQR.m */,
 			);
 			path = QRCode;
 			sourceTree = "<group>";
@@ -417,6 +443,14 @@
 				4EC6212F2348F89D00F4DCD9 /* Wallet.m */,
 				4EC62137234B038900F4DCD9 /* PaymentQR.h */,
 				4EC62138234B038900F4DCD9 /* PaymentQR.m */,
+				4EE24A2B234C7E7C00E2C651 /* PointsHistory.h */,
+				4EE24A2C234C7E7C00E2C651 /* PointsHistory.m */,
+				4EE24A2E234DBF6300E2C651 /* TopUp.h */,
+				4EE24A2F234DBF6300E2C651 /* TopUp.m */,
+				4EE24A38234F331E00E2C651 /* PaymentCode.h */,
+				4EE24A39234F331E00E2C651 /* PaymentCode.m */,
+				4EE24A3B234F34A600E2C651 /* PaymentCodeDigit.h */,
+				4EE24A3C234F34A600E2C651 /* PaymentCodeDigit.m */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -517,6 +551,7 @@
 				4E065740231E7F9A00884D79 /* LaunchScreen.storyboard in Resources */,
 				4E18D7B8234728FB00039811 /* editinfo.png in Resources */,
 				4E18D7C223472D1000039811 /* referral.png in Resources */,
+				4EE24A34234DD26B00E2C651 /* paybyali.png in Resources */,
 				4EEB8458233DF25000853E76 /* intro4@2x.png in Resources */,
 				4EEB8467233DF4FB00853E76 /* logo.png in Resources */,
 				4EC621362349D7FB00F4DCD9 /* dollaricon.png in Resources */,
@@ -537,6 +572,7 @@
 				4E18D7C423472D1000039811 /* waller.png in Resources */,
 				4EEB8465233DF2D900853E76 /* intro3@3x.png in Resources */,
 				4E18D7C323472D1000039811 /* office.png in Resources */,
+				4EE24A33234DD26B00E2C651 /* paybywechat.png in Resources */,
 				4E18D7922342130800039811 /* normalmember.png in Resources */,
 				4E18D79B2344567F00039811 /* restauranticon.png in Resources */,
 				4EEB84712340397D00853E76 /* launchscreen.png in Resources */,
@@ -553,6 +589,7 @@
 				4EEB8469233E01A500853E76 /* goldbutton.png in Resources */,
 				4EEB846F233E0BC000853E76 /* addricon.png in Resources */,
 				4E18D78B2341EAA600039811 /* msg.png in Resources */,
+				4EE24A3F23502EF200E2C651 /* GoogleService-Info.plist in Resources */,
 				4EEB84772340A2BD00853E76 /* regflow1.png in Resources */,
 				4E18D7822341EA1900039811 /* LOGO切图-渐变底色 in Resources */,
 				4EEB8463233DF2D900853E76 /* intro3.png in Resources */,
@@ -601,6 +638,7 @@
 				4E065738231E7F9300884D79 /* ViewController.m in Sources */,
 				4E12D78F23223A2F00D4A545 /* ORViewController.m in Sources */,
 				4EC621302348F89D00F4DCD9 /* Wallet.m in Sources */,
+				4EE24A37234EE10100E2C651 /* ChargeQR.m in Sources */,
 				4EEB8447233B5D8200853E76 /* Home.m in Sources */,
 				4E12D7922322577F00D4A545 /* LoginOrReg.m in Sources */,
 				4E18D7AA234700B400039811 /* ScanQR.m in Sources */,
@@ -614,8 +652,12 @@
 				4E12D77D2320D50200D4A545 /* Introduction.m in Sources */,
 				4E12D796232297B900D4A545 /* RegisterViewController.m in Sources */,
 				4E12D7AE2322D38000D4A545 /* WXApiManager.m in Sources */,
+				4EE24A3A234F331E00E2C651 /* PaymentCode.m in Sources */,
+				4EE24A2D234C7E7C00E2C651 /* PointsHistory.m in Sources */,
 				4E065743231E7F9A00884D79 /* main.m in Sources */,
+				4EE24A30234DBF6300E2C651 /* TopUp.m in Sources */,
 				4E065735231E7F9300884D79 /* AppDelegate.m in Sources */,
+				4EE24A3D234F34A600E2C651 /* PaymentCodeDigit.m in Sources */,
 				4E18D7C72347429C00039811 /* EditInfo.m in Sources */,
 				4E18D7972344294400039811 /* HomeCarousel.m in Sources */,
 				4E18D7CA234743C000039811 /* ORTableViewController.m in Sources */,

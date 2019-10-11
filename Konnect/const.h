@@ -31,8 +31,31 @@
 #define TEXT_MY_POINTS @"我的積分"
 #define TEXT_TOP_UP_POINTS @"充值積分"
 #define TEXT_NEXT_STEP @"下一步"
+#define TEXT_POINTS @"積分"
+#define TEXT_SALES @"售價"
+#define TEXT_PAY_BY_WECHAT @"微信支付"
+#define TEXT_PAY_BY_ALIPAY @"支付寶支付"
+#define TEXT_SHOULD_PAY @"應付"
+#define TEXT_PAY @"支付"
+#define TEXT_RECEIVE_PAYMENT @"收款"
+#define TEXT_TOPUP_SUCCESS @"充值成功"
+#define TEXT_NEW_BALANCE @"新積分結餘"
+#define TEXT_QR_CODE_EXPIRED @"QR Code 已過期"
+#define TEXT_GEN_NEW_QR @"請客戶產生新一個 QR Code"
+#define TEXT_RECEIVE_PAYMENT_SUCC @"收款成功"
+#define TEXT_YOU_RECEIVED @"你收到"
+#define TEXT_TITLE_NO_PAYMENT_CODE @"你還未設置付款密碼"
+#define TEXT_NO_PAYMENT_CODE @"請先設置付款密碼，再開啟積分付款"
+#define TEXT_SET_PAYMENT_CODE @"設置付款密碼"
+#define TEXT_SET_PAYMENT_CODE_2 @"再次輸入付款密碼"
+#define TEXT_PAYMENT_CODE @"付款密碼"
+#define TEXT_SET @"設置"
+#define TEXT_SAVE_SUCCESS @"儲存成功"
+#define TEXT_INPUT_ERROR @"輸入錯誤"
+#define TEXT_PASSWORD_DONT_MATCH @"兩次輸入的密碼不乎，請重新輸入"
 #define LEFT_ARROW @"\U000025C0"
 #define DOWN_ARROW @"\U000025BC"
+#define SMALL_DOWN_ARROW @"\U000025BE"
 #define CLOSE_X @"\U00002715"
 
 #define UNCHECK_BOX @"\U00002610"
@@ -57,6 +80,7 @@
 #define K_USER_NAME @"kuser"
 #define K_USER_GENDER @"kusergender"
 #define K_USER_EMAIL @"kuseremail"
+
 
 // User Token
 #define K_NOT_LOGGED_IN 400001
@@ -88,7 +112,8 @@
 #define SHOW_BACK_BTN @"showbackbtn"
 #define DISABLE_BACK_BTN @"disablebackbtn"
 #define ENABLE_BACK_BTN @"enablebackbtn"
-
+#define REDIRECT_BACK_BTN @"redirectbackbtn"
+#define RESTORE_BACK_BTN @"restorebackbtn"
 
 #define GO_SLIDE @"goslide"
 #define CHANGE_TITLE @"changetitle"
@@ -101,7 +126,10 @@ typedef enum {
     VC_TYPE_SCAN_QRCODE = 3,
     VC_TYPE_MY = 4,
     VC_TYPE_MY_EDITINFO = 5,
-    VC_TYPE_MY_WALLET = 6
+    VC_TYPE_MY_WALLET = 6,
+    VC_TYPE_POINT_HISTORY = 7,
+    VC_TYPE_TOP_UP = 8,
+    VC_TYPE_PAYMENT_CODE = 9
 } VC_TYPE;
 
 #endif /* const_h */

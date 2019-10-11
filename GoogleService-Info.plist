@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>18509503322-anag8cggo90er45oovemiqrctsf94qj9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.18509503322-anag8cggo90er45oovemiqrctsf94qj9</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDHBLlZTsM7ABQolsZMVSGxz64H4UZwcMY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>18509503322</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ormediagroup.konnect</string>
+	<key>PROJECT_ID</key>
+	<string>optical-figure-251809</string>
+	<key>STORAGE_BUCKET</key>
+	<string>optical-figure-251809.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:18509503322:ios:792cb7330d1214ee237163</string>
+	<key>DATABASE_URL</key>
+	<string>https://optical-figure-251809.firebaseio.com</string>
+</dict>
+</plist>

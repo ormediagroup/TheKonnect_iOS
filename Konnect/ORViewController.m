@@ -19,7 +19,7 @@
     delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.screenHeight)];
+    scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0,delegate.headerHeight,delegate.screenWidth,delegate.screenHeight-delegate.headerHeight-delegate.footerHeight)];
     // Do any additional setup after loading the view.
     [scroll setBackgroundColor:[UIColor whiteColor]];
     [scroll setBounces:NO];

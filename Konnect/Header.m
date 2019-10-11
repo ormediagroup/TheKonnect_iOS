@@ -48,11 +48,26 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showBackBtn) name:SHOW_BACK_BTN object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(disableBackBtn) name:DISABLE_BACK_BTN object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableBackBtn) name:ENABLE_BACK_BTN object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(redirectBackBtn:) name:REDIRECT_BACK_BTN object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restoreBackBtn) name:RESTORE_BACK_BTN object:nil];
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeTitle:) name:CHANGE_TITLE object:nil];
 }
+-(void) redirectBackBtn:(NSNotification *)t {
+    [back removeTarget:self action:@selector(onBackPressed) forControlEvents:UIControlEventAllEvents];
+    if (strcmp([[t.object objectForKey:@"selector"] objCType], @encode(SEL)) == 0) {
+        SEL selector;
+        [[t.object objectForKey:@"selector"] getValue:&selector];
+        [back addTarget:[t.object objectForKey:@"target"] action:selector forControlEvents:UIControlEventTouchUpInside];
+    }
 
+}
+-(void) restoreBackBtn {
+    [back removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [back addTarget:self action:@selector(onBackPressed) forControlEvents:UIControlEventTouchUpInside];
+
+}
 -(void) onBackPressed {
     if (backEnabled) {
         [parent onBackPressed];

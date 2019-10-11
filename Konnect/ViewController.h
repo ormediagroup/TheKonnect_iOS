@@ -18,6 +18,10 @@
 @class My;
 @class EditInfo;
 @class Wallet;
+@class PointsHistory;
+@class TopUp;
+@class ChargeQR;
+@class PaymentCode;
 @interface ViewController : UIViewController {
     Introduction *lc;
     UINavigationController *nav;
@@ -28,9 +32,13 @@
     MessageList *messageList;
     MessageDetails *messageDetails;
     ScanQR *scanqr;
+    ChargeQR *chargeqr;
     My *my;
     EditInfo *editinfo;
     Wallet *wallet;
+    PointsHistory *points;
+    TopUp *topup;
+    PaymentCode *paymentcode;
     
 }
 -(void) onBackPressed;

@@ -50,6 +50,7 @@
 #pragma mark - Table view data source
 -(void) viewWillAppear:(BOOL)animated {
     edited = NO;
+    [super viewWillAppear:animated];
 }
 -(void) viewWillDisappear:(BOOL)animated {
     if (edited) {

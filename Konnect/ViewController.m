@@ -18,6 +18,10 @@
 #import "My.h"
 #import "EditInfo.h"
 #import "Wallet.h"
+#import "PointsHistory.h"
+#import "TopUp.h"
+#import "ChargeQR.h"
+#import "PaymentCode.h"
 @interface ViewController ()
 
 @end
@@ -46,10 +50,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goSlide:) name:GO_SLIDE object:nil];
     
     #if DEBUG
-    [delegate.preferences setObject:@"oyhE7w3wBH5m7PdUF7RrwsN9bGgk" forKey:WX_USER_UNION_ID];
-    [delegate.preferences synchronize];
+        #if TARGET_IPHONE_SIMULATOR
+            [delegate.preferences setObject:@"oyhE7w3wBH5m7PdUF7RrwsN9bGgk" forKey:WX_USER_UNION_ID];
+            [delegate.preferences synchronize];
+        #else
+        #endif
+    
     #endif
-    if (![[delegate.preferences objectForKey:WX_USER_UNION_ID] isEqualToString:@""]) {
+    if ([[delegate.preferences objectForKey:WX_USER_UNION_ID] isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:WX_USER_UNION_ID] isEqualToString:@""]) {
         [delegate startLoading];
         dispatch_queue_t createQueue = dispatch_queue_create("SerialQueue", nil);
         dispatch_async(createQueue, ^(){
@@ -105,10 +113,15 @@
             }
             [self pushOrPop:messageList];
         } else if (type==VC_TYPE_SCAN_QRCODE) {
-            if (!scanqr) {
+            if (!chargeqr) {
+                chargeqr = [[ChargeQR alloc] initWithNibName:nil bundle:nil];
+            }
+            [self pushOrPop:chargeqr];
+          /*  if (!scanqr) {
                 scanqr = [[ScanQR alloc] initWithNibName:nil bundle:nil];
             }
            [self pushOrPop:scanqr];
+           */
         } else if (type==VC_TYPE_MY) {
             if (!my) {
                 my = [[My alloc] initWithNibName:nil bundle:nil];
@@ -124,12 +137,29 @@
                 wallet = [[Wallet alloc] initWithNibName:nil bundle:nil];
             }
             [self pushOrPop:wallet];
+        } else if (type==VC_TYPE_POINT_HISTORY) {
+            if (!points) {
+                points = [[PointsHistory alloc] initWithStyle:UITableViewStylePlain];
+                points.type = TYPE_POINTS;
+            }
+            [self pushOrPop:points];
+        } else if (type==VC_TYPE_PAYMENT_CODE) {
+            if (!points) {
+                paymentcode = [[PaymentCode alloc] initWithNibName:nil bundle:nil];
+                paymentcode.state = PC_STATE_INIT;
+            }
+            [self pushOrPop:paymentcode];
         } else if (type==VC_TYPE_MESSAGE_DETAIL) {
             if (!messageDetails) {
                 messageDetails = [[MessageDetails alloc] initWithNibName:nil bundle:nil];
             }
            [self pushOrPop:messageDetails];
            [messageDetails loadMessage:[[notif.object objectForKey:@"messageID"]intValue]];
+        } else if (type==VC_TYPE_TOP_UP) {
+            if (!topup) {
+                topup = [[TopUp alloc] initWithNibName:nil bundle:nil];
+            }
+            [self pushOrPop:topup];            
         }
     }
     if ([nav.viewControllers count]>1) {
