@@ -7,5 +7,7 @@ target 'Konnect' do
 
   # Pods for Konnect
   pod 'WechatOpenSDK'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Messaging'
 
 end
