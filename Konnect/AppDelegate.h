@@ -44,8 +44,8 @@
 #import "const.h"
 #import "WXApiManager.h"
 #import "KApiManager.h"
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate, WXApiManagerDelegate> {
+@import Firebase;
+@interface AppDelegate : UIResponder <UIApplicationDelegate, WXApiManagerDelegate, FIRMessagingDelegate> {
     CGFloat screenWidth, screenHeight;
     CGFloat headerHeight, footerHeight, statusBarHeight;
     NSCache *imageCache;

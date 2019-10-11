@@ -19,9 +19,13 @@ typedef enum {
     PAYMENT_CODE_STATE state;
     NSString *code, *verifycode;
     UIView *codeHolder;
+    NSString *transactionCode;
+    NSString *amount;
     
 }
+-(void) paymentRequest:(NSString *)code andAmount:(NSString*)amount;
 @property PAYMENT_CODE_STATE state;
+
 @end
 
 NS_ASSUME_NONNULL_END

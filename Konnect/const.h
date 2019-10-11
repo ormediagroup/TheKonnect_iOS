@@ -48,11 +48,17 @@
 #define TEXT_NO_PAYMENT_CODE @"請先設置付款密碼，再開啟積分付款"
 #define TEXT_SET_PAYMENT_CODE @"設置付款密碼"
 #define TEXT_SET_PAYMENT_CODE_2 @"再次輸入付款密碼"
+#define TEXT_ENTER_PAYMENT_CODE @"輸入付款密碼"
 #define TEXT_PAYMENT_CODE @"付款密碼"
 #define TEXT_SET @"設置"
 #define TEXT_SAVE_SUCCESS @"儲存成功"
 #define TEXT_INPUT_ERROR @"輸入錯誤"
 #define TEXT_PASSWORD_DONT_MATCH @"兩次輸入的密碼不乎，請重新輸入"
+#define TEXT_PAY_POINTS @"消費積分"
+#define TEXT_CLEAR @"清除"
+
+
+
 #define LEFT_ARROW @"\U000025C0"
 #define DOWN_ARROW @"\U000025BC"
 #define SMALL_DOWN_ARROW @"\U000025BE"
@@ -81,6 +87,7 @@
 #define K_USER_GENDER @"kusergender"
 #define K_USER_EMAIL @"kuseremail"
 
+#define PAYMENT_TOKEN @"paymenttoken"
 
 // User Token
 #define K_NOT_LOGGED_IN 400001
@@ -95,6 +102,7 @@
 #define UICOLOR_BLUE [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0]
 #define UICOLOR_ERROR [UIColor colorWithRed:1 green:100/255.0 blue:100/255.0 alpha:1.0]
 #define UICOLOR_VERY_LIGHT_GREY [UIColor colorWithWhite:0.95 alpha:1.0]
+#define UICOLOR_VERY_LIGHT_GREY_BORDER [UIColor colorWithWhite:0.90 alpha:1.0]
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
@@ -114,6 +122,7 @@
 #define ENABLE_BACK_BTN @"enablebackbtn"
 #define REDIRECT_BACK_BTN @"redirectbackbtn"
 #define RESTORE_BACK_BTN @"restorebackbtn"
+#define RECEIVE_TRANSACTION_REQUEST @"recvTransReq"
 
 #define GO_SLIDE @"goslide"
 #define CHANGE_TITLE @"changetitle"

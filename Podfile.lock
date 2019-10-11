@@ -1,4 +1,7 @@
 PODS:
+  - Crashlytics (3.14.0):
+    - Fabric (~> 1.10.2)
+  - Fabric (1.10.2)
   - Firebase/Analytics (6.7.0):
     - Firebase/Core
   - Firebase/Core (6.7.0):
@@ -80,12 +83,16 @@ PODS:
   - WechatOpenSDK (1.8.3)
 
 DEPENDENCIES:
+  - Crashlytics (~> 3.14.0)
+  - Fabric (~> 1.10.2)
   - Firebase/Analytics
   - Firebase/Messaging
   - WechatOpenSDK
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Crashlytics
+    - Fabric
     - Firebase
     - FirebaseAnalytics
     - FirebaseAnalyticsInterop
@@ -103,6 +110,8 @@ SPEC REPOS:
     - WechatOpenSDK
 
 SPEC CHECKSUMS:
+  Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
+  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 291d7b0a7b393f252358083b5d224884126fa46d
   FirebaseAnalytics: 843c7f64a8f9c79f0d03281197ebe7bb1d58d477
   FirebaseAnalyticsInterop: d48b6ab67bcf016a05e55b71fc39c61c0cb6b7f3
@@ -119,6 +128,6 @@ SPEC CHECKSUMS:
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
   WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
 
-PODFILE CHECKSUM: 08a99a0d1b0cfe9374432070221942ab67a89560
+PODFILE CHECKSUM: 10f201b6071a343cca8bb02cff685c6f6f3a0d24
 
 COCOAPODS: 1.5.3

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "WXApiManager.h"
+
 @interface AppDelegate ()
 
 @end
@@ -52,8 +53,40 @@
         headerHeight=80;
         statusBarHeight = 44;
     }
+    [FIRApp configure];
+    [FIRMessaging messaging].delegate = self;
+    if ([UNUserNotificationCenter class] != nil) {
+        // iOS 10 or later
+        // For iOS 10 display notification (sent via APNS)
+        [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+        UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert |
+        UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
+        [[UNUserNotificationCenter currentNotificationCenter]
+         requestAuthorizationWithOptions:authOptions
+         completionHandler:^(BOOL granted, NSError * _Nullable error) {
+             // ...
+         }];
+    } else {
+        // iOS 10 notifications aren't available; fall back to iOS 8-9 notifications.
+        UIUserNotificationType allNotificationTypes =
+        (UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge);
+        UIUserNotificationSettings *settings =
+        [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }
     
-    
+    [application registerForRemoteNotifications];
+    [[FIRInstanceID instanceID] instanceIDWithHandler:^(FIRInstanceIDResult * _Nullable result,
+                                                        NSError * _Nullable error) {
+        if (error != nil) {
+            NSLog(@"Error fetching remote instance ID: %@", error);
+        } else {
+            NSLog(@"Remote instance ID token: %@", result.token);
+            NSString* message =
+            [NSString stringWithFormat:@"Remote InstanceID token: %@", result.token];
+           // self.instanceIDTokenMessage.text = message;
+        }
+    }];
     // first login to K site
     
     
@@ -113,6 +146,39 @@
     }
      */
     return YES;
+}
+- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
+    NSLog(@"FCM registration token: %@", fcmToken);
+    // Notify about received token.
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObject:fcmToken forKey:@"token"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:
+     @"FCMToken" object:nil userInfo:dataDict];
+    // TODO: If necessary send token to application server.
+    // Note: This callback is fired at each app startup and whenever a new token is generated.
+}
+
+-(void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    NSLog(@"AD Message User Info: %@",[userInfo description]);
+    if ( application.applicationState == UIApplicationStateInactive || application.applicationState == UIApplicationStateBackground) {
+        NSLog(@"AD Jumped from Background Notification");
+    } else {
+        NSLog(@"AD Active Notification");
+    
+    }
+    if ([[userInfo objectForKey:@"Type"] isKindOfClass:[NSString class]] && [[userInfo objectForKey:@"Type"] isEqualToString:@"PaymentRequest"]) {
+    
+        [[NSNotificationCenter defaultCenter] postNotificationName:RECEIVE_TRANSACTION_REQUEST
+                                                        object:[[NSDictionary alloc] initWithObjects:@[
+                                                                                             [userInfo objectForKey:@"PaymentToken"],
+                                                                                             [userInfo objectForKey:@"Amount"]
+                                                                                                       ]
+                                                                                             forKeys:@[
+                                                                                                       PAYMENT_TOKEN,
+                                                                                                       @"amount"]]];
+    }
+    
+    // [[UIApplication sharedApplication] setApplicationIconBadgeNumber:bva+bvb];
+    
 }
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];

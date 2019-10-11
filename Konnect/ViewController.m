@@ -48,7 +48,7 @@
     [footer.view setFrame:CGRectMake(0,delegate.screenHeight-delegate.footerHeight,delegate.screenWidth,delegate.footerHeight)];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goSlide:) name:GO_SLIDE object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(confirmPayment:) name:RECEIVE_TRANSACTION_REQUEST object:nil];
     #if DEBUG
         #if TARGET_IPHONE_SIMULATOR
             [delegate.preferences setObject:@"oyhE7w3wBH5m7PdUF7RrwsN9bGgk" forKey:WX_USER_UNION_ID];
@@ -102,6 +102,16 @@
     [header.view removeFromSuperview];
     [footer.view removeFromSuperview];
 }
+-(void) confirmPayment:(NSNotification *) notif {
+    [delegate startLoading];
+    if (!points) {
+        paymentcode = [[PaymentCode alloc] initWithNibName:nil bundle:nil];
+    }
+    paymentcode.state = PC_STATE_NORMAL;
+    [paymentcode paymentRequest:[notif.object objectForKey:PAYMENT_TOKEN] andAmount:[notif.object objectForKey:@"amount"]];
+    
+    [self pushOrPop:paymentcode];
+}
 -(void) goSlide:(NSNotification *)notif {
     if ([notif.object isKindOfClass:[NSDictionary class]]) {
         int type = [[notif.object objectForKey:@"type"] intValue];
@@ -146,8 +156,8 @@
         } else if (type==VC_TYPE_PAYMENT_CODE) {
             if (!points) {
                 paymentcode = [[PaymentCode alloc] initWithNibName:nil bundle:nil];
-                paymentcode.state = PC_STATE_INIT;
             }
+            paymentcode.state = PC_STATE_INIT;
             [self pushOrPop:paymentcode];
         } else if (type==VC_TYPE_MESSAGE_DETAIL) {
             if (!messageDetails) {
