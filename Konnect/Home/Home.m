@@ -92,8 +92,10 @@
             [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:@""];
         }
     }];
-    
-
+}
+-(void) pressed:(UIButton *)b {
+    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_FACILITY],[NSNumber numberWithInt:b.tag]] forKeys:@[@"type",@"facilityid"]]];
 }
 -(UIButton *) makeBtn:(int) tag withImageSrc:(NSString *)imageSrc andText:(NSString *)lbl {
  

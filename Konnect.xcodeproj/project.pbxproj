@@ -60,6 +60,11 @@
 		4E18D7CA234743C000039811 /* ORTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E18D7C9234743C000039811 /* ORTableViewController.m */; };
 		4E3CA9F823248DE100FE655B /* KApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CA9F723248DE100FE655B /* KApiManager.m */; };
 		4E3CA9FC2329F60300FE655B /* RegisterPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CA9FB2329F60300FE655B /* RegisterPassword.m */; };
+		4E9C0FA02350EB46005285A4 /* Facility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E9C0F9F2350EB46005285A4 /* Facility.m */; };
+		4E9C0FA7235432E4005285A4 /* ImageList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E9C0FA6235432E4005285A4 /* ImageList.m */; };
+		4E9C0FAA23543C3C005285A4 /* ImageZoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E9C0FA823543C3C005285A4 /* ImageZoomViewController.m */; };
+		4E9C0FAD23543C4B005285A4 /* ImageGallery.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E9C0FAC23543C4A005285A4 /* ImageGallery.m */; };
+		4E9C0FB023545984005285A4 /* Booking.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E9C0FAF23545984005285A4 /* Booking.m */; };
 		4E9FBBDF23503B2A006890DB /* AuthKey_2R84QJ3BPG.p8 in Resources */ = {isa = PBXBuildFile; fileRef = 4E9FBBDE23503B2A006890DB /* AuthKey_2R84QJ3BPG.p8 */; };
 		4EC621302348F89D00F4DCD9 /* Wallet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EC6212F2348F89D00F4DCD9 /* Wallet.m */; };
 		4EC621322349A47200F4DCD9 /* 300goldbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EC621312349A47200F4DCD9 /* 300goldbg.png */; };
@@ -183,6 +188,16 @@
 		4E3CA9F923248DEA00FE655B /* KApiManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KApiManager.h; sourceTree = "<group>"; };
 		4E3CA9FA2329F60300FE655B /* RegisterPassword.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterPassword.h; sourceTree = "<group>"; };
 		4E3CA9FB2329F60300FE655B /* RegisterPassword.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterPassword.m; sourceTree = "<group>"; };
+		4E9C0F9E2350EB46005285A4 /* Facility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Facility.h; sourceTree = "<group>"; };
+		4E9C0F9F2350EB46005285A4 /* Facility.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Facility.m; sourceTree = "<group>"; };
+		4E9C0FA5235432E4005285A4 /* ImageList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageList.h; sourceTree = "<group>"; };
+		4E9C0FA6235432E4005285A4 /* ImageList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageList.m; sourceTree = "<group>"; };
+		4E9C0FA823543C3C005285A4 /* ImageZoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageZoomViewController.m; sourceTree = "<group>"; };
+		4E9C0FA923543C3C005285A4 /* ImageZoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageZoomViewController.h; sourceTree = "<group>"; };
+		4E9C0FAB23543C4A005285A4 /* ImageGallery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageGallery.h; sourceTree = "<group>"; };
+		4E9C0FAC23543C4A005285A4 /* ImageGallery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageGallery.m; sourceTree = "<group>"; };
+		4E9C0FAE23545984005285A4 /* Booking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Booking.h; sourceTree = "<group>"; };
+		4E9C0FAF23545984005285A4 /* Booking.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Booking.m; sourceTree = "<group>"; };
 		4E9FBBDD235036CA006890DB /* Konnect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Konnect.entitlements; sourceTree = "<group>"; };
 		4E9FBBDE23503B2A006890DB /* AuthKey_2R84QJ3BPG.p8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AuthKey_2R84QJ3BPG.p8; sourceTree = "<group>"; };
 		4EC6212E2348F89D00F4DCD9 /* Wallet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Wallet.h; sourceTree = "<group>"; };
@@ -292,6 +307,7 @@
 		4E065732231E7F9300884D79 /* Konnect */ = {
 			isa = PBXGroup;
 			children = (
+				4E9FBBE42350EAE7006890DB /* Facility */,
 				4E9FBBDE23503B2A006890DB /* AuthKey_2R84QJ3BPG.p8 */,
 				4E9FBBDD235036CA006890DB /* Konnect.entitlements */,
 				4EC6212D2348F79300F4DCD9 /* Wallet */,
@@ -441,6 +457,23 @@
 			path = My;
 			sourceTree = "<group>";
 		};
+		4E9FBBE42350EAE7006890DB /* Facility */ = {
+			isa = PBXGroup;
+			children = (
+				4E9C0FAB23543C4A005285A4 /* ImageGallery.h */,
+				4E9C0FAC23543C4A005285A4 /* ImageGallery.m */,
+				4E9C0FA923543C3C005285A4 /* ImageZoomViewController.h */,
+				4E9C0FA823543C3C005285A4 /* ImageZoomViewController.m */,
+				4E9C0F9E2350EB46005285A4 /* Facility.h */,
+				4E9C0F9F2350EB46005285A4 /* Facility.m */,
+				4E9C0FA5235432E4005285A4 /* ImageList.h */,
+				4E9C0FA6235432E4005285A4 /* ImageList.m */,
+				4E9C0FAE23545984005285A4 /* Booking.h */,
+				4E9C0FAF23545984005285A4 /* Booking.m */,
+			);
+			path = Facility;
+			sourceTree = "<group>";
+		};
 		4EC6212D2348F79300F4DCD9 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
@@ -506,6 +539,7 @@
 				4E06572C231E7F9300884D79 /* Sources */,
 				4E06572D231E7F9300884D79 /* Frameworks */,
 				4E06572E231E7F9300884D79 /* Resources */,
+				4E9C0FA12350ECB5005285A4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -639,6 +673,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		4E9C0FA12350ECB5005285A4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -652,11 +704,14 @@
 				4EE24A37234EE10100E2C651 /* ChargeQR.m in Sources */,
 				4EEB8447233B5D8200853E76 /* Home.m in Sources */,
 				4E12D7922322577F00D4A545 /* LoginOrReg.m in Sources */,
+				4E9C0FA7235432E4005285A4 /* ImageList.m in Sources */,
 				4E18D7AA234700B400039811 /* ScanQR.m in Sources */,
 				4EEB844A233CB36C00853E76 /* Header.m in Sources */,
 				4EEB844D233DE0E200853E76 /* Footer.m in Sources */,
 				4E18D7B023470D6300039811 /* My.m in Sources */,
 				4EC62139234B038900F4DCD9 /* PaymentQR.m in Sources */,
+				4E9C0FAD23543C4B005285A4 /* ImageGallery.m in Sources */,
+				4E9C0FB023545984005285A4 /* Booking.m in Sources */,
 				4E18D7A62345FF3D00039811 /* MessageDetails.m in Sources */,
 				4E18D7A12345C21700039811 /* MessageList.m in Sources */,
 				4E3CA9FC2329F60300FE655B /* RegisterPassword.m in Sources */,
@@ -668,9 +723,11 @@
 				4E065743231E7F9A00884D79 /* main.m in Sources */,
 				4EE24A30234DBF6300E2C651 /* TopUp.m in Sources */,
 				4E065735231E7F9300884D79 /* AppDelegate.m in Sources */,
+				4E9C0FA02350EB46005285A4 /* Facility.m in Sources */,
 				4EE24A3D234F34A600E2C651 /* PaymentCodeDigit.m in Sources */,
 				4E18D7C72347429C00039811 /* EditInfo.m in Sources */,
 				4E18D7972344294400039811 /* HomeCarousel.m in Sources */,
+				4E9C0FAA23543C3C005285A4 /* ImageZoomViewController.m in Sources */,
 				4E18D7CA234743C000039811 /* ORTableViewController.m in Sources */,
 				4E3CA9F823248DE100FE655B /* KApiManager.m in Sources */,
 			);

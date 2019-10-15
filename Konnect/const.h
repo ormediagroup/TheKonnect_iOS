@@ -25,6 +25,7 @@
 #define TEXT_BACK @"返回"
 #define TEXT_SUBMIT @"發送"
 #define TEXT_LOGIN @"登錄"
+#define TEXT_DONE @"完成"
 #define TEXT_NETWORK_ERROR @"網絡出錯"
 #define TEXT_FORGOT_PASSWORD @"忘記密碼"
 #define TEXT_TOU @"使用條款"
@@ -56,9 +57,22 @@
 #define TEXT_PASSWORD_DONT_MATCH @"兩次輸入的密碼不乎，請重新輸入"
 #define TEXT_PAY_POINTS @"消費積分"
 #define TEXT_CLEAR @"清除"
-
-
-
+#define TEXT_OPERATION_HOURS @"營業時間"
+#define TEXT_ADDRESS @"地址"
+#define TEXT_BOOKING_PHONE @"訂座電話"
+#define TEXT_RESTAURANT_INFO @"餐廳簡介"
+#define TEXT_PHOTOS @"照片"
+#define TEXT_RESERVATION @"線上預約"
+#define TEXT_PHONE_INQUIRY @"電話查詢"
+#define TEXT_BROWSE_ALL @"瀏覽全部"
+#define TEXT_BOOK_RESTAURANT @"餐廳訂座"
+#define TEXT_BOOK_FB_DATE @"訂座日期"
+#define TEXT_BOOK_FB_START_TIME @"入座時間"
+#define TEXT_BOOK_FB_NUMBER_PEOPLE @"訂座人數"
+#define TEXT_OTHER_MESSAGE @"其他信息"
+#define TEXT_PEOPLE @"人"
+#define TEXT_BOOK_FB_CONFIRM @"你確定訂座?"
+#define TEXT_BOOK_FB_SUCCESS @"你已成功訂座！"
 #define LEFT_ARROW @"\U000025C0"
 #define DOWN_ARROW @"\U000025BC"
 #define SMALL_DOWN_ARROW @"\U000025BE"
@@ -103,6 +117,7 @@
 #define UICOLOR_ERROR [UIColor colorWithRed:1 green:100/255.0 blue:100/255.0 alpha:1.0]
 #define UICOLOR_VERY_LIGHT_GREY [UIColor colorWithWhite:0.95 alpha:1.0]
 #define UICOLOR_VERY_LIGHT_GREY_BORDER [UIColor colorWithWhite:0.90 alpha:1.0]
+#define UICOLOR_ALPHA_BACKGROUND [UIColor colorWithWhite:0.10 alpha:0.5]
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
@@ -138,7 +153,11 @@ typedef enum {
     VC_TYPE_MY_WALLET = 6,
     VC_TYPE_POINT_HISTORY = 7,
     VC_TYPE_TOP_UP = 8,
-    VC_TYPE_PAYMENT_CODE = 9
+    VC_TYPE_PAYMENT_CODE = 9,
+    VC_TYPE_FACILITY = 10,
+    VC_TYPE_IMAGE_GALLERY = 11,
+    VC_TYPE_RESTAURANT_BOOKING = 12
+
 } VC_TYPE;
 
 #endif /* const_h */

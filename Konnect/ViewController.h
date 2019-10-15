@@ -22,6 +22,9 @@
 @class TopUp;
 @class ChargeQR;
 @class PaymentCode;
+@class Facility;
+@class ImageList;
+@class Booking;
 @interface ViewController : UIViewController {
     Introduction *lc;
     UINavigationController *nav;
@@ -39,6 +42,9 @@
     PointsHistory *points;
     TopUp *topup;
     PaymentCode *paymentcode;
+    Facility *facility;
+    ImageList *imgList;
+    Booking *booking;
     
 }
 -(void) onBackPressed;

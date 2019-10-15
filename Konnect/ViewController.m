@@ -22,6 +22,9 @@
 #import "TopUp.h"
 #import "ChargeQR.h"
 #import "PaymentCode.h"
+#import "Facility.h"
+#import "ImageList.h"
+#import "Booking.h"
 @interface ViewController ()
 
 @end
@@ -169,7 +172,36 @@
             if (!topup) {
                 topup = [[TopUp alloc] initWithNibName:nil bundle:nil];
             }
-            [self pushOrPop:topup];            
+            [self pushOrPop:topup];
+        } else if (type==VC_TYPE_IMAGE_GALLERY) {
+            if (!imgList) {
+                imgList = [[ImageList alloc] initWithStyle:UITableViewStylePlain];
+            }
+            if ([[notif.object objectForKey:@"images"] isKindOfClass:[NSArray class]]) {
+                imgList.datasrc = [notif.object objectForKey:@"images"];
+            }
+            [self pushOrPop:imgList];
+        } else if (type==VC_TYPE_IMAGE_GALLERY) {
+            if (!imgList) {
+                imgList = [[ImageList alloc] initWithStyle:UITableViewStylePlain];
+            }
+            if ([[notif.object objectForKey:@"images"] isKindOfClass:[NSArray class]]) {
+                imgList.datasrc = [notif.object objectForKey:@"images"];
+            }
+            [self pushOrPop:imgList];
+        } else if (type==VC_TYPE_RESTAURANT_BOOKING) {
+            if (!booking) {
+                booking = [[Booking alloc] initWithStyle:UITableViewStylePlain];
+            }
+            if ([[notif.object objectForKey:@"facility"] isKindOfClass:[NSDictionary class]]) {
+                booking.facility =[notif.object objectForKey:@"facility"];
+            }
+            [self pushOrPop:booking];
+        } else if (type==VC_TYPE_FACILITY) {
+            if (!facility) {
+                facility = [[Facility alloc] initWithNibName:nil bundle:nil];
+            }
+            [self pushOrPop:facility];
         }
     }
     if ([nav.viewControllers count]>1) {
