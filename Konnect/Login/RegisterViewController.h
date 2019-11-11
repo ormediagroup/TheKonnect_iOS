@@ -11,14 +11,13 @@
 NS_ASSUME_NONNULL_BEGIN
 typedef enum {
     REG_TYPE_PHONE = 0,
-    REG_TYPE_WECHAT =1
-    
+    REG_TYPE_WECHAT =1    
 } REG_TYPE;
 @interface RegisterViewController : ORViewController <UITextFieldDelegate> {
     UIButton *areaCode;
-    UITextField *phone, *verification;
-    UIButton *clearPhone, *clearVerification, *sendVerification, *submit;
-    UIView *phoneLine, *verificationLine;
+    UITextField *phone, *verification, *email;
+    UIButton *clearPhone, *clearVerification, *clearEmail, *sendVerification, *submit;
+    UIView *phoneLine, *verificationLine, *emailLine;
     UILabel *errorMessage;
     UIButton *tou;
     NSTimer *timer;

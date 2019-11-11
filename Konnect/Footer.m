@@ -24,11 +24,11 @@
     [v setBackgroundColor:UICOLOR_LIGHT_GREY];
     [self.view addSubview:v];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:[self makeBtn:0 withImageSrc:@"home.png" andText:@"首頁"]];
-    [self.view addSubview:[self makeBtn:1 withImageSrc:@"me.png" andText:@"我的"]];
+    [self.view addSubview:[self makeBtn:0 withImageSrc:@"home.png" andText:TEXT_HOME]];
+    [self.view addSubview:[self makeBtn:1 withImageSrc:@"me.png" andText:TEXT_MY]];
     [self.view addSubview:[self makeBtn:2 withImageSrc:@"scanqr.png" andText:@""]];
-    [self.view addSubview:[self makeBtn:3 withImageSrc:@"msg.png" andText:@"消息"]];
-    [self.view addSubview:[self makeBtn:4 withImageSrc:@"cs.png" andText:@"客服"]];
+    [self.view addSubview:[self makeBtn:3 withImageSrc:@"msg.png" andText:TEXT_MSG]];
+    [self.view addSubview:[self makeBtn:4 withImageSrc:@"cs.png" andText:TEXT_CS]];
     
    
 }
@@ -63,19 +63,50 @@
     return b1;
     
 }
+
 -(void) pressed:(UIButton *)b {
     if (b.tag==3) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MESSAGE_LIST]] forKeys:@[@"type"]]];
+        if ([self checkLogin]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+            [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MESSAGE_LIST]] forKeys:@[@"type"]]];
+        }
     } else if (b.tag==2) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SCAN_QRCODE]] forKeys:@[@"type"]]];
+        if ([self checkLogin]) {
+            [[NSNotificationCenter  defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SCAN_QRCODE]] forKeys:@[@"type"]]];
+        }
     } else if (b.tag==1) {
+        if ([self checkLogin]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MY]] forKeys:@[@"type"]]];
+        }
+    } else if (b.tag==4) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MY]] forKeys:@[@"type"]]];
+            [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONTACT_US],TEXT_CS] forKeys:@[@"type",@"title"]]];
+        
     } else if (b.tag==0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_HOME]] forKeys:@[@"type"]]];
+    }
+}
+-(BOOL) checkLogin {
+    if ([delegate isLoggedIn]) {
+        return YES;
+    } else {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_PLEASE_LOGIN
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_GO_LOGIN style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_LOGIN object:nil];
+            
+        }];
+        [alert addAction:defaultAction];
+        [alert addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
+        });
+        return NO;
     }
 }
 /*

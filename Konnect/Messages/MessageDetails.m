@@ -32,7 +32,6 @@
        @"action":@"getmessage",
        @"messageID":[NSNumber numberWithInt:messageID]
        } interation:0 callback:^(NSDictionary *data) {
-           [self->delegate stopLoading];
            if ([[data objectForKey:@"errcode"] intValue]==0) {
                if ([[data objectForKey:@"rc"] intValue]==0 && [[data objectForKey:@"data"]  isKindOfClass:[NSDictionary class]])  {
                    NSLog(@"Loading Message Details %@",[data objectForKey:@"message"]);

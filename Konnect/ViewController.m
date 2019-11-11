@@ -25,6 +25,23 @@
 #import "Facility.h"
 #import "ImageList.h"
 #import "Booking.h"
+#import "ORWebViewController.h"
+#import "FacilityList.h"
+#import "ServiceOffice.h"
+#import "ContactUs.h"
+#import "Invoices.h"
+#import "PastInvoices.h"
+#import "Invoice.h"
+#import "RefereralQR.h"
+#import "Company.h"
+#import "Office.h"
+#import "SearchMeetingRoom.h"
+#import "KonnectNews.h"
+#import "AboutKonnect.h"
+#import "Events.h"
+#import "EventDetails.h"
+#import "Coupons.h"
+#import "Reservations.h"
 @interface ViewController ()
 
 @end
@@ -41,6 +58,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goHome) name:LOGIN_SUCCESS object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goLogout) name:LOGOUT_SUCCESS object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goLogin) name:GO_LOGIN object:nil];
     
     header = [[Header alloc] initWithNibName:nil bundle:nil];
     header.parent = self;
@@ -95,15 +113,21 @@
     [self.view addSubview:footer.view];
 }
 -(void) goLogout {
-    if (!lc) {
-        lc = [[Introduction alloc] initWithNibName:nil bundle:nil];
-    }
     nav = [[UINavigationController alloc] initWithRootViewController:lc];
     [nav setNavigationBarHidden:YES];
     [nav setToolbarHidden:YES];
     [self.view addSubview:nav.view];
     [header.view removeFromSuperview];
     [footer.view removeFromSuperview];
+}
+-(void) goLogin {
+    nav = [[UINavigationController alloc] initWithRootViewController:lc];
+    [nav setNavigationBarHidden:YES];
+    [nav setToolbarHidden:YES];
+    [self.view addSubview:nav.view];
+    [header.view removeFromSuperview];
+    [footer.view removeFromSuperview];
+    [lc login];
 }
 -(void) confirmPayment:(NSNotification *) notif {
     [delegate startLoading];
@@ -201,13 +225,116 @@
             if (!facility) {
                 facility = [[Facility alloc] initWithNibName:nil bundle:nil];
             }
+            facility.facilityid =[notif.object objectForKey:@"facilityID"];
             [self pushOrPop:facility];
+        } else if (type==VC_TYPE_TOU) {
+            if (!tou) {
+                tou = [[ORWebViewController alloc] initWithNibName:nil bundle:nil];
+            }
+            [tou loadData:[notif.object objectForKey:@"url"]];
+            [self.view.window.rootViewController presentViewController:tou animated:YES completion:nil];
+        } else if (type==VC_TYPE_FACILITIES) {
+            if (!faciliites) {
+                faciliites = [[FacilityList alloc] initWithStyle:UITableViewStylePlain];
+                faciliites.title = TEXT_FNB;
+            }
+            [self pushOrPop:faciliites];
+        } else if (type==VC_TYPE_SERVICE_OFFICE) {
+            if (!serviceOffice) {
+                serviceOffice = [[ServiceOffice alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:serviceOffice];
+        } else if (type==VC_TYPE_CONTACT_US) {
+            if (!contact) {
+                contact = [[ContactUs alloc] initWithStyle:UITableViewStylePlain];
+            }
+           
+            contact.title =[notif.object objectForKey:@"title"];
+            [self pushOrPop:contact];
+            if ([[notif.object objectForKey:@"inquirytype"] isKindOfClass:[NSString class]] && ![[notif.object objectForKey:@"inquirytype"] isEqualToString:@""]) {
+                contact.inquirytype = [notif.object objectForKey:@"inquirytype"];
+                [contact.tableView reloadData];
+            }
+        } else if (type==VC_TYPE_INVOICES) {
+            if (!invoice) {
+                invoice = [[Invoices alloc] initWithStyle:UITableViewStylePlain];
+            }
+            invoice.invoicetype = [notif.object objectForKey:@"status"];
+            [self pushOrPop:invoice];
+        } else if (type==VC_TYPE_PAST_INVOICES) {
+            if (!pastinvoice) {
+                pastinvoice = [[PastInvoices alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:pastinvoice];
+        } else if (type==VC_TYPE_INVOICE) {
+            if (!inv) {
+                inv = [[Invoice alloc] initWithStyle:UITableViewStylePlain];
+            }
+            inv.invoiceID =[notif.object objectForKey:@"invoiceID"];
+            [self pushOrPop:inv];
+        } else if (type==VC_TYPE_REFERER_QR) {
+            if (!refqr) {
+                refqr = [[RefereralQR alloc] initWithNibName:nil bundle:nil];
+            }
+            [self pushOrPop:refqr];
+        
+        } else if (type==VC_TYPE_COMPANY) {
+            if (!company) {
+                company = [[Company alloc] initWithNibName:nil bundle:nil];
+            }
+            company.companyID = [notif.object objectForKey:@"companyID"];
+            [self pushOrPop:company];
+        } else if (type==VC_TYPE_OFFICE) {
+            if (!office) {
+                office = [[Office alloc] initWithNibName:nil bundle:nil];
+            }
+            office.officeID = [notif.object objectForKey:@"officeID"];
+            [self pushOrPop:office];
+        } else if (type==VC_TYPE_SEARCH_MEETING_ROOM) {
+            if (!searchroom) {
+                searchroom = [[SearchMeetingRoom alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:searchroom];
+        } else if (type==VC_TYPE_KONNECT_NEWS) {
+            if (!knews) {
+                knews = [[KonnectNews alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:knews];
+        } else if (type==VC_TYPE_ABOUT_KONNECT) {
+            if (!about) {
+                about = [[AboutKonnect alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:about];
+        } else if (type==VC_TYPE_EVENT) {
+            if (!event) {
+                event = [[Events alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:event];
+        } else if (type==VC_TYPE_EVENT_DETAILS) {
+            if (!eventdetails) {
+                eventdetails = [[EventDetails alloc] initWithNibName:nil bundle:nil];
+            }
+            eventdetails.eventID = [notif.object objectForKey:@"eventID"];
+            
+            [self pushOrPop:eventdetails];
+        } else if (type==VC_TYPE_COUPON) {
+            if (!coupon) {
+                coupon = [[Coupons alloc] initWithStyle:UITableViewStylePlain];
+            }
+            
+            [self pushOrPop:coupon];
+        } else if (type==VC_TYPE_RESERVATIONS) {
+            if (!reservation) {
+                reservation = [[Reservations alloc] initWithStyle:UITableViewStylePlain];
+            }
+            
+            [self pushOrPop:reservation];
         }
     }
     if ([nav.viewControllers count]>1) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SHOW_BACK_BTN object:nil];
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:HIDE_BACK_BTN object:nil];
+     //   [[NSNotificationCenter defaultCenter] postNotificationName:HIDE_BACK_BTN object:nil];
     }
 }
 -(void) pushOrPop:(UIViewController *)v {

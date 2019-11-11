@@ -210,8 +210,7 @@
                                           param:[[NSDictionary alloc] initWithObjects:@[@"get-token"]
                                                                               forKeys:@[@"action"]]
                                      interation:0 callback:^(NSDictionary *data) {
-                                         [self->delegate stopLoading];
-                                         if ([[data objectForKey:@"rc"] intValue]==0) {
+                                         if ([[data objectForKey:@"rc"] intValue]==0 || [[data objectForKey:@"rc"] intValue]==2) {
                                              [self topup:[data objectForKey:@"data"]];
                                          } else {
                                              [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
@@ -224,7 +223,6 @@
                                           param:[[NSDictionary alloc] initWithObjects:@[@"topup",paymentToken,chargeType,[NSNumber numberWithFloat:topupPoints],[NSNumber numberWithFloat:chargeAmount]]
                                                                               forKeys:@[@"action",@"paymentToken",@"paymentType",@"amount",@"cash"]]
                                      interation:0 callback:^(NSDictionary *data) {
-                                         [self->delegate stopLoading];
                                          if ([[data objectForKey:@"rc"] intValue]==0) {
                                              [delegate raiseAlert:TEXT_TOPUP_SUCCESS msg:[NSString stringWithFormat:@"%@%@", TEXT_NEW_BALANCE,[data objectForKey:@"balance"]]];
                                              [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];

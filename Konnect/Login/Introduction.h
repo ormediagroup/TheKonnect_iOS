@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
     int index;
 }
 -(void) backToIntro;
+-(void) login;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -14,8 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSString * facilityid;
     UIView *toolbar;
     NSDictionary *datasrc;
+
 }
 @property NSString *facilityid;
+
 @end
 
 NS_ASSUME_NONNULL_END

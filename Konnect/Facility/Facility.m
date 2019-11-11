@@ -31,29 +31,76 @@
     }
     {
         UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(15,15,30,30)];
-        [icon setImage:[UIImage imageNamed:@"cs.png"]];
+        b.tag = 1;
+        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(15,5,30,30)];
+        [icon setImage:[UIImage imageNamed:@"phone.png"]];
         [b addSubview:icon];
+        [b setContentMode:UIViewContentModeScaleAspectFit];
         [b setFrame:CGRectMake(delegate.screenWidth-120,0,50,FB_TOOLBAR_HEIGHT)];
-        [b addTarget:self action:@selector(makeBooking) forControlEvents:UIControlEventTouchUpInside];
+        [b addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
+        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(0,35,60,FB_TOOLBAR_HEIGHT-40)];
+        [l setText:TEXT_PHONE];
+        [l setTextColor:UICOLOR_GOLD];
+        [l setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [l setTextAlignment:NSTextAlignmentCenter];
+        [b addSubview:l];
         [toolbar addSubview:b];
     }
     {
         UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(15,15,30,30)];
-        [icon setImage:[UIImage imageNamed:@"icon64_appwx_logo.png"]];
+        b.tag=2;
+        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(15,5,30,30)];
+        [icon setImage:[UIImage imageNamed:@"wechatshare.png"]];
         [b addSubview:icon];
         [b setFrame:CGRectMake(delegate.screenWidth-60,0,50,FB_TOOLBAR_HEIGHT)];
-        [b addTarget:self action:@selector(makeBooking) forControlEvents:UIControlEventTouchUpInside];
+        [b addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
+        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(0,35,60,FB_TOOLBAR_HEIGHT-40)];
+        [l setText:TEXT_SHARE];
+        [l setTextColor:UICOLOR_GOLD];
+        [l setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [l setTextAlignment:NSTextAlignmentCenter];
+        [b addSubview:l];
         [toolbar addSubview:b];
     }
 }
+-(void) share:(UIButton *)b {
+    if (b.tag==1) {
+        NSString *n = [datasrc objectForKey:@"phone_1"];
+        NSString *phNo = [n stringByReplacingOccurrencesOfString:@" " withString:@""];
+        NSURL *phoneUrl = [NSURL URLWithString:[NSString  stringWithFormat:@"telprompt:%@",phNo]];
+        if ([[UIApplication sharedApplication] canOpenURL:phoneUrl]) {
+            [[UIApplication sharedApplication] openURL:phoneUrl];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"這裝置不支持撥打電話功能" message:@"" delegate:nil cancelButtonTitle:@"返回" otherButtonTitles: nil];
+            [alert show];
+            return;
+        }
+    } else {
+        NSString *content = [NSString stringWithFormat:@"Konnect - %@%@",[datasrc objectForKey:@"name_zh"],[datasrc objectForKey:@"name_en"]];
+        NSString *URL = [NSString stringWithFormat:@"http://eagenthk.com/site/?siteid=%@",[datasrc objectForKey:@"ID"]];
+        NSURL *u = [NSURL URLWithString:[URL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        if ([[datasrc objectForKey:@"otherimages"] count]>0) {
+            NSString *url = [[datasrc objectForKey:@"otherimages"]objectAtIndex:0];
+            [delegate getImage:url callback:^(UIImage *image) {
+                NSArray* sharedObjects=[NSArray arrayWithObjects:content,u,image,nil];
+                UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:sharedObjects applicationActivities:nil];
+                activityViewController.popoverPresentationController.sourceView = self.view;
+                [self presentViewController:activityViewController animated:YES completion:nil];
+            }];
+        } else {
+            NSArray* sharedObjects=[NSArray arrayWithObjects:content,u, nil];
+            UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:sharedObjects applicationActivities:nil];
+            activityViewController.popoverPresentationController.sourceView = self.view;
+            [self presentViewController:activityViewController animated:YES completion:nil];
+        }
+    }
+}
 -(void) viewWillAppear:(BOOL)animated {
-    if (![facilityid isEqualToString:@""]) {
+    if (facilityid && ![facilityid isEqualToString:@""]) {
         [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-home",K_API_ENDPOINT] param:
          [[NSDictionary alloc] initWithObjects:@[
                                                  @"get-vendor",
-                                                 @"10"
+                                                 facilityid
                                                  ]
                                        forKeys:@[
                                                  @"action",
@@ -108,11 +155,11 @@
         
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(100,y+4,delegate.screenWidth-SIDE_PAD-100,LINE_HEIGHT)];
         [l setNumberOfLines:-1];
-        NSAttributedString *hS = [[NSAttributedString alloc] initWithData:[[NSString stringWithFormat:@"<html><body style='font-size:%dpx;font-color:#333;font-family:Arial'>%@<p>%@</p></body></html>",FONT_S,[d objectForKey:@"address_zh"],[d objectForKey:@"address_en"]] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+        NSAttributedString *hS = [[NSAttributedString alloc] initWithData:[[NSString stringWithFormat:@"<html><body style='font-size:%dpx;font-color:#333;font-family:Arial'>%@</body></html>",FONT_S,[d objectForKey:@"address"]] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
         [l setAttributedText:hS];
         [l sizeToFit];
         [scroll addSubview:l];
-        y+=l.frame.size.height-6;
+        y+=l.frame.size.height+LINE_PAD;
         
     }
     {
@@ -129,15 +176,19 @@
         NSAttributedString *hS;
         if (![[d objectForKey:@"phone_2"] isEqualToString:@"0"]) {
             hS = [[NSAttributedString alloc] initWithData:[[NSString stringWithFormat:@"<html><body style='font-size:%dpx;font-color:#333;font-family:Arial'>%@<p>%@</p></body></html>",FONT_S,[d objectForKey:@"phone_1"],[d objectForKey:@"phone_2"]] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-        } else {
+        } else if (![[d objectForKey:@"phone_1"] isEqualToString:@"0"]) {
             hS = [[NSAttributedString alloc] initWithData:[[NSString stringWithFormat:@"<html><body style='font-size:%dpx;font-color:#333;font-family:Arial'>%@</body></html>",FONT_S,[d objectForKey:@"phone_1"]] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
         }
-        [l setAttributedText:hS];
-        [l sizeToFit];
-        [scroll addSubview:l];
-        y+=l.frame.size.height+LINE_PAD;
+        if (hS) {
+            [l setAttributedText:hS];
+            [l sizeToFit];
+            [scroll addSubview:l];
+            y+=l.frame.size.height;
+        }
         
     }
+    
+    
     {
         UILabel *p = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT)];
         [p setTextColor:UICOLOR_LIGHT_GREY];
@@ -177,7 +228,7 @@
         [l setNumberOfLines:-1];
         [l setFont:[UIFont systemFontOfSize:FONT_S]];
         [l setTextAlignment:NSTextAlignmentLeft];
-        [l setText:[d objectForKey:@"description"]];
+        [l setText:[d objectForKey:@"description_zh"]];
         [l sizeToFit];
         [scroll addSubview:l];
         y+=l.frame.size.height+LINE_PAD;
@@ -228,8 +279,24 @@
     [self.view addSubview:toolbar];
 }
 -(void) makeBooking {
-    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_RESTAURANT_BOOKING],datasrc] forKeys:@[@"type",@"facility"]]];
+    if ([delegate isLoggedIn]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_RESTAURANT_BOOKING],datasrc] forKeys:@[@"type",@"facility"]]];
+    } else {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_PLEASE_LOGIN
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_GO_LOGIN style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_LOGIN object:nil];
+            
+        }];
+        [alert addAction:defaultAction];
+        [alert addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
+        });
+    }
 }
 -(void) imagePressed {
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:

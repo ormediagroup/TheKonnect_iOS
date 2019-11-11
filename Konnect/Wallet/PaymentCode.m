@@ -36,7 +36,6 @@
                                                                                         ]]
                                      interation:0
                                        callback:^(NSDictionary *data) {
-                                           [self->delegate stopLoading];
                                            NSLog(@"PaymentCode Recv Payment Request: %@",[data description]);
                                            if ([[data objectForKey:@"rc"] intValue]==0) {
                                                [self makeInit];
@@ -289,7 +288,6 @@
                                                                                                     ]]
                                                  interation:0
                                                    callback:^(NSDictionary *data) {
-                                                       [self->delegate stopLoading];
                                                        if ([[data objectForKey:@"rc"] intValue]==0) {
                                                            [self->delegate raiseAlert:TEXT_SAVE_SUCCESS msg:@""];
                                                            [[NSNotificationCenter defaultCenter] postNotificationName:RESTORE_BACK_BTN object:nil];
@@ -327,7 +325,6 @@
                                                                                                     ]]
                                                  interation:0
                                                    callback:^(NSDictionary *data) {
-                                                       [self->delegate stopLoading];
                                                        if ([[data objectForKey:@"rc"] intValue]==0) {
                                                            [self->delegate raiseAlert:TEXT_SAVE_SUCCESS msg:@""];
                                                            [[NSNotificationCenter defaultCenter] postNotificationName:RESTORE_BACK_BTN object:nil];

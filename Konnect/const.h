@@ -20,12 +20,34 @@
 #define LINE_HEIGHT 30
 #define LINE_PAD 20
 
-
+#define TEXT_K_ADDRESS @"香港灣仔謝斐道303號"
+#define TEXT_K_PHONE @"00000000"
+#define TEXT_K_EMAIL @"info@thekonnect.com.hk"
+#define TEXT_HOME @"首頁"
+#define TEXT_MY @"我的"
+#define TEXT_EMAIL @"電郵"
+#define TEXT_MSG @"通知"
+#define TEXT_CS @"客服"
 #define BACK_TEXT @"返回"
+#define TEXT_NO @"否"
+#define TEXT_YES @"是"
+#define TEXT_COMPANY_INFO @"公司資料"
+#define TEXT_ERROR_MISSING_INFO @"請填寫所有資料"
+#define TEXT_BYOB @"自備酒精飲品"
+#define TEXT_PLEASE_LOGIN @"請先登入帳戶"
+#define TEXT_GO_LOGIN @"登入帳戶"
+#define TEXT_ENTER @"進入"
+#define TEXT_LOGIN_OR_REG @"登入 / 註冊"
+#define TEXT_GO_HOMEPAGE @"進入主頁面"
 #define TEXT_BACK @"返回"
 #define TEXT_SUBMIT @"發送"
 #define TEXT_LOGIN @"登錄"
 #define TEXT_DONE @"完成"
+#define TEXT_CLOSE @"關閉"
+#define TEXT_FNB @"餐飲"
+#define TEXT_SERVICE_OFFICE @"服務式辦公室"
+#define TEXT_ACTIVITY @"活動"
+#define TEXT_CANCEL @"取消"
 #define TEXT_NETWORK_ERROR @"網絡出錯"
 #define TEXT_FORGOT_PASSWORD @"忘記密碼"
 #define TEXT_TOU @"使用條款"
@@ -33,6 +55,8 @@
 #define TEXT_TOP_UP_POINTS @"充值積分"
 #define TEXT_NEXT_STEP @"下一步"
 #define TEXT_POINTS @"積分"
+#define TEXT_PHONE @"電話"
+#define TEXT_SHARE @"分享"
 #define TEXT_SALES @"售價"
 #define TEXT_PAY_BY_WECHAT @"微信支付"
 #define TEXT_PAY_BY_ALIPAY @"支付寶支付"
@@ -51,6 +75,7 @@
 #define TEXT_SET_PAYMENT_CODE_2 @"再次輸入付款密碼"
 #define TEXT_ENTER_PAYMENT_CODE @"輸入付款密碼"
 #define TEXT_PAYMENT_CODE @"付款密碼"
+#define TEXT_NEED_ROOM_MIN_PAY @"需要房間？ (最低消費 %@)"
 #define TEXT_SET @"設置"
 #define TEXT_SAVE_SUCCESS @"儲存成功"
 #define TEXT_INPUT_ERROR @"輸入錯誤"
@@ -59,8 +84,14 @@
 #define TEXT_CLEAR @"清除"
 #define TEXT_OPERATION_HOURS @"營業時間"
 #define TEXT_ADDRESS @"地址"
+#define TEXT_BOOK_PHONE @"聯絡人電話"
+#define TEXT_BOOK_NAME @"聯絡人名稱"
 #define TEXT_BOOKING_PHONE @"訂座電話"
-#define TEXT_RESTAURANT_INFO @"餐廳簡介"
+#define TEXT_RESTAURANT_INFO @"簡介"
+#define TEXT_INVOICE @"賬單"
+#define TEXT_BOOK_MEETING_ROOM @"預訂會議室"
+#define TEXT_PRINT_BALANCE @"列印結餘"
+#define TEXT_OFFICE_TOU @"使用條款"
 #define TEXT_PHOTOS @"照片"
 #define TEXT_RESERVATION @"線上預約"
 #define TEXT_PHONE_INQUIRY @"電話查詢"
@@ -77,6 +108,79 @@
 #define DOWN_ARROW @"\U000025BC"
 #define SMALL_DOWN_ARROW @"\U000025BE"
 #define CLOSE_X @"\U00002715"
+#define TEXT_ERROR_NO_PHONE @"這裝置不支持撥打電話功能"
+#define TEXT_INQUIRY_TYPE @"查詢類型"
+#define TEXT_INQUIRY_GENERAL @"一般查詢"
+#define TEXT_INQUIRY_RENT @"租務查詢"
+#define TEXT_INQUIRY_SERVICE_OFFICE_SUPPORT @"服務式辦公室支援"
+#define TEXT_INQUIRY_TECH @"技術支援"
+#define TEXT_INQUIRY_AD @"廣告查詢"
+#define TEXT_INQUIRY_BIZ @"商務合作"
+#define TEXT_INQUIRY_CONFIRM @"你確定發送?"
+#define TEXT_INQUIRY_SUCCESS @"感謝你的查詢，我們會盡快回復。！"
+#define TEXT_INVOICE_TYPE_PENDING @"尚未繳付"
+#define TEXT_INVOICE_TYPE_PAID @"已繳付"
+#define TEXT_INVOICE_TOTAL_PENDING @"尚未繳付總額"
+#define TEXT_BROWSE_PAST_INVOICE @"瀏覽過往賬單"
+#define TEXT_PAST_INVOICE @"過往賬單"
+#define TEXT_NO_INVOICE @"沒有賬單"
+#define TEXT_NO_PENDING_INVOICE @"沒有未繳賬單"
+#define TEXT_INVOICE_DATE @"賬單日期"
+#define TEXT_ALREADY @"已於"
+#define TEXT_INVOICE_NO @"賬單號碼"
+#define TEXT_INVOICE_AMOUNT @"賬單總額"
+#define TEXT_INVOICE_DUE @"請在此日期前繳付"
+#define TEXT_INVOICE_STATUS @"賬單狀態"
+#define TEXT_INVOICE_SETTLE_DATE @"繳付日期"
+#define TEXT_INVOICE_DETAILS @"賬單明細"
+#define TEXT_ONLY_SHOW_PAST_6_MONTHS_BILL @"只顯示過往6個月內已繳賬單"
+#define TEXT_REFERRAL_QR @"介紹朋友二維碼"
+#define TEXT_COMPANY  @"公司"
+#define TEXT_NAME  @"名稱"
+#define TEXT_ADDRESS  @"地址"
+#define TEXT_WEBSITE  @"網站"
+#define TEXT_OFFICE_ROOM_NO @"辦公室號碼"
+#define TEXT_OFFICE_ROOM_LOCATION @"辦公室位置"
+#define TEXT_OFFICE_ROOM_LEASE_END @"合約期至"
+#define TEXT_ACCESS_CODE @"門鎖密碼"
+#define TEXT_GENERATE_TEMP_ACCESS_CODE @"生成臨時門鎖密碼"
+#define TEXT_SEARCH_MEETING_ROOM @"搜尋會議室"
+#define TEXT_MEETING_ROOM @"會議室"
+#define TEXT_BOOK_ROOM_DATE @"日期"
+#define TEXT_BOOK_ROOM_START_TIME @"開始時間"
+#define TEXT_BOOK_ROOM_END_TIME @"完結時間"
+#define TEXT_BOOK_AVAILABLE @"可用會議室"
+#define TEXT_BOOK_PARTIAL @"沒有會議室可用，以下是會議室預訂情況。"
+#define TEXT_BOOK_NONE @"沒有會議室可用"
+#define TEXT_BOOK_ROOM_NOW @"訂房"
+#define TEXT_BOOK_ROOM_SUCCESS @"你已成功預訂會議室"
+#define TEXT_CONFIRM_BOOK_ROOM @"你確定要訂這個會議室？"
+#define TEXT_BOOKED_ROOM @"已預訂會議室"
+#define TEXT_K_NEWS @"Konnect 最新消息"
+#define TEXT_ABOUT_K @"關於 Konnect"
+#define TEXT_DL_K_MARKETING @"下載Konnect宣傳小冊子"
+#define TEXT_DL_K_PERSONAL_FORM @"下載Konnect個人會員入會登記表"
+#define TEXT_DL_K_CORPORATE_FORM @"下載Konnect團體會員入會登記表"
+#define TEXT_K_EVENT @"Konnect活動"
+#define TEXT_RENT_K_SPACE @"租用空間"
+#define TEXT_RENT_POPUP @"租用Popup Lounge"
+#define TEXT_RENT_EVENT_SPACE @"租用Polyform Event Space"
+#define TEXT_RENT_MEETING_ROOM @"租用會議室"
+#define TEXT_FEE @"費用"
+#define TEXT_DATE @"日期"
+#define TEXT_TIME @"時間"
+#define TEXT_LEARN_MORE @"了解詳情"
+#define TEXT_CAPACITY @"人數"
+#define TEXT_REMARKS @"備註"
+#define TEXT_EVENT_DETAILS @"活動介紹"
+#define TEXT_REGISTER_EVENT @"報名"
+#define TEXT_REGISTER_EVENT_SUCCESS @"報名成功"
+#define TEXT_NO_BALANCE @"餘額不足"
+#define TEXT_PLEASE_TOP_UP @"請先充值"
+#define TEXT_CONFIRM_REGISTER @"你確定要報名？（費用：%@)"
+#define TEXT_REGISTERED @"你已報名"
+#define TEXT_NO_COUPON @"暫時未有優惠券"
+#define TEXT_COUPON @"優惠券"
 
 #define UNCHECK_BOX @"\U00002610"
 #define CHECK_BOX @"\U00002714"
@@ -118,6 +222,7 @@
 #define UICOLOR_VERY_LIGHT_GREY [UIColor colorWithWhite:0.95 alpha:1.0]
 #define UICOLOR_VERY_LIGHT_GREY_BORDER [UIColor colorWithWhite:0.90 alpha:1.0]
 #define UICOLOR_ALPHA_BACKGROUND [UIColor colorWithWhite:0.10 alpha:0.5]
+#define UICOLOR_GREEN [UIColor colorWithRed:17/255.0 green:57/255.0 blue:44/255.0 alpha:1.0]
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
@@ -138,10 +243,11 @@
 #define REDIRECT_BACK_BTN @"redirectbackbtn"
 #define RESTORE_BACK_BTN @"restorebackbtn"
 #define RECEIVE_TRANSACTION_REQUEST @"recvTransReq"
-
+#define GO_LOGIN @"gologin"
 #define GO_SLIDE @"goslide"
 #define CHANGE_TITLE @"changetitle"
 #define LOAD_MESSAGE_DETAIL @"loadmd"
+
 
 typedef enum {
     VC_TYPE_HOME = 0,
@@ -156,7 +262,24 @@ typedef enum {
     VC_TYPE_PAYMENT_CODE = 9,
     VC_TYPE_FACILITY = 10,
     VC_TYPE_IMAGE_GALLERY = 11,
-    VC_TYPE_RESTAURANT_BOOKING = 12
+    VC_TYPE_RESTAURANT_BOOKING = 12,
+    VC_TYPE_TOU = 13,
+    VC_TYPE_FACILITIES = 14,
+    VC_TYPE_SERVICE_OFFICE = 15,
+    VC_TYPE_CONTACT_US = 16,
+    VC_TYPE_INVOICES = 17,
+    VC_TYPE_PAST_INVOICES = 18,
+    VC_TYPE_INVOICE = 19,
+    VC_TYPE_REFERER_QR = 20,
+    VC_TYPE_COMPANY = 21,
+    VC_TYPE_OFFICE = 22,
+    VC_TYPE_SEARCH_MEETING_ROOM = 23,
+    VC_TYPE_KONNECT_NEWS = 24,
+    VC_TYPE_ABOUT_KONNECT = 25,
+    VC_TYPE_EVENT = 26,
+    VC_TYPE_EVENT_DETAILS = 27,
+    VC_TYPE_COUPON = 28,
+    VC_TYPE_RESERVATIONS = 29
 
 } VC_TYPE;
 

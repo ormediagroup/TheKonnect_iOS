@@ -44,7 +44,6 @@
     
     phone = [[UITextField alloc] initWithFrame:CGRectMake(120,0,delegate.screenWidth-140-SIDE_PAD,LINE_HEIGHT)];
     [phone setKeyboardType:UIKeyboardTypePhonePad];
-    [phone setPlaceholder:@"手機號碼"];
     [phone setPlaceholder:@"請輸入8個位手機號碼"];
     [phone setTextAlignment:NSTextAlignmentCenter];
     [delegate addDoneToKeyboard:phone];
@@ -63,6 +62,8 @@
         [self.view addSubview:phoneLine];
     }
     
+    
+   
     
     verification = [[UITextField alloc] initWithFrame:CGRectMake(SIDE_PAD_2,LINE_HEIGHT+40,delegate.screenWidth-180-SIDE_PAD-SIDE_PAD,LINE_HEIGHT)];
     [verification setKeyboardType:UIKeyboardTypeNumberPad];
@@ -97,6 +98,29 @@
     }
     
     int y =LINE_HEIGHT+LINE_HEIGHT+50+LINE_HEIGHT;
+    
+    email = [[UITextField alloc] initWithFrame:CGRectMake(SIDE_PAD_2,y,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2-40,LINE_HEIGHT)];
+    [email setKeyboardType:UIKeyboardTypeEmailAddress];
+    [email setPlaceholder:@"請輸入電郵地址"];
+    [email setTextAlignment:NSTextAlignmentCenter];
+    [delegate addDoneToKeyboard:email];
+    clearEmail = [UIButton buttonWithType:UIButtonTypeCustom];
+    [clearEmail setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    [clearEmail setTitle:CLOSE_X forState:UIControlStateNormal];
+    [clearEmail setFrame:CGRectMake(delegate.screenWidth-SIDE_PAD_2-20,y,20,LINE_HEIGHT)];
+    [clearEmail addTarget:self action:@selector(clearEmail) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:clearEmail];
+    
+    [self.view addSubview:email];
+    {
+        emailLine = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD_2,y+LINE_HEIGHT+10,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2,1)];
+        [emailLine setBackgroundColor:[UIColor lightGrayColor]];
+        [self.view addSubview:emailLine];
+    }
+    
+    y+=LINE_HEIGHT+50;
+    
+    
     UIView *h = [[UIView alloc] initWithFrame:CGRectMake(delegate.screenWidth/2-120,y,240,LINE_HEIGHT)];
     [self.view addSubview:h];
     tou = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -118,6 +142,7 @@
     UIButton *goTOU = [UIButton buttonWithType:UIButtonTypeCustom];
     [goTOU setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
     [goTOU setTitle:@"《使用條款》" forState:UIControlStateNormal];
+    [goTOU addTarget:self action:@selector(gotou) forControlEvents:UIControlEventTouchUpInside];
     goTOU.contentHorizontalAlignment=UIControlContentHorizontalAlignmentLeft;
     [goTOU.titleLabel setFont:[UIFont systemFontOfSize:FONT_XS]];
     [goTOU setFrame:CGRectMake(146,0,100,LINE_HEIGHT)];
@@ -151,6 +176,10 @@
     [self.view addSubview:errorMessage];
     
 }
+-(void) gotou {
+    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@/privacy-policy-zh/",domain]] forKeys:@[@"type",@"url"]]];
+}
 -(void) viewWillAppear:(BOOL)animated {
     [self textFieldDidEndEditing:phone];
     [self textFieldDidEndEditing:verification];
@@ -172,6 +201,9 @@
         [c setImage:[UIImage imageNamed:@"unchecked.png"]];
     }
     
+}
+-(void) clearEmail {
+    [email setText:@""];
 }
 -(void) clearPhone {
     [phone setText:@""];
@@ -226,15 +258,21 @@
     }
 }
 -(void) submit {
-    [delegate startLoading];
-    
     NSString *areacodetext = areaCode.titleLabel.text;
     NSString *phonetext = phone.text;
+    NSString *emailtext = email.text;
     NSString *vtext = verification.text;
+
+    if ([phone.text isEqualToString:@""] || [email.text isEqualToString:@""]) {
+        [delegate raiseAlert:TEXT_INPUT_ERROR msg:TEXT_ERROR_MISSING_INFO];
+        return;
+    }
+    [delegate startLoading];
+    
     dispatch_queue_t createQueue = dispatch_queue_create("SerialQueue", nil);
     if (regType == REG_TYPE_PHONE) {
         dispatch_async(createQueue, ^(){
-            NSObject *data = [[KApiManager sharedManager] verifyRegUser:[NSString stringWithFormat:@"%@%@",areacodetext,phonetext] verification:vtext];
+            NSObject *data = [[KApiManager sharedManager] verifyRegUser:[NSString stringWithFormat:@"%@%@",areacodetext,phonetext] verification:vtext withEmail:emailtext];
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self->delegate stopLoading];
                 [self submitComplete:data];

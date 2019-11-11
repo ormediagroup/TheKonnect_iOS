@@ -207,6 +207,7 @@
                                   JSONObjectWithData:data
                                   options:kNilOptions
                                   error:&error];
+        [delegate stopLoading];
         if (error) {
             NSLog(@"K get URL async %@ with Error %@",urlS, [error description]);
             NSString *datastr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -233,10 +234,10 @@
 -(NSDictionary *) login:(NSString *)username pw:(NSString *)pw {
     return [self getResultSync:@"" param:[NSDictionary dictionaryWithObjects:@[username, pw] forKeys:@[@"username",@"pw"]] interation:0];
 }
--(id) verifyRegUser:(NSString *)username verification:(NSString *)code {
+-(id) verifyRegUser:(NSString *)username verification:(NSString *)code  withEmail:(NSString *) email{
     return [self getResultSync:[NSString stringWithFormat:@"%@app-reg-user",K_API_ENDPOINT]
                          param:[NSDictionary dictionaryWithObjects:
-                                    @[username, code, @"verifycode"] forKeys:@[@"username",@"code",@"action"]]
+                                    @[username, code, email, @"verifycode"] forKeys:@[@"username",@"code",@"emailaddr",@"action"]]
                     interation:0];
 }
 -(NSDictionary *) verifyWXUser:(NSString *)username verification:(NSString *)code unionID:(NSString *)unionid{

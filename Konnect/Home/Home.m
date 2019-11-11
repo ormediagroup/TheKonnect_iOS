@@ -9,7 +9,7 @@
 #import "Home.h"
 #import "AppDelegate.h"
 #import "const.h"
-#import "HomeCarousel.h"
+#import "ORCarousel.h"
 @interface Home ()
 
 @end
@@ -59,16 +59,16 @@
     [submit addSubview:memberTier];
     
     y+=submit.frame.size.height+LINE_PAD;
-    carousel = [[HomeCarousel alloc] initWithNibName:nil bundle:nil];
+    carousel = [[ORCarousel alloc] initWithNibName:nil bundle:nil];
     [carousel.view setFrame:CGRectMake(SIDE_PAD, y, delegate.screenWidth-SIDE_PAD_2, 200)];
     [scroll addSubview:carousel.view];
     
     y+=200+LINE_PAD;
     UIView *btns = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,80)];
     [scroll addSubview:btns];
-    [btns addSubview:[self makeBtn:0 withImageSrc:@"restauranticon.png" andText:@"餐廳"]];
-    [btns addSubview:[self makeBtn:1 withImageSrc:@"officeicon.png" andText:@"辦公室"]];
-    [btns addSubview:[self makeBtn:2 withImageSrc:@"conferenceicon.png" andText:@"會議室"]];
+    [btns addSubview:[self makeBtn:0 withImageSrc:@"restauranticon.png" andText:TEXT_FNB]];
+    [btns addSubview:[self makeBtn:1 withImageSrc:@"officeicon.png" andText:TEXT_SERVICE_OFFICE]];
+    [btns addSubview:[self makeBtn:2 withImageSrc:@"conferenceicon.png" andText:TEXT_ACTIVITY]];
     
     y += (delegate.screenWidth-SIDE_PAD_2)/3 + LINE_PAD;
     ad = [[UIImageView alloc] initWithFrame:CGRectMake
@@ -94,8 +94,16 @@
     }];
 }
 -(void) pressed:(UIButton *)b {
-    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_FACILITY],[NSNumber numberWithInt:b.tag]] forKeys:@[@"type",@"facilityid"]]];
+    if (b.tag==0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_FACILITIES],[NSNumber numberWithInt:b.tag]] forKeys:@[@"type",@"facilityid"]]];
+    } else if (b.tag==1) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SERVICE_OFFICE]] forKeys:@[@"type"]]];
+    } else if (b.tag==2) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_EVENT]] forKeys:@[@"type"]]];
+    }
 }
 -(UIButton *) makeBtn:(int) tag withImageSrc:(NSString *)imageSrc andText:(NSString *)lbl {
  
@@ -125,7 +133,8 @@
     
 }
 -(void) goAccount {
-    //[[NSNotificationCenter defaultCenter] postNotificationName:GO_ACCOUNT object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MY]] forKeys:@[@"type"]]];
 }
 -(void) addBottomPart:(NSArray *)data {
     CGFloat x = SIDE_PAD;
@@ -133,24 +142,43 @@
     CGFloat width = (delegate.screenWidth-SIDE_PAD_2-SIDE_PAD)/2;
     int k = 0;
     for (NSDictionary *d in data) {
-        UIImageView *v =[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,100)];
+        UIImageView *v =[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,80)];
+        [v setUserInteractionEnabled:YES];
+        v.tag = k;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adpressed:)];
+        [v addGestureRecognizer:tap];
         [v setImage:[delegate getImage:[[d objectForKey:@"image"] objectAtIndex:0] callback:^(UIImage *image) {
             [v setImage:image];
         }]];
-        [v setContentMode:UIViewContentModeScaleAspectFill];
+        [v setContentMode:UIViewContentModeScaleAspectFit];
         [v setClipsToBounds:YES];
         x+= SIDE_PAD + width;
         if ((x+width) > delegate.screenWidth) {
             x = SIDE_PAD;
-            y+=100+LINE_PAD;
+            y+=70+LINE_PAD;
         }
         [bottom addSubview:v];
         
         k++;
     }
-    [bottom setFrame:CGRectMake(0,bottom.frame.origin.y, bottom.frame.size.width,y+80)];
-    [scroll setContentSize:CGSizeMake(delegate.screenWidth,(bottom.frame.origin.y+y+80))];
+    [bottom setFrame:CGRectMake(0,bottom.frame.origin.y, bottom.frame.size.width,y+60)];
+    [scroll setContentSize:CGSizeMake(delegate.screenWidth,(bottom.frame.origin.y+y+60))];
                                       
+}
+-(void) adpressed:(UITapGestureRecognizer *)tap  {
+    if (tap.view.tag==0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_RESERVATIONS]] forKeys:@[@"type"]]];
+    } else if (tap.view.tag==1) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_KONNECT_NEWS]] forKeys:@[@"type"]]];
+    } else if (tap.view.tag==2) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_ABOUT_KONNECT]] forKeys:@[@"type"]]];
+    } else if (tap.view.tag==3) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONTACT_US]] forKeys:@[@"type"]]];
+    }
 }
 -(void) viewWillAppear:(BOOL)animated {
     /*

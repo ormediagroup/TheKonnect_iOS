@@ -330,6 +330,14 @@
     [preferences removeObjectForKey:K_USER_EMAIL];
     [[NSNotificationCenter defaultCenter] postNotificationName:LOGOUT_SUCCESS object:nil];
 }
+-(BOOL) isLoggedIn {
+    if ([[preferences objectForKey:K_USER_OPENID] isKindOfClass:[NSString class]]
+        && [[preferences objectForKey:K_USER_OPENID] length] >0) {
+        return true;
+    }
+    return false;
+    
+}
 -(void) getWXAuthCode:(BOOL) isReg {
     WXisRegistration = isReg;
     SendAuthReq* req =[[SendAuthReq alloc]init];

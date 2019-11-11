@@ -16,11 +16,6 @@
 @implementation MessageList
 - (void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@"消息中心"];
-}
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
-    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-message",K_API_ENDPOINT]  param:
      @{
@@ -37,6 +32,13 @@
                [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
            }
        }];
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -199,7 +201,6 @@
                                self->loadingMore = NO;
                         //       NSLog(@"Loading no more 3");
                            }];
-                           [self->delegate stopLoading];
                        
                        }
                    } else {

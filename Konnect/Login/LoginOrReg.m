@@ -208,7 +208,7 @@
         [tou setTitle:TEXT_TOU forState:UIControlStateNormal];
         [tou setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [tou.titleLabel setFont:[UIFont systemFontOfSize:FONT_S]];
-        [tou addTarget:self action:@selector(forgotPassword) forControlEvents:UIControlEventTouchUpInside];
+        [tou addTarget:self action:@selector(gotou) forControlEvents:UIControlEventTouchUpInside];
         [loginView.view addSubview:tou];
     }
     y+=LINE_HEIGHT;
@@ -243,6 +243,10 @@
 
     [delegate getWXAuthCode:NO];
      
+}
+-(void) gotou {
+    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@/privacy-policy-zh/",domain]] forKeys:@[@"type",@"url"]]];
 }
 -(void) submit {
     if ([areaCode.titleLabel.text isEqualToString:@"852"] || [areaCode.titleLabel.text isEqualToString:@"853"]) {

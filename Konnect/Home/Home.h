@@ -8,13 +8,13 @@
 
 #import "ORViewController.h"
 @class AppDelegate;
-@class HomeCarousel;
+@class ORCarousel;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Home : ORViewController {
    
     UIImageView *memberTier;
-    HomeCarousel *carousel;
+    ORCarousel *carousel;
     UIImageView *ad;
     UIView *bottom;
     UILabel *nameLbl;

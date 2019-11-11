@@ -32,7 +32,7 @@
     [back addTarget:self action:@selector(onBackPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:back];
     
-    logo = [[UIImageView alloc] initWithFrame:CGRectMake(0,delegate.headerHeight-34,delegate.screenWidth,30)];
+    logo = [[UIImageView alloc] initWithFrame:CGRectMake(0,delegate.headerHeight-40,delegate.screenWidth,28)];
     [logo setImage:[UIImage imageNamed:@"logo-small.png"]];
     [logo setContentMode:UIViewContentModeScaleAspectFit];
     [self.view addSubview:logo];

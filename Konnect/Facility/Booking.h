@@ -17,12 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *bookTimeHr, *bookTimeMin;
     NSString *bookPeople;
     NSString *bookOthers;
-    UIPickerView *datepicker,*timepicker,*peoplepicker;
+    NSString *bookRoom;
+    NSString *bookAlcohol;
+    UITextField *bookingName, *bookingPhone;
+    UIPickerView *datepicker,*timepicker,*peoplepicker, *roompicker, *alcoholpicker;
     NSDateFormatter *dateFormat;
     UIView *pickerViewToolbar;
     UILabel *pickerValue;
     UITextView *remarks;
     UIButton *bookNow;
+    BOOL hasPrivateRoom, hasBringAlcohol;
 }
 @property NSDictionary *facility;
 @end

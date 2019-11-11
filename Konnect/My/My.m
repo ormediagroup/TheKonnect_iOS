@@ -21,13 +21,14 @@
     //[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
-    labels = @[@"我的資料",@"我的錢包",@"積分記錄",@"預約記錄",@"優惠券",@"辦公室",@"推薦註冊"];
+    labels = @[@"我的資料",@"我的錢包",@"積分記錄",@"預約記錄",TEXT_COUPON,TEXT_SERVICE_OFFICE,TEXT_REFERRAL_QR];
     iconsrc = @[@"editinfo.png",@"waller.png",@"pointshistory.png",@"appointments.png",@"coupons.png",@"office.png",@"referral.png"];
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 -(void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@"我的"];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     [super viewWillAppear:animated];
 }
 #pragma mark - Table view data source
@@ -39,7 +40,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section==0) return 8;
-    else if (section==1) return 2;
+    else if (section==1) return 0;
     return 1;
 }
 
@@ -113,6 +114,18 @@
         } else if (indexPath.row==3) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_POINT_HISTORY]] forKeys:@[@"type"]]];
+        } else if (indexPath.row==4) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_RESERVATIONS]] forKeys:@[@"type"]]];
+        } else if (indexPath.row==5) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_COUPON]] forKeys:@[@"type"]]];
+        } else if (indexPath.row==6) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SERVICE_OFFICE]] forKeys:@[@"type"]]];
+        } else if (indexPath.row==7) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_REFERER_QR]] forKeys:@[@"type"]]];
         }
         
     } if (indexPath.section==2) {

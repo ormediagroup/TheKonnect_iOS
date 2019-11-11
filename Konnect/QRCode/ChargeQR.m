@@ -325,7 +325,6 @@
                                          } else {
                                              [self raiseAlertSuccess:TEXT_RECEIVE_PAYMENT_SUCC msg:[NSString stringWithFormat:@"%@%@",TEXT_YOU_RECEIVED, self->chargeTotal]];
                                          }
-                                         [self->delegate stopLoading];
                                      }];
 }
 -(void) raiseAlert:(NSString *)title msg:(NSString *)msg {

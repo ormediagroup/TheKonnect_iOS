@@ -5,8 +5,21 @@
 //  Created by Jacky Mok on 3/9/2019.
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
+/* TODO : Invoice Create per item details */
 
 
+
+/* version 0.5
+ List of FNB
+  - Booking
+ Service Office
+  - Invoices
+ Contact Us
+ Meeting Room Search
+ Book Meeting Room
+ */
+ 
+ 
 // China Domain
 /*
 #define domain @"https://thekonnect.cn/"
@@ -53,6 +66,7 @@
     UIActivityIndicatorView *loading;
     BOOL WXisRegistration, isX;
 }
+-(BOOL) isLoggedIn;
 -(void) addDoneToKeyboard:(UITextField *)t;
 //-(void) getWXAccessToken:(NSString *)code;
 -(void) getWXAuthCode:(BOOL)isReg;
@@ -69,5 +83,6 @@
 -(void) raiseAlert:(NSString *)title msg:(NSString *)msg inViewController:(UIViewController *)vc;
 -(void) networkError;
 -(void) logout;
+
 @end
 

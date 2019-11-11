@@ -13,7 +13,7 @@
 
 + (instancetype)sharedManager;
 -(void) getResultAsync:(NSString *)urlS param:(NSDictionary *)params interation:(int)i callback:(void (^)(NSDictionary *data))callback;
--(NSDictionary *) verifyRegUser:(NSString *)username verification:(NSString *)code;
+-(NSDictionary *) verifyRegUser:(NSString *)username verification:(NSString *)code withEmail:(NSString *) email;
 -(NSDictionary *) verifyWXUser:(NSString *)username verification:(NSString *)code unionID:(NSString *)unionid;
 -(id) setPassword:(NSString *)userToken password:(NSString *)password;
 -(id) tieWithWechat:(NSString *)unionID userToken:(NSString *)userToken;

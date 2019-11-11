@@ -25,6 +25,23 @@
 @class Facility;
 @class ImageList;
 @class Booking;
+@class ORWebViewController;
+@class FacilityList;
+@class ServiceOffice;
+@class ContactUs;
+@class Invoices;
+@class PastInvoices;
+@class Invoice;
+@class RefereralQR;
+@class Company;
+@class Office;
+@class SearchMeetingRoom;
+@class KonnectNews;
+@class AboutKonnect;
+@class Events;
+@class EventDetails;
+@class Coupons;
+@class Reservations;
 @interface ViewController : UIViewController {
     Introduction *lc;
     UINavigationController *nav;
@@ -45,6 +62,23 @@
     Facility *facility;
     ImageList *imgList;
     Booking *booking;
+    ORWebViewController *tou;
+    FacilityList *faciliites;
+    ServiceOffice *serviceOffice;
+    ContactUs *contact;
+    Invoices *invoice;
+    PastInvoices *pastinvoice;
+    Invoice *inv;
+    RefereralQR *refqr;
+    Company *company;
+    Office *office;
+    SearchMeetingRoom *searchroom;
+    KonnectNews *knews;
+    AboutKonnect *about;
+    Events *event;
+    EventDetails *eventdetails;
+    Coupons *coupon;
+    Reservations *reservation;
     
 }
 -(void) onBackPressed;

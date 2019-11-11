@@ -34,7 +34,7 @@
     [t setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:t];
     
-    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD,200,delegate.screenWidth-SIDE_PAD_2,delegate.screenHeight-250-delegate.footerHeight-SIDE_PAD_2-SIDE_PAD_2)];
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD,100,delegate.screenWidth-SIDE_PAD_2,delegate.screenHeight-50-delegate.footerHeight-SIDE_PAD_2-SIDE_PAD_2)];
     v.layer.cornerRadius = 5.0f;
     [v setBackgroundColor:[UIColor whiteColor]];
     v.layer.borderWidth = 0.5f;
@@ -51,7 +51,7 @@
     UIBezierPath *shadowPath      = [UIBezierPath bezierPathWithRect:UIEdgeInsetsInsetRect(v.bounds, shadowInsets)];
     v.layer.shadowPath    = shadowPath.CGPath;
     
-    UILabel *purple = [[UILabel alloc] initWithFrame:CGRectMake(0,0,v.frame.size.width,80)];
+    UILabel *purple = [[UILabel alloc] initWithFrame:CGRectMake(0,0,v.frame.size.width,60)];
     [purple setText:@"使用積分向商家付款"];
     [purple setTextColor:UICOLOR_GOLD];
     [purple setFont:[UIFont systemFontOfSize:FONT_L]];
@@ -59,7 +59,7 @@
     [purple setBackgroundColor:UICOLOR_PURPLE];
     [v addSubview:purple];
     
-    qrImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD+20,v.frame.size.height-v.frame.size.width-SIDE_PAD_2+40,v.frame.size.width-SIDE_PAD_2-40,v.frame.size.width-SIDE_PAD_2-40)];
+    qrImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD+20,v.frame.size.height-v.frame.size.width-SIDE_PAD_2+20,v.frame.size.width-SIDE_PAD_2-40,v.frame.size.width-SIDE_PAD_2-20)];
     qrImageView.layer.borderColor = [UICOLOR_GOLD CGColor];
     qrImageView.layer.borderWidth = 0.5f;
     
@@ -88,12 +88,11 @@
                                                                            message:TEXT_NO_PAYMENT_CODE
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction* setCodeAction = [UIAlertAction actionWithTitle:TEXT_SET_PAYMENT_CODE style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                [self dismissViewControllerAnimated:YES
-                                         completion:^{
-                                             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+            UIAlertAction* setCodeAction = [UIAlertAction actionWithTitle:TEXT_SET_PAYMENT_CODE style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {                
+                [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
                                               [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_PAYMENT_CODE]] forKeys:@[@"type"]]];
-                                         }];
+                [self dismissViewControllerAnimated:YES
+                                         completion:^{}];
                
                 
             }];
