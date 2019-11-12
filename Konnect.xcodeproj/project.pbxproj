@@ -44,6 +44,11 @@
 		4E16724423781C9B00F6FD8E /* Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E16724323781C9B00F6FD8E /* Events.m */; };
 		4E167248237847FD00F6FD8E /* EventDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E167247237847FD00F6FD8E /* EventDetails.m */; };
 		4E16724B2378EEBF00F6FD8E /* Reservations.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E16724A2378EEBF00F6FD8E /* Reservations.m */; };
+		4E167251237A4FF000F6FD8E /* BuyPrintQuota.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E167250237A4FF000F6FD8E /* BuyPrintQuota.m */; };
+		4E167254237A503400F6FD8E /* AssoPIcker.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E167253237A503400F6FD8E /* AssoPIcker.m */; };
+		4E167257237A72B600F6FD8E /* OfficeNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E167256237A72B600F6FD8E /* OfficeNotifications.m */; };
+		4E16725A237A9B3900F6FD8E /* MeetingRoomList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E167259237A9B3900F6FD8E /* MeetingRoomList.m */; };
+		4E16725D237AB24F00F6FD8E /* MeetingRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E16725C237AB24F00F6FD8E /* MeetingRoom.m */; };
 		4E18D7842341EA5B00039811 /* logo-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7832341EA5B00039811 /* logo-small.png */; };
 		4E18D78A2341EAA600039811 /* scanqr.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7852341EAA500039811 /* scanqr.png */; };
 		4E18D78B2341EAA600039811 /* msg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7862341EAA500039811 /* msg.png */; };
@@ -184,6 +189,16 @@
 		4E167247237847FD00F6FD8E /* EventDetails.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventDetails.m; sourceTree = "<group>"; };
 		4E1672492378EEBF00F6FD8E /* Reservations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reservations.h; sourceTree = "<group>"; };
 		4E16724A2378EEBF00F6FD8E /* Reservations.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reservations.m; sourceTree = "<group>"; };
+		4E16724F237A4FF000F6FD8E /* BuyPrintQuota.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuyPrintQuota.h; sourceTree = "<group>"; };
+		4E167250237A4FF000F6FD8E /* BuyPrintQuota.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuyPrintQuota.m; sourceTree = "<group>"; };
+		4E167252237A503400F6FD8E /* AssoPIcker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssoPIcker.h; sourceTree = "<group>"; };
+		4E167253237A503400F6FD8E /* AssoPIcker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssoPIcker.m; sourceTree = "<group>"; };
+		4E167255237A72B600F6FD8E /* OfficeNotifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OfficeNotifications.h; sourceTree = "<group>"; };
+		4E167256237A72B600F6FD8E /* OfficeNotifications.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OfficeNotifications.m; sourceTree = "<group>"; };
+		4E167258237A9B3900F6FD8E /* MeetingRoomList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeetingRoomList.h; sourceTree = "<group>"; };
+		4E167259237A9B3900F6FD8E /* MeetingRoomList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeetingRoomList.m; sourceTree = "<group>"; };
+		4E16725B237AB24F00F6FD8E /* MeetingRoom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeetingRoom.h; sourceTree = "<group>"; };
+		4E16725C237AB24F00F6FD8E /* MeetingRoom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeetingRoom.m; sourceTree = "<group>"; };
 		4E18D7832341EA5B00039811 /* logo-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-small.png"; sourceTree = "<group>"; };
 		4E18D7852341EAA500039811 /* scanqr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scanqr.png; sourceTree = "<group>"; };
 		4E18D7862341EAA500039811 /* msg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = msg.png; sourceTree = "<group>"; };
@@ -398,6 +413,8 @@
 				4E12D795232297B900D4A545 /* RegisterViewController.m */,
 				4E3CA9FA2329F60300FE655B /* RegisterPassword.h */,
 				4E3CA9FB2329F60300FE655B /* RegisterPassword.m */,
+				4E167252237A503400F6FD8E /* AssoPIcker.h */,
+				4E167253237A503400F6FD8E /* AssoPIcker.m */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -531,6 +548,14 @@
 				4E167237237662A800F6FD8E /* Company.m */,
 				4E1672392376943900F6FD8E /* SearchMeetingRoom.h */,
 				4E16723A2376943900F6FD8E /* SearchMeetingRoom.m */,
+				4E16724F237A4FF000F6FD8E /* BuyPrintQuota.h */,
+				4E167250237A4FF000F6FD8E /* BuyPrintQuota.m */,
+				4E167255237A72B600F6FD8E /* OfficeNotifications.h */,
+				4E167256237A72B600F6FD8E /* OfficeNotifications.m */,
+				4E167258237A9B3900F6FD8E /* MeetingRoomList.h */,
+				4E167259237A9B3900F6FD8E /* MeetingRoomList.m */,
+				4E16725B237AB24F00F6FD8E /* MeetingRoom.h */,
+				4E16725C237AB24F00F6FD8E /* MeetingRoom.m */,
 			);
 			path = ServiceOffice;
 			sourceTree = "<group>";
@@ -804,6 +829,7 @@
 				4E991C4F23745D8E00DEBE01 /* ORCarousel.m in Sources */,
 				4E12D7922322577F00D4A545 /* LoginOrReg.m in Sources */,
 				4E16724423781C9B00F6FD8E /* Events.m in Sources */,
+				4E167251237A4FF000F6FD8E /* BuyPrintQuota.m in Sources */,
 				4E9C0FA7235432E4005285A4 /* ImageList.m in Sources */,
 				4E18D7AA234700B400039811 /* ScanQR.m in Sources */,
 				4EEB844A233CB36C00853E76 /* Header.m in Sources */,
@@ -833,13 +859,17 @@
 				4E02E22C23727ABA0006379B /* ORWebViewController.m in Sources */,
 				4E9F7CD1237561DD005EB150 /* Invoice.m in Sources */,
 				4E065735231E7F9300884D79 /* AppDelegate.m in Sources */,
+				4E167254237A503400F6FD8E /* AssoPIcker.m in Sources */,
 				4E9C0FA02350EB46005285A4 /* Facility.m in Sources */,
 				4E9F7CC823752AD7005EB150 /* ContactUs.m in Sources */,
 				4EE24A3D234F34A600E2C651 /* PaymentCodeDigit.m in Sources */,
 				4E9F7CD423757827005EB150 /* RefereralQR.m in Sources */,
 				4E16723B2376943900F6FD8E /* SearchMeetingRoom.m in Sources */,
 				4E1672412377F2BF00F6FD8E /* AboutKonnect.m in Sources */,
+				4E16725D237AB24F00F6FD8E /* MeetingRoom.m in Sources */,
+				4E167257237A72B600F6FD8E /* OfficeNotifications.m in Sources */,
 				4E9F7CD823757B8C005EB150 /* Coupons.m in Sources */,
+				4E16725A237A9B3900F6FD8E /* MeetingRoomList.m in Sources */,
 				4E18D7C72347429C00039811 /* EditInfo.m in Sources */,
 				4E9C0FAA23543C3C005285A4 /* ImageZoomViewController.m in Sources */,
 				4E18D7CA234743C000039811 /* ORTableViewController.m in Sources */,

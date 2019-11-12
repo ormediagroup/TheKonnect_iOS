@@ -124,6 +124,7 @@
         UIButton *b1 = [UIButton buttonWithType:UIButtonTypeCustom];
         [b1 setFrame:CGRectMake(delegate.screenWidth/2,v.frame.size.height-80,delegate.screenWidth/2,60)];
         [b1 setBackgroundColor:[UIColor whiteColor]];
+        [b1 addTarget:self action:@selector(goPointsHistory) forControlEvents:UIControlEventTouchUpInside];
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(b1.frame.size.width/2-10,0,gold.frame.size.width/2,b1.frame.size.height)];
         [title setFont:[UIFont systemFontOfSize:FONT_S]];
         [title setTextColor:[UIColor darkTextColor]];
@@ -152,6 +153,11 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
      [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOP_UP]] forKeys:@[@"type"]]];
 }
+-(void) goPointsHistory {
+    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_POINT_HISTORY]] forKeys:@[@"type"]]];
+}
+    
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 60;
 }

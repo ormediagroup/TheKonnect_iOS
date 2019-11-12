@@ -58,7 +58,7 @@
     if (section==2) {
         return delegate.footerHeight+LINE_PAD;
     } else {
-        return LINE_PAD;
+        return 0;
     }
 }
 -(UIView *) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {

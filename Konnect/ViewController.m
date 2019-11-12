@@ -42,6 +42,10 @@
 #import "EventDetails.h"
 #import "Coupons.h"
 #import "Reservations.h"
+#import "BuyPrintQuota.h"
+#import "OfficeNotifications.h"
+#import "MeetingRoomList.h"
+#import "MeetingRoom.h"
 @interface ViewController ()
 
 @end
@@ -129,13 +133,12 @@
     [footer.view removeFromSuperview];
     [lc login];
 }
--(void) confirmPayment:(NSNotification *) notif {
-    [delegate startLoading];
-    if (!points) {
+-(void) confirmPayment:(NSNotification *) notif {    
+    if (!paymentcode) {
         paymentcode = [[PaymentCode alloc] initWithNibName:nil bundle:nil];
     }
     paymentcode.state = PC_STATE_NORMAL;
-    [paymentcode paymentRequest:[notif.object objectForKey:PAYMENT_TOKEN] andAmount:[notif.object objectForKey:@"amount"]];
+    [paymentcode paymentRequest:[notif.object objectForKey:PAYMENT_TOKEN] andAmount:[notif.object objectForKey:@"amount"] forVendor:[notif.object objectForKey:@"vendorid"] withRemarks:[notif.object objectForKey:@"remarks"]];
     
     [self pushOrPop:paymentcode];
 }
@@ -150,15 +153,17 @@
             }
             [self pushOrPop:messageList];
         } else if (type==VC_TYPE_SCAN_QRCODE) {
+            /*
             if (!chargeqr) {
                 chargeqr = [[ChargeQR alloc] initWithNibName:nil bundle:nil];
             }
             [self pushOrPop:chargeqr];
-          /*  if (!scanqr) {
+             */
+            if (!scanqr) {
                 scanqr = [[ScanQR alloc] initWithNibName:nil bundle:nil];
             }
            [self pushOrPop:scanqr];
-           */
+           
         } else if (type==VC_TYPE_MY) {
             if (!my) {
                 my = [[My alloc] initWithNibName:nil bundle:nil];
@@ -181,7 +186,7 @@
             }
             [self pushOrPop:points];
         } else if (type==VC_TYPE_PAYMENT_CODE) {
-            if (!points) {
+            if (!paymentcode) {
                 paymentcode = [[PaymentCode alloc] initWithNibName:nil bundle:nil];
             }
             paymentcode.state = PC_STATE_INIT;
@@ -329,7 +334,30 @@
             }
             
             [self pushOrPop:reservation];
-        }
+        } else if (type==VC_TYPE_PRINT_TOPUP) {
+            if (!printTopup) {
+                printTopup = [[BuyPrintQuota alloc] initWithStyle:UITableViewStylePlain];
+            }
+            
+            [self pushOrPop:printTopup];
+        } else if (type==VC_TYPE_OFFICE_NOTIFICATION) {
+            if (!officenotif) {
+                officenotif = [[OfficeNotifications alloc] initWithStyle:UITableViewStylePlain];
+            }
+            
+            [self pushOrPop:officenotif];
+        } else if (type==VC_TYPE_OFFICE_INTRO) {
+            if (!meetingRoomList) {
+                meetingRoomList = [[MeetingRoomList alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:meetingRoomList];
+        } else if (type==VC_TYPE_MEETING_ROOM) {
+            if (!meetingRoom) {
+                meetingRoom = [[MeetingRoom alloc] initWithNibName:nil bundle:nil];
+            }
+            meetingRoom.facilityID = [notif.object objectForKey:@"facilityID"];
+            [self pushOrPop:meetingRoom];
+        }        
     }
     if ([nav.viewControllers count]>1) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SHOW_BACK_BTN object:nil];

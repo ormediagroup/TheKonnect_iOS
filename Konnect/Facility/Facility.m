@@ -76,7 +76,7 @@
             return;
         }
     } else {
-        NSString *content = [NSString stringWithFormat:@"Konnect - %@%@",[datasrc objectForKey:@"name_zh"],[datasrc objectForKey:@"name_en"]];
+        NSString *content = [NSString stringWithFormat:@"KONNECT - %@%@",[datasrc objectForKey:@"name_zh"],[datasrc objectForKey:@"name_en"]];
         NSString *URL = [NSString stringWithFormat:@"http://eagenthk.com/site/?siteid=%@",[datasrc objectForKey:@"ID"]];
         NSURL *u = [NSURL URLWithString:[URL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         if ([[datasrc objectForKey:@"otherimages"] count]>0) {
@@ -200,7 +200,7 @@
         
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(100,y+4,delegate.screenWidth-SIDE_PAD-100,LINE_HEIGHT)];
         [l setNumberOfLines:-1];
-        NSAttributedString *hS = [[NSAttributedString alloc] initWithData:[[NSString stringWithFormat:@"<html><body style='font-size:%dpx;font-color:#333;font-family:Arial'>%@</body></html>",FONT_S,[d objectForKey:@"hours"]] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+        NSAttributedString *hS = [[NSAttributedString alloc] initWithData:[[NSString stringWithFormat:@"<html><body style='font-size:%dpx;line-height:150%%;font-color:#333;font-family:Arial'>%@</body></html>",FONT_S,[d objectForKey:@"hours"]] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
         [l setAttributedText:hS];
         [l sizeToFit];
         [scroll addSubview:l];
@@ -275,6 +275,44 @@
         }
         y+=h;
     }
+    y+=LINE_PAD;
+    if ([[d objectForKey:@"foodimages"] isKindOfClass:[NSArray class]] && [[d objectForKey:@"foodimages"] count]>0) {
+        {
+            UILabel *p = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT)];
+            [p setTextColor:UICOLOR_GOLD];
+            [p setFont:[UIFont systemFontOfSize:FONT_S]];
+            [p setTextAlignment:NSTextAlignmentLeft];
+            [p setText:[NSString stringWithFormat:@"%@ (%@: %ld)", TEXT_FOOD_PHOTOS,TEXT_BROWSE_ALL,[[d objectForKey:@"foodimages"] count]]];
+            [scroll addSubview:p];
+            [p sizeToFit];
+            y+=p.frame.size.height+LINE_PAD;
+        }
+        int x = SIDE_PAD;
+        CGFloat w = (delegate.screenWidth-(SIDE_PAD*4))/3;
+        CGFloat h = w/16*9;
+        int curr =0 ;
+        for (NSString *src in [d objectForKey:@"foodimages"]) {
+            UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(x,y,w,h)];
+            [v setClipsToBounds:YES];
+            [v addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(foodImagePressed)]];
+            [v setUserInteractionEnabled:YES];
+            [v setContentMode:UIViewContentModeScaleAspectFill];
+            [v setImage:[delegate getImage:src callback:^(UIImage *image) {
+                [v setImage:image];
+            }]];
+            [scroll addSubview:v];
+            x+=w+SIDE_PAD;
+            if (x >= delegate.screenWidth-SIDE_PAD) {
+                x = SIDE_PAD;
+                y+=h+LINE_PAD;
+            }
+            if ((++curr)>=6) {
+                break;
+            }
+            
+        }
+        y+=h;
+    }
     [scroll setContentSize:CGSizeMake(delegate.screenWidth,y+LINE_PAD+FB_TOOLBAR_HEIGHT)];
     [self.view addSubview:toolbar];
 }
@@ -302,5 +340,10 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
      [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_IMAGE_GALLERY],[datasrc objectForKey:@"otherimages"]] forKeys:@[@"type",@"images"]]];
 
+}
+-(void) foodImagePressed {
+    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_IMAGE_GALLERY],[datasrc objectForKey:@"foodimagers"]] forKeys:@[@"type",@"images"]]];
+    
 }
 @end

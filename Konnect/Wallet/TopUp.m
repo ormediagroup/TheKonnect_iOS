@@ -205,20 +205,18 @@
     }
 }
 -(void) charge {
-    [delegate startLoading];
     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-payment-token",K_API_ENDPOINT]
-                                          param:[[NSDictionary alloc] initWithObjects:@[@"get-token"]
-                                                                              forKeys:@[@"action"]]
+                                          param:[[NSDictionary alloc] initWithObjects:@[@"get-token",@"topup"]
+                                                                              forKeys:@[@"action",@"method"]]
                                      interation:0 callback:^(NSDictionary *data) {
-                                         if ([[data objectForKey:@"rc"] intValue]==0 || [[data objectForKey:@"rc"] intValue]==2) {
+                                         if ([[data objectForKey:@"rc"] intValue]==0) {
                                              [self topup:[data objectForKey:@"data"]];
                                          } else {
                                              [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
                                          }
                                      }];
 }
--(void) topup:(NSString *) paymentToken {
-    [delegate startLoading];
+-(void) topup:(NSString *) paymentToken {    
     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-perform-transaction",K_API_ENDPOINT]
                                           param:[[NSDictionary alloc] initWithObjects:@[@"topup",paymentToken,chargeType,[NSNumber numberWithFloat:topupPoints],[NSNumber numberWithFloat:chargeAmount]]
                                                                               forKeys:@[@"action",@"paymentToken",@"paymentType",@"amount",@"cash"]]

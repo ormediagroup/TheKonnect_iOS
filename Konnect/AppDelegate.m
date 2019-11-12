@@ -328,6 +328,7 @@
     [preferences removeObjectForKey:K_USER_NAME];
     [preferences removeObjectForKey:K_USER_GENDER];
     [preferences removeObjectForKey:K_USER_EMAIL];
+    [preferences synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:LOGOUT_SUCCESS object:nil];
 }
 -(BOOL) isLoggedIn {
@@ -337,6 +338,26 @@
     }
     return false;
     
+}
+-(BOOL) checkLogin {
+    if ([self isLoggedIn]) {
+        return YES;
+    } else {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_PLEASE_LOGIN
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_GO_LOGIN style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_LOGIN object:nil];
+            
+        }];
+        [alert addAction:defaultAction];
+        [alert addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+        });
+        return NO;
+    }
 }
 -(void) getWXAuthCode:(BOOL) isReg {
     WXisRegistration = isReg;
@@ -619,7 +640,7 @@
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
     [alert addAction:defaultAction];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+        [vc presentViewController:alert animated:YES completion:nil];
     });
 }
 -(void) raiseAlert:(NSString *)title msg:(NSString *)msg {
@@ -638,5 +659,20 @@
         }];
     });
     
+}
+-(void) raiseAlertSuccess:(NSString *)title msg:(NSString *)msg {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:title
+                                                                   message:msg
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        [self.window.rootViewController dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    }];
+    [alert addAction:defaultAction];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
+    });
 }
 @end

@@ -18,14 +18,17 @@
 @implementation ServiceOffice
 -(void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:TEXT_SERVICE_OFFICE];
-    
-    [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-service-office",K_API_ENDPOINT] param:nil interation:0 callback:^(NSDictionary *data) {
-        if ([data isKindOfClass:[NSDictionary class]] && [[data objectForKey:@"rc"] intValue]==0) {
-            self->datasrc = data;
-        } else {
-        }
-        [self.tableView reloadData];
-    }];
+    if (![delegate isLoggedIn]) {
+        datasrc = [NSDictionary dictionaryWithObject:@[@[],@[]]  forKey:@[@"company",@"office"] ];
+    } else {
+        [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-service-office",K_API_ENDPOINT] param:nil interation:0 callback:^(NSDictionary *data) {
+            if ([data isKindOfClass:[NSDictionary class]] && [[data objectForKey:@"rc"] intValue]==0) {
+                self->datasrc = data;
+            } else {
+            }
+            [self.tableView reloadData];
+        }];
+    }
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -62,7 +65,7 @@
     } else if (section==2) {
         return [[datasrc objectForKey:@"office"] count];
     } else if (section==3) {
-        return 5;
+        return 7;
     }
     return 1;
 }
@@ -120,14 +123,18 @@
         if (indexPath.row==0) {
             [cell.textLabel setText:TEXT_INVOICE];
         } else if (indexPath.row==1) {
-            [cell.textLabel setText:TEXT_BOOK_MEETING_ROOM];
+            [cell.textLabel setText:TEXT_SERVICE_OFFICE_DESCRIPTION];
         } else if (indexPath.row==2) {
-            [cell.textLabel setText:TEXT_PRINT_BALANCE];
-            [cell.detailTextLabel setText:[[[datasrc objectForKey:@"company"] objectAtIndex:0] objectForKey:@"printquota"]];
+            [cell.textLabel setText:TEXT_BOOK_MEETING_ROOM];
         } else if (indexPath.row==3) {
-            [cell.textLabel setText:TEXT_MSG];
+            [cell.textLabel setText:TEXT_PRINT_BALANCE];
+            [cell.detailTextLabel setText:[datasrc objectForKey:@"printquota"]];
         } else if (indexPath.row==4) {
+            [cell.textLabel setText:TEXT_SERVICE_OFFICE_SERVICE];
+        } else if (indexPath.row==5) {
             [cell.textLabel setText:TEXT_CS];
+        } else if (indexPath.row==6) {
+            [cell.textLabel setText:TEXT_INQUIRY_SERVICE_OFFICE_TOU];
         }
     }
     
@@ -144,15 +151,34 @@
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE],[[[datasrc objectForKey:@"office"] objectAtIndex:indexPath.row] objectForKey:@"ID"]] forKeys:@[@"type",@"officeID"]]];
     } else if (indexPath.section==3) {
         if (indexPath.row==0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_INVOICES],TEXT_INVOICE_TYPE_PENDING] forKeys:@[@"type",@"status"]]];
-            
+            if ([delegate checkLogin]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                 [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_INVOICES],TEXT_INVOICE_TYPE_PENDING] forKeys:@[@"type",@"status"]]];
+            }
         } else if (indexPath.row==1) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE_INTRO]] forKeys:@[@"type"]]];
+        } else if (indexPath.row==2) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SEARCH_MEETING_ROOM]] forKeys:@[@"type"]]];
+        } else if (indexPath.row==3) {
+            if ([delegate checkLogin]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                 [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_PRINT_TOPUP]] forKeys:@[@"type"]]];
+            }
         } else if (indexPath.row==4) {
+            if ([delegate checkLogin]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                 [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE_NOTIFICATION]] forKeys:@[@"type"]]];
+            }
+        } else if (indexPath.row==5) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONTACT_US],TEXT_INQUIRY_SERVICE_OFFICE_SUPPORT] forKeys:@[@"type",@"inquirytype"]]];
+        } else if (indexPath.row==6) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@service-office-house-rules/",domain]] forKeys:@[@"type",@"url"]]];
+            
+            
         }
     }
 }

@@ -19,31 +19,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    //scode=@"";
+    //amount=@"0";
 }
--(void) paymentRequest:(NSString *)code andAmount:(NSString*)amount {
-    self->amount = amount;
+-(void) paymentRequest:(NSString *)code andAmount:(NSString*)amt forVendor:(NSString *)vid  withRemarks:(NSString *)iid{
     transactionCode = code;
-    [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-perform-transaction",K_API_ENDPOINT]
-                                          param:[[NSDictionary alloc] initWithObjects:@[
-                                                                                        @"verifyPayment",
-                                                                                        code,
-                                                                                        amount
-                                                                                        ]
-                                                                              forKeys:@[
-                                                                                        @"action",
-                                                                                        @"paymentToken",
-                                                                                        @"amount"
-                                                                                        ]]
-                                     interation:0
-                                       callback:^(NSDictionary *data) {
-                                           NSLog(@"PaymentCode Recv Payment Request: %@",[data description]);
-                                           if ([[data objectForKey:@"rc"] intValue]==0) {
-                                               [self makeInit];
-                                           } else {
-                                               [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
-                                               [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
-                                           }
-                                       }];
+    vendorid = vid;
+    remarks = iid;
+    amount = amt;
+    self.state = PC_STATE_NORMAL;
+    [self makeInit];
+}
+-(void) paymentRequest:(NSString *)code andAmount:(NSString*)amount  withRemarks:(NSString *)iid {
+    [self paymentRequest:code andAmount:amount forVendor:@"3" withRemarks:@""];
 }
 -(void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:TEXT_PAYMENT_CODE];
@@ -313,22 +301,27 @@
                                                                                                     transactionCode,
                                                                                                     code,
                                                                                                     amount,
-                                                                                                    @"3"
+                                                                                                    vendorid,
+                                                                                                    remarks
                                                                                                     ]
                                                                                           forKeys:@[
                                                                                                     @"action",
                                                                                                     @"paymentToken",
                                                                                                     @"paymentPassword",
                                                                                                     @"amount",
-                                                                                                    @"vendor_id"
+                                                                                                    @"vendor_id",
+                                                                                                    @"remarks"
                                                                                                     
                                                                                                     ]]
                                                  interation:0
                                                    callback:^(NSDictionary *data) {
                                                        if ([[data objectForKey:@"rc"] intValue]==0) {
-                                                           [self->delegate raiseAlert:TEXT_SAVE_SUCCESS msg:@""];
+                                                           [self->delegate raiseAlert:TEXT_PAYMENT_SUCCESS msg:@""];
                                                            [[NSNotificationCenter defaultCenter] postNotificationName:RESTORE_BACK_BTN object:nil];
                                                            [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
+                                                           if ([vendorid isEqualToString:@"print"]) {
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
+                                                           }
                                                        } else if ([[data objectForKey:@"rc"] intValue]==6) {
                                                            [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
                                                        } else {

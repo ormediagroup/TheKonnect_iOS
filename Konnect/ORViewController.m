@@ -49,11 +49,9 @@
     if (!CGRectContainsPoint(aRect, activeField.frame.origin) ) {
         [scroll scrollRectToVisible:activeField.frame animated:YES];
     }
-    
 }
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-    
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     scroll.contentInset = contentInsets;
     scroll.scrollIndicatorInsets = contentInsets;

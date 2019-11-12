@@ -27,18 +27,14 @@
     [scroll addSubview:bg];
     
     int y = 0;
-    UIButton *submit = [UIButton buttonWithType:UIButtonTypeCustom];
+    submit = [UIButton buttonWithType:UIButtonTypeCustom];
     [submit setImage:[UIImage imageNamed:@"goldbutton.png"] forState:UIControlStateNormal];
     [submit setFrame:CGRectMake(SIDE_PAD, y, delegate.screenWidth-SIDE_PAD_2, 34)];
     [submit addTarget:self action:@selector(goAccount) forControlEvents:UIControlEventTouchUpInside];
     [scroll addSubview:submit];
     
     nameLbl = [[UILabel alloc] initWithFrame:CGRectMake(10,0,submit.frame.size.width, submit.frame.size.height)];
-    if ([[delegate.preferences objectForKey:K_USER_NAME] isKindOfClass:[NSString class]]) {
-        [nameLbl setText:[delegate.preferences objectForKey:K_USER_NAME]];
-    } else if ([[delegate.preferences objectForKey:K_USER_PHONE] isKindOfClass:[NSString class]]){
-        [nameLbl setText:[delegate.preferences objectForKey:K_USER_PHONE]];
-    }
+   
     
     [nameLbl setTextColor:UICOLOR_DARK_GREY];
     [nameLbl setFont:[UIFont systemFontOfSize:FONT_M]];
@@ -93,6 +89,7 @@
         }
     }];
 }
+    
 -(void) pressed:(UIButton *)b {
     if (b.tag==0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
@@ -133,8 +130,10 @@
     
 }
 -(void) goAccount {
-    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MY]] forKeys:@[@"type"]]];
+    if ([delegate isLoggedIn]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MY]] forKeys:@[@"type"]]];
+    }
 }
 -(void) addBottomPart:(NSArray *)data {
     CGFloat x = SIDE_PAD;
@@ -167,8 +166,10 @@
 }
 -(void) adpressed:(UITapGestureRecognizer *)tap  {
     if (tap.view.tag==0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_RESERVATIONS]] forKeys:@[@"type"]]];
+        if ([delegate checkLogin]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_RESERVATIONS]] forKeys:@[@"type"]]];
+        }
     } else if (tap.view.tag==1) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_KONNECT_NEWS]] forKeys:@[@"type"]]];
@@ -188,16 +189,22 @@
      */
     [[NSNotificationCenter defaultCenter] postNotificationName:HIDE_BACK_BTN object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@""];
-    if ([[delegate.preferences objectForKey:K_USER_NAME] isKindOfClass:[NSString class]]) {
-        [nameLbl setText:[delegate.preferences objectForKey:K_USER_NAME]];
-    } else if ([[delegate.preferences objectForKey:K_USER_PHONE] isKindOfClass:[NSString class]]){
-        [nameLbl setText:[delegate.preferences objectForKey:K_USER_PHONE]];
-    }    
+    if ([delegate isLoggedIn]) {
+        if ([[delegate.preferences objectForKey:K_USER_NAME] isKindOfClass:[NSString class]]) {
+            [nameLbl setText:[delegate.preferences objectForKey:K_USER_NAME]];
+        } else if ([[delegate.preferences objectForKey:K_USER_PHONE] isKindOfClass:[NSString class]]){
+            [nameLbl setText:[delegate.preferences objectForKey:K_USER_PHONE]];
+        }
+        [memberTier setFrame:CGRectMake(30+nameLbl.frame.size.width,6,80,22)];
+        [memberTier setImage:[UIImage imageNamed:@"normalmember.png"]];
+        [submit addSubview:memberTier];
+    } else {
+        [nameLbl setText:TEXT_VISITOR];
+        [memberTier removeFromSuperview];
+    }
     [nameLbl sizeToFit];    
     [nameLbl setFrame:CGRectMake(10,0,nameLbl.frame.size.width,34)];
-    [memberTier setFrame:CGRectMake(30+nameLbl.frame.size.width,6,80,22)];
-    
-    [memberTier setImage:[UIImage imageNamed:@"normalmember.png"]];
+
     
 }
 

@@ -432,8 +432,12 @@
         [cell addSubview:remarks];
         [cell setAccessoryType:UITableViewCellAccessoryNone];
     } else if (indexPath.row==7) {
-        if (hasPrivateRoom) {
-            [cell.textLabel setText:[NSString stringWithFormat:TEXT_NEED_ROOM_MIN_PAY,@"5000"]];
+        if (hasPrivateRoom ) {
+            if ([[facility objectForKey:@"mincharge"]intValue]>0) {
+                [cell.textLabel setText:[NSString stringWithFormat:TEXT_NEED_ROOM_MIN_PAY,[[facility objectForKey:@"mincharge"]intValue]]];
+            } else {
+                [cell.textLabel setText:TEXT_NEED_ROOM_NO_MIN_PAY];
+            }
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             [cell.detailTextLabel setText:bookRoom];
         } else if (hasBringAlcohol) {

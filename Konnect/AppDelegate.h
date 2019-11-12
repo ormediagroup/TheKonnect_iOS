@@ -5,11 +5,31 @@
 //  Created by Jacky Mok on 3/9/2019.
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
-/* TODO : Invoice Create per item details */
+/* TODO : Invoice Create per item details
 
-
-
-/* version 0.5
+ Version 0.9 (12/11/2019)
+ 1) Updated Search Meeting Room interface
+ 2) Added booking price to room
+ 3) Fixed Logout Flow
+ 4) Enabled Personal / Company Print Quota
+ 5) Enabled New Payment Mechanism (with payment code) with Event Registration
+ 6) Meeting Room Lists
+ 7) Individual Meeting Room UI Update
+ 8) ScanQR
+ 9) shortcut to referral QR / payment QR
+ 
+ 
+Version 0.8 (12/11/2019)
+ 1) Added Association Selection
+ 2) Added Pay by Invoice
+ 3) Added Food images for F&B
+ 4) Added Printing Top Up
+ 5) Added Service Office Service (Notifications)
+ 
+Version 0.6 (09/11/2019)
+ 1) Stability Issue
+ 
+version 0.5
  List of FNB
   - Booking
  Service Office
@@ -17,7 +37,7 @@
  Contact Us
  Meeting Room Search
  Book Meeting Room
- */
+
  
  
 // China Domain
@@ -81,8 +101,11 @@
 -(void) stopLoading;
 -(void) raiseAlert:(NSString *)title msg:(NSString *)msg;
 -(void) raiseAlert:(NSString *)title msg:(NSString *)msg inViewController:(UIViewController *)vc;
+-(void) raiseAlertSuccess:(NSString *)title msg:(NSString *)msg;
 -(void) networkError;
 -(void) logout;
+-(BOOL) checkLogin;
+-(NSString *) getPaymentCode;
 
 @end
 

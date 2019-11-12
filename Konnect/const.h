@@ -9,6 +9,9 @@
 #ifndef const_h
 #define const_h
 
+#define TEXT_INVOICE_TYPE_PENDING @"尚未繳付"
+
+
 #define FONT_XS 14
 #define FONT_S 16
 #define FONT_M 18
@@ -75,7 +78,8 @@
 #define TEXT_SET_PAYMENT_CODE_2 @"再次輸入付款密碼"
 #define TEXT_ENTER_PAYMENT_CODE @"輸入付款密碼"
 #define TEXT_PAYMENT_CODE @"付款密碼"
-#define TEXT_NEED_ROOM_MIN_PAY @"需要房間？ (最低消費 %@)"
+#define TEXT_NEED_ROOM_MIN_PAY @"需要房間？ (最低消費 %d)"
+#define TEXT_NEED_ROOM_NO_MIN_PAY @"需要房間？ (最低消費 %@)"
 #define TEXT_SET @"設置"
 #define TEXT_SAVE_SUCCESS @"儲存成功"
 #define TEXT_INPUT_ERROR @"輸入錯誤"
@@ -93,6 +97,7 @@
 #define TEXT_PRINT_BALANCE @"列印結餘"
 #define TEXT_OFFICE_TOU @"使用條款"
 #define TEXT_PHOTOS @"照片"
+#define TEXT_FOOD_PHOTOS @"食物照片"
 #define TEXT_RESERVATION @"線上預約"
 #define TEXT_PHONE_INQUIRY @"電話查詢"
 #define TEXT_BROWSE_ALL @"瀏覽全部"
@@ -113,12 +118,13 @@
 #define TEXT_INQUIRY_GENERAL @"一般查詢"
 #define TEXT_INQUIRY_RENT @"租務查詢"
 #define TEXT_INQUIRY_SERVICE_OFFICE_SUPPORT @"服務式辦公室支援"
+#define TEXT_INQUIRY_SERVICE_OFFICE_TOU @"服務式辦公室使用條款"
 #define TEXT_INQUIRY_TECH @"技術支援"
 #define TEXT_INQUIRY_AD @"廣告查詢"
 #define TEXT_INQUIRY_BIZ @"商務合作"
 #define TEXT_INQUIRY_CONFIRM @"你確定發送?"
 #define TEXT_INQUIRY_SUCCESS @"感謝你的查詢，我們會盡快回復。！"
-#define TEXT_INVOICE_TYPE_PENDING @"尚未繳付"
+
 #define TEXT_INVOICE_TYPE_PAID @"已繳付"
 #define TEXT_INVOICE_TOTAL_PENDING @"尚未繳付總額"
 #define TEXT_BROWSE_PAST_INVOICE @"瀏覽過往賬單"
@@ -134,6 +140,8 @@
 #define TEXT_INVOICE_SETTLE_DATE @"繳付日期"
 #define TEXT_INVOICE_DETAILS @"賬單明細"
 #define TEXT_ONLY_SHOW_PAST_6_MONTHS_BILL @"只顯示過往6個月內已繳賬單"
+#define TEXT_SCAN_QR @"掃描二維碼"
+#define TEXT_PAYMENT_QR @"付款二維碼"
 #define TEXT_REFERRAL_QR @"介紹朋友二維碼"
 #define TEXT_COMPANY  @"公司"
 #define TEXT_NAME  @"名稱"
@@ -142,6 +150,7 @@
 #define TEXT_OFFICE_ROOM_NO @"辦公室號碼"
 #define TEXT_OFFICE_ROOM_LOCATION @"辦公室位置"
 #define TEXT_OFFICE_ROOM_LEASE_END @"合約期至"
+#define TEXT_SERVICE_OFFICE_SERVICE @"辦公室服務通知"
 #define TEXT_ACCESS_CODE @"門鎖密碼"
 #define TEXT_GENERATE_TEMP_ACCESS_CODE @"生成臨時門鎖密碼"
 #define TEXT_SEARCH_MEETING_ROOM @"搜尋會議室"
@@ -156,12 +165,12 @@
 #define TEXT_BOOK_ROOM_SUCCESS @"你已成功預訂會議室"
 #define TEXT_CONFIRM_BOOK_ROOM @"你確定要訂這個會議室？"
 #define TEXT_BOOKED_ROOM @"已預訂會議室"
-#define TEXT_K_NEWS @"Konnect 最新消息"
-#define TEXT_ABOUT_K @"關於 Konnect"
-#define TEXT_DL_K_MARKETING @"下載Konnect宣傳小冊子"
-#define TEXT_DL_K_PERSONAL_FORM @"下載Konnect個人會員入會登記表"
-#define TEXT_DL_K_CORPORATE_FORM @"下載Konnect團體會員入會登記表"
-#define TEXT_K_EVENT @"Konnect活動"
+#define TEXT_K_NEWS @"KONNECT 最新消息"
+#define TEXT_ABOUT_K @"關於 KONNECT"
+#define TEXT_DL_K_MARKETING @"下載KONNECT宣傳小冊子"
+#define TEXT_DL_K_PERSONAL_FORM @"下載KONNECT個人會員入會登記表"
+#define TEXT_DL_K_CORPORATE_FORM @"下載KONNECT團體會員入會登記表"
+#define TEXT_K_EVENT @"KONNECT活動"
 #define TEXT_RENT_K_SPACE @"租用空間"
 #define TEXT_RENT_POPUP @"租用Popup Lounge"
 #define TEXT_RENT_EVENT_SPACE @"租用Polyform Event Space"
@@ -181,6 +190,27 @@
 #define TEXT_REGISTERED @"你已報名"
 #define TEXT_NO_COUPON @"暫時未有優惠券"
 #define TEXT_COUPON @"優惠券"
+#define TEXT_PAYMENT_SUCCESS @"支付成功"
+#define TEXT_MAX_3 @"最多選擇3個"
+#define TEXT_ASSOC_MEMBER @"我是商會會員"
+#define TEXT_SELECT_ASSOC @"選擇商會"
+#define TEXT_AT_LEAST_1 @"請最少選擇一個商會"
+#define TEXT_SELECT_AGAIN @"再選擇"
+#define TEXT_NOT_ASSOC_MEMBER @"不是商會會員"
+#define TEXT_NOT_ASSOC_MEMBER @"不是商會會員"
+#define TEXT_TOP_UP @"充值"
+#define TEXT_PRINT @"列印"
+#define TEXT_SHEET @"張"
+#define TEXT_TOP_UP_PRINT @"購買列印數量"
+#define TEXT_SERVICE_OFFICE_NOTIFICATION @"服務辦公室通知"
+#define TEXT_NO_NOTIFICATION @"暫時沒有任何訊息或通知"
+#define TEXT_CONFIRM_ROOM_BOOK_MSG @"你確定要訂 %@ %@ 由 %@ 至 %@？"
+#define TEXT_PAY_CONFIRM @"確認消費 %d"
+#define TEXT_VISITOR @"非會員"
+#define TEXT_SERVICE_OFFICE_DESCRIPTION @"活動空間介紹"
+#define TEXT_EQUIPMENT @"設備"
+#define TEXT_PRICE @"價格"
+#define TEXT_SELECT_ACTION @"請選擇"
 
 #define UNCHECK_BOX @"\U00002610"
 #define CHECK_BOX @"\U00002714"
@@ -279,7 +309,11 @@ typedef enum {
     VC_TYPE_EVENT = 26,
     VC_TYPE_EVENT_DETAILS = 27,
     VC_TYPE_COUPON = 28,
-    VC_TYPE_RESERVATIONS = 29
+    VC_TYPE_RESERVATIONS = 29,
+    VC_TYPE_PRINT_TOPUP = 30,
+    VC_TYPE_OFFICE_NOTIFICATION = 31,
+    VC_TYPE_OFFICE_INTRO = 32,
+    VC_TYPE_MEETING_ROOM = 33
 
 } VC_TYPE;
 

@@ -42,6 +42,10 @@
 @class EventDetails;
 @class Coupons;
 @class Reservations;
+@class BuyPrintQuota;
+@class OfficeNotifications;
+@class MeetingRoomList;
+@class MeetingRoom;
 @interface ViewController : UIViewController {
     Introduction *lc;
     UINavigationController *nav;
@@ -79,6 +83,11 @@
     EventDetails *eventdetails;
     Coupons *coupon;
     Reservations *reservation;
+    BuyPrintQuota *printTopup;
+    OfficeNotifications *officenotif;
+    MeetingRoomList *meetingRoomList;
+    MeetingRoom *meetingRoom;
+    
     
 }
 -(void) onBackPressed;

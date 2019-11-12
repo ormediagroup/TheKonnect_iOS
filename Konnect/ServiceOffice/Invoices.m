@@ -32,6 +32,7 @@
                                          if ([[data objectForKey:@"rc"] intValue]==0) {
                                              self->datasrc = data;
                                              self->invoices = [data objectForKey:@"data"];
+                                             self->invIDs = [data objectForKey:@"invoiceIDs"];
                                              [self.tableView reloadData];
                                          } else {
                                              [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
@@ -68,7 +69,43 @@
     return 0;
 }
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section==3) {
+    if (indexPath.section==1) {
+        [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-payment-token",K_API_ENDPOINT]
+                                              param:[[NSDictionary alloc] initWithObjects:@[@"get-token"]
+                                                                                  forKeys:@[@"action"]]
+         
+                                         interation:0 callback:^(NSDictionary *data) {
+                                             if ([[data objectForKey:@"rc"] intValue]==0) {
+                                                 //
+                                                 [[NSNotificationCenter defaultCenter] postNotificationName:RECEIVE_TRANSACTION_REQUEST object:[[NSDictionary alloc] initWithObjects:@[[data objectForKey:@"data"],[self->datasrc objectForKey:@"pendingamount"],@"current",self->invIDs] forKeys:@[PAYMENT_TOKEN,@"amount",@"vendorid",@"remarks"]]];
+                                                 
+                                             } else if ([[data objectForKey:@"rc"] intValue]==2) {
+                                                 UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_TITLE_NO_PAYMENT_CODE
+                                                                                                                message:TEXT_NO_PAYMENT_CODE
+                                                                                                         preferredStyle:UIAlertControllerStyleAlert];
+                                                 
+                                                 UIAlertAction* setCodeAction = [UIAlertAction actionWithTitle:TEXT_SET_PAYMENT_CODE style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                                                      [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_PAYMENT_CODE]] forKeys:@[@"type"]]];
+                                                     [self dismissViewControllerAnimated:YES
+                                                                              completion:^{}];
+                                                 }];
+                                                 [alert addAction:setCodeAction];
+                                                 UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_BACK style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                                                     [self dismissViewControllerAnimated:YES
+                                                                              completion:^{
+                                                                              }];
+                                                 }];
+                                                 [alert addAction:defaultAction];
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     [self presentViewController:alert animated:YES completion:nil];
+                                                 });
+                                             } else {
+                                                 [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
+                                             }
+                                         }];
+        
+    } else if (indexPath.section==3) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_PAST_INVOICES]] forKeys:@[@"type"]]];
     } else if (indexPath.section==2) {

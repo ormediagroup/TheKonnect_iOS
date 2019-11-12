@@ -234,10 +234,10 @@
 -(NSDictionary *) login:(NSString *)username pw:(NSString *)pw {
     return [self getResultSync:@"" param:[NSDictionary dictionaryWithObjects:@[username, pw] forKeys:@[@"username",@"pw"]] interation:0];
 }
--(id) verifyRegUser:(NSString *)username verification:(NSString *)code  withEmail:(NSString *) email{
+-(id) verifyRegUser:(NSString *)username verification:(NSString *)code  withEmail:(NSString *) email andReferer:(NSString *)assoc{
     return [self getResultSync:[NSString stringWithFormat:@"%@app-reg-user",K_API_ENDPOINT]
                          param:[NSDictionary dictionaryWithObjects:
-                                    @[username, code, email, @"verifycode"] forKeys:@[@"username",@"code",@"emailaddr",@"action"]]
+                                    @[username, code, email,assoc, @"verifycode"] forKeys:@[@"username",@"code",@"emailaddr",@"assoc",@"action"]]
                     interation:0];
 }
 -(NSDictionary *) verifyWXUser:(NSString *)username verification:(NSString *)code unionID:(NSString *)unionid{

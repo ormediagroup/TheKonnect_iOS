@@ -10,17 +10,21 @@
 #import "const.h"
 #import "AppDelegate.h"
 #import "LoginOrReg.h"
+#import "AssoPIcker.h"
 @interface RegisterViewController ()
 
 @end
 
 @implementation RegisterViewController
-@synthesize parent, regType, showWXMessage;
+@synthesize parent, regType, showWXMessage, assoc;
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil
                                bundle:nibBundleOrNil]) {
         regType = REG_TYPE_PHONE;
         showWXMessage=NO;
+        assocPicker = [[AssoPIcker alloc] initWithStyle:UITableViewStyleGrouped];
+        assocPicker.parent = self;
+        assoc = @"";
     }
     return self;
 }
@@ -69,7 +73,7 @@
     [verification setKeyboardType:UIKeyboardTypeNumberPad];
     verification.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [verification setSecureTextEntry:YES];
-    [verification setPlaceholder:@"請輸6個位入認證碼"];
+    [verification setPlaceholder:@"請輸入6個位認證碼"];
     verification.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [delegate addDoneToKeyboard:verification];
     [verification setDelegate:self];
@@ -117,10 +121,38 @@
         [emailLine setBackgroundColor:[UIColor lightGrayColor]];
         [self.view addSubview:emailLine];
     }
+    y+=LINE_HEIGHT+20;
+    errorMessage = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT*2)];
+    [errorMessage setTextColor:UICOLOR_ERROR];
+    [errorMessage setNumberOfLines:-1];
+    [errorMessage setTextAlignment:NSTextAlignmentCenter];
+    [self.view addSubview:errorMessage];
+    y+=LINE_HEIGHT+LINE_HEIGHT;
     
-    y+=LINE_HEIGHT+50;
+    {
+        isAssoc = [UIButton buttonWithType:UIButtonTypeCustom];
+        [isAssoc setFrame:CGRectMake(0,y,delegate.screenWidth,LINE_HEIGHT)];
+        isAssoc.tag=0;
+        [isAssoc addTarget:self action:@selector(checkAssoc:) forControlEvents:UIControlEventTouchUpInside];
+        UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"unchecked.png"]];
+        tick.tag=99;
+        [isAssoc addSubview:tick];
+        UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,LINE_HEIGHT)];
+        [t setText:TEXT_ASSOC_MEMBER];
+        [t setTextAlignment:NSTextAlignmentLeft];
+        [t setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [t setTextColor:[UIColor darkGrayColor]];
+        [t sizeToFit];
+        [t setFrame:CGRectMake((delegate.screenWidth-t.frame.size.width)/2,0,delegate.screenWidth,LINE_HEIGHT)];
+        [tick setFrame:CGRectMake(t.frame.origin.x-30,4,20,20)];
+        [isAssoc addSubview:t];
     
+        [self.view addSubview:isAssoc];
     
+    }
+    
+    y+=LINE_HEIGHT+20;
+     
     UIView *h = [[UIView alloc] initWithFrame:CGRectMake(delegate.screenWidth/2-120,y,240,LINE_HEIGHT)];
     [self.view addSubview:h];
     tou = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -168,13 +200,17 @@
     
     
   
-    y += 100;
-    errorMessage = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT*2)];
-    [errorMessage setTextColor:UICOLOR_ERROR];
-    [errorMessage setNumberOfLines:-1];
-    [errorMessage setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:errorMessage];
+
+   
     
+}
+-(void) checkAssoc:(UIButton *)b{
+    if (b.tag==0) {
+        b.tag=1;
+        UIImageView *i = [b viewWithTag:99];
+        [i setImage:[UIImage imageNamed:@"checked.png"]];
+    }
+    [self.view.window.rootViewController presentViewController:assocPicker animated:YES completion:nil];
 }
 -(void) gotou {
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
@@ -183,6 +219,11 @@
 -(void) viewWillAppear:(BOOL)animated {
     [self textFieldDidEndEditing:phone];
     [self textFieldDidEndEditing:verification];
+    if ([assoc isEqualToString:@""]) {
+        isAssoc.tag=0;
+        UIImageView *i = [isAssoc viewWithTag:99];
+        [i setImage:[UIImage imageNamed:@"unchecked.png"]];
+    }
 }
 -(void) viewDidAppear:(BOOL)animated {
     if (regType == REG_TYPE_WECHAT && showWXMessage==YES) {
@@ -272,7 +313,7 @@
     dispatch_queue_t createQueue = dispatch_queue_create("SerialQueue", nil);
     if (regType == REG_TYPE_PHONE) {
         dispatch_async(createQueue, ^(){
-            NSObject *data = [[KApiManager sharedManager] verifyRegUser:[NSString stringWithFormat:@"%@%@",areacodetext,phonetext] verification:vtext withEmail:emailtext];
+            NSObject *data = [[KApiManager sharedManager] verifyRegUser:[NSString stringWithFormat:@"%@%@",areacodetext,phonetext] verification:vtext withEmail:emailtext andReferer:self->assoc];
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self->delegate stopLoading];
                 [self submitComplete:data];
@@ -284,14 +325,14 @@
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self->delegate stopLoading];
                 if ([[data objectForKey:@"errcode"] intValue]!=0) {
-                    [delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
+                    [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
                 } else {
                     if ([[data objectForKey:@"rc"] intValue]==0) {
                         [self->delegate.preferences setObject:[data objectForKey:K_USER_OPENID] forKey:K_USER_OPENID];
                         [self->delegate.preferences setObject:[data objectForKey:K_USER_PHONE] forKey:K_USER_PHONE];
                         [self->delegate.preferences synchronize];                        
                         [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
-                        [self->delegate makeToast:@"註冊成功！歡迎你成為Konnect+會員。" duration:5 inView:self->delegate.window.rootViewController.view];
+                        [self->delegate makeToast:@"註冊成功！歡迎你成為KONNECT會員。" duration:5 inView:self->delegate.window.rootViewController.view];
                     } else {
                          [self->errorMessage setText:@"驗證碼不正確"];
                     }

@@ -149,7 +149,7 @@
         if ([[data objectForKey:@"rc"] intValue]==0) {
             dispatch_async(dispatch_get_main_queue(),^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
-                [self->delegate makeToast:@"註冊成功！歡迎你成為Konnect+會員。" duration:5 inView:delegate.window.rootViewController.view];
+                [self->delegate makeToast:@"註冊成功！歡迎你成為KONNECT會員。" duration:5 inView:self->delegate.window.rootViewController.view];
             });
             [password setText:@""];
             [password2 setText:@""];

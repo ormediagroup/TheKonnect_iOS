@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString * invoicetype;
     NSDictionary *datasrc;
     NSArray *invoices;
+    NSString *invIDs;
 }
 @property NSString *invoicetype;
 @end

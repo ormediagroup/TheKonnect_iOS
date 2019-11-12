@@ -21,9 +21,11 @@ typedef enum {
     UIView *codeHolder;
     NSString *transactionCode;
     NSString *amount;
-    
+    NSString *vendorid;
+    NSString *remarks;
 }
--(void) paymentRequest:(NSString *)code andAmount:(NSString*)amount;
+-(void) paymentRequest:(NSString *)code andAmount:(NSString*)amt;
+-(void) paymentRequest:(NSString *)code andAmount:(NSString*)amt forVendor:(NSString *)vid  withRemarks:(NSString *)iid;
 @property PAYMENT_CODE_STATE state;
 
 @end

@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "const.h"
 #import "Home.h"
+#import "PaymentQR.h"
 @interface Footer ()
 
 @end
@@ -50,7 +51,6 @@
     [b1 addSubview:icon];
     
     if ([lbl isEqualToString:@""]) {
-        
         [icon setFrame:CGRectMake(0,5,b1.frame.size.width, b1.frame.size.height-bottomPad-5)];
     } else {
         UILabel *btnText = [[UILabel alloc] initWithFrame:CGRectMake(0,delegate.footerHeight-20-bottomPad,b1.frame.size.width,20)];
@@ -61,7 +61,6 @@
         [b1 addSubview:btnText];
     }
     return b1;
-    
 }
 
 -(void) pressed:(UIButton *)b {
@@ -72,8 +71,7 @@
         }
     } else if (b.tag==2) {
         if ([self checkLogin]) {
-            [[NSNotificationCenter  defaultCenter] postNotificationName:GO_SLIDE object:
-             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SCAN_QRCODE]] forKeys:@[@"type"]]];
+            [self QR];
         }
     } else if (b.tag==1) {
         if ([self checkLogin]) {
@@ -88,6 +86,34 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_HOME]] forKeys:@[@"type"]]];
     }
+}
+-(void) QR {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                   message:TEXT_SELECT_ACTION
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    /*
+     #define TEXT_SCAN_QR @"掃描二維碼"
+     #define TEXT_PAYMENT_QR @"付款二維碼"
+     #define TEXT_REFERRAL_QR @"介紹朋友二維碼"
+     */
+    [alert addAction: [UIAlertAction actionWithTitle:TEXT_SCAN_QR style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SCAN_QRCODE],TEXT_CS] forKeys:@[@"type",@"title"]]];
+    }]];
+    [alert addAction: [UIAlertAction actionWithTitle:TEXT_PAYMENT_QR style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        PaymentQR *p = [[PaymentQR alloc] initWithNibName:nil bundle:nil];
+        [self.view.window.rootViewController presentViewController:p animated:YES completion:^{
+            
+        }];
+    }]];
+    [alert addAction: [UIAlertAction actionWithTitle:TEXT_REFERRAL_QR style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_REFERER_QR],TEXT_CS] forKeys:@[@"type",@"title"]]];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
+    });
 }
 -(BOOL) checkLogin {
     if ([delegate isLoggedIn]) {
