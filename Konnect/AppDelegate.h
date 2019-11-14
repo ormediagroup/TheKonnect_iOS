@@ -6,7 +6,13 @@
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
 /* TODO : Invoice Create per item details
-
+ Verion 0.10
+ 1) Fixed a display problem during first login on Membership bar
+ 2) Add Membership Icon badge in My Page
+ 3) Changed App name to all caps KONNECT
+ 4) Added Avatar Support
+ 
+ 
  Version 0.9 (12/11/2019)
  1) Updated Search Meeting Room interface
  2) Added booking price to room

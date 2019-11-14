@@ -195,15 +195,17 @@
         } else if ([[delegate.preferences objectForKey:K_USER_PHONE] isKindOfClass:[NSString class]]){
             [nameLbl setText:[delegate.preferences objectForKey:K_USER_PHONE]];
         }
+        [nameLbl sizeToFit];
+        [nameLbl setFrame:CGRectMake(10,0,nameLbl.frame.size.width,34)];
         [memberTier setFrame:CGRectMake(30+nameLbl.frame.size.width,6,80,22)];
         [memberTier setImage:[UIImage imageNamed:@"normalmember.png"]];
         [submit addSubview:memberTier];
     } else {
         [nameLbl setText:TEXT_VISITOR];
+        
         [memberTier removeFromSuperview];
     }
-    [nameLbl sizeToFit];    
-    [nameLbl setFrame:CGRectMake(10,0,nameLbl.frame.size.width,34)];
+    
 
     
 }

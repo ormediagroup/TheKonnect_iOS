@@ -8,6 +8,7 @@
 
 #import "My.h"
 #import "AppDelegate.h"
+#define AVATAR_SIZE 80
 @interface My ()
 
 @end
@@ -21,10 +22,49 @@
     //[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeAvatar:) name:CHANGE_AVATAR object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(login) name:LOGIN_SUCCESS object:nil];
     labels = @[@"我的資料",@"我的錢包",@"積分記錄",@"預約記錄",TEXT_COUPON,TEXT_SERVICE_OFFICE,TEXT_REFERRAL_QR];
     iconsrc = @[@"editinfo.png",@"waller.png",@"pointshistory.png",@"appointments.png",@"coupons.png",@"office.png",@"referral.png"];
+    
+    avatar = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,SIDE_PAD,AVATAR_SIZE,AVATAR_SIZE)];
+    avatar.layer.cornerRadius = 10.0f;
+    [avatar setContentMode:UIViewContentModeScaleAspectFit];
+    [avatar setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeAvatar)];
+    [avatar addGestureRecognizer:tap];
+    [avatar setBackgroundColor:UICOLOR_LIGHT_GREY];
+    avatar.tag =0;
+    NSLog(@"My : %@",[delegate.preferences objectForKey:K_USER_AVATAR] );
+    if ([[delegate.preferences objectForKey:K_USER_AVATAR] isKindOfClass:[NSString class]] && [[delegate.preferences objectForKey:K_USER_AVATAR] length]>0) {
+        avatar.tag = 1;
+        [avatar setBackgroundColor:[UIColor clearColor]];
+        [avatar setImage:[delegate getImage:[delegate.preferences objectForKey:K_USER_AVATAR] callback:^(UIImage *image) {
+            [self->avatar setImage:image];
+        }]];
+    }
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+-(void) login {
+    [avatar setImage:[delegate getImage:[delegate.preferences objectForKey:K_USER_AVATAR] callback:^(UIImage *image) {
+        [self->avatar setImage:image];
+        [self->avatar setBackgroundColor:[UIColor clearColor]];
+        self->avatar.tag =1;
+    }]];
+}
+-(void) changeAvatar:(NSNotification*)notif {
+    if ([notif.object isKindOfClass:[NSString class]] && ![notif.object isEqualToString:@""]) {
+        [avatar setImage:[delegate getImage:notif.object callback:^(UIImage *image) {
+            [self->avatar setImage:image];
+            self->avatar.tag =1;
+            [self->avatar setBackgroundColor:[UIColor clearColor]];
+        }]];
+    } else {
+        [avatar setImage:nil];
+        avatar.tag = 0;
+        [avatar setBackgroundColor:UICOLOR_LIGHT_GREY];
+    }
 }
 -(void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@"我的"];
@@ -66,7 +106,7 @@
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==0 && indexPath.row==0) {
-        return 100;
+        return AVATAR_SIZE+SIDE_PAD_2;
     } else {
         return LINE_HEIGHT+LINE_HEIGHT;
     }
@@ -76,8 +116,46 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"my"];
     [cell setBackgroundColor:[UIColor whiteColor]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    
-    if (indexPath.section==0 && indexPath.row>0) {
+    if (indexPath.section==0 && indexPath.row==0) {
+        CGFloat l =SIDE_PAD_2+AVATAR_SIZE;
+        CGFloat w =delegate.screenWidth-SIDE_PAD_2-SIDE_PAD-AVATAR_SIZE;
+        UIView *p = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,50+delegate.statusBarHeight)];
+        [p setBackgroundColor:UICOLOR_PURPLE];
+        [cell addSubview:p];
+        
+        UIImageView *bg = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,0, delegate.screenWidth-SIDE_PAD, AVATAR_SIZE + SIDE_PAD_2)];
+        [bg setContentMode:UIViewContentModeScaleAspectFill];
+        [bg setClipsToBounds:YES];
+        [bg setUserInteractionEnabled:YES];
+        [bg setImage:[UIImage imageNamed:@"GoldBg.png"]];
+        [cell addSubview:bg];
+        
+
+        [bg addSubview:avatar];
+        
+        int y = SIDE_PAD;
+        UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(l,y,w,LINE_HEIGHT)];
+        [name setTextColor:[UIColor darkTextColor]];
+        [name setText:[delegate.preferences objectForKey:K_USER_NAME]];
+        [name setFont:[UIFont systemFontOfSize:FONT_M]];
+        [bg addSubview:name];
+        y+=LINE_HEIGHT+4;
+        
+        //207 x 52
+        UIImageView *badge = [[UIImageView alloc] initWithFrame:CGRectMake(l,y,69,18)];
+        [badge setImage:[UIImage imageNamed:@"normalmember.png"]];
+        [badge setContentMode:UIViewContentModeScaleAspectFit];
+        [bg addSubview:badge];
+        y+=22;
+        
+        UILabel *memberno = [[UILabel alloc] initWithFrame:CGRectMake(l,y,w,LINE_HEIGHT)];
+        [memberno setTextColor:[UIColor darkGrayColor]];
+        [memberno setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [memberno setText:[NSString stringWithFormat:@"%@: %@",TEXT_MEMBER_NO,[delegate.preferences objectForKey:K_USER_NO]]];
+        [bg addSubview:memberno];
+        y+=SIDE_PAD+LINE_HEIGHT;
+        
+    } else if (indexPath.section==0 && indexPath.row>0) {
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD+50,0,delegate.screenWidth-50-SIDE_PAD_2,LINE_HEIGHT+LINE_HEIGHT)];
         [title setText:[labels objectAtIndex:(indexPath.row-1)]];
@@ -99,10 +177,9 @@
         [cell addSubview:title];
         
     }
-    
-    
     return cell;
 }
+
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==0) {
         if (indexPath.row==1) {
@@ -144,6 +221,76 @@
         });
         
     }
+}
+-(void) chooseFromAlbum {
+    imgpicker = [[UIImagePickerController alloc] init];
+    imgpicker.delegate = self;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        [imgpicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [delegate.window.rootViewController presentViewController:imgpicker animated:YES completion:^{
+            
+        }];
+        
+    }
+}
+-(void) changeAvatar {
+    if (avatar.tag==0) {
+        [self chooseFromAlbum];
+    } else {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                       message:TEXT_CHANGE_AVATAR
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        [alert addAction: [UIAlertAction actionWithTitle:TEXT_SELECT_AVATAR style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self chooseFromAlbum];
+        }]];
+        [alert addAction: [UIAlertAction actionWithTitle:TEXT_DELETE_AVATAR style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-upload-image",K_API_ENDPOINT] param:[[NSDictionary alloc] initWithObjects:@[@"deleteavatar"] forKeys:@[@"action"]] interation:0 callback:^(NSDictionary *data) {
+                if ([[data objectForKey:@"rc"] intValue]==0) {
+                    [self->delegate raiseAlert:TEXT_DELETE_AVATAR msg:TEXT_SAVE_SUCCESS];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_AVATAR object:@""];
+                } else {
+                    [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"msg"]];
+                }
+            }];
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self->delegate.window.rootViewController presentViewController:alert animated:YES completion:nil];
+        });
+    }
+    
+}
+#pragma mark Take Photo Delegates
+- (void) imagePickerControllerDidCancel: (UIImagePickerController *) picker {
+    [delegate.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+}
+// For responding to the user accepting a newly-captured picture or movie
+- (void) imagePickerController: (UIImagePickerController *) picker
+ didFinishPickingMediaWithInfo: (NSDictionary *) info {
+    if ([info objectForKey:@"UIImagePickerControllerOriginalImage"]!=nil) {
+        // add params (all params are strings)
+        UIImage* uimg =[info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        [delegate startLoading:delegate.window.rootViewController];
+        id result = [[KApiManager sharedManager] uploadImage:uimg];
+        [delegate stopLoading];
+        if ([result isKindOfClass:[NSDictionary class]] && [[result objectForKey:@"image"] isKindOfClass:[NSString class]]) {
+            [delegate raiseAlert:TEXT_SAVE_SUCCESS msg:@"" inViewController:imgpicker];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_AVATAR object:[result objectForKey:@"image"]];
+            [delegate.preferences setObject:[result objectForKey:@"image"] forKey:K_USER_AVATAR];
+            [delegate.preferences synchronize];
+            [self.view.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        } else if ([result isKindOfClass:[NSError class]]) {
+            NSError *r = result;
+            if ([[r.userInfo objectForKey:@"rc"]intValue]==1) {
+                [delegate raiseAlert:TEXT_INPUT_ERROR msg:[r.userInfo objectForKey:@"msg"] inViewController:imgpicker];
+            }
+        } else {
+            [delegate raiseAlert:TEXT_INPUT_ERROR msg:@"" inViewController:imgpicker];
+        }
+        //        CGFloat h = uimg.size.height / uimg.size.width * 800;
+        // UIImageWriteToSavedPhotosAlbum(uimg, nil,nil,nil);
+    }
+    [delegate.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 /*

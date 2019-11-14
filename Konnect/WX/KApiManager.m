@@ -207,7 +207,7 @@
                                   JSONObjectWithData:data
                                   options:kNilOptions
                                   error:&error];
-        [delegate stopLoading];
+            [delegate stopLoading];
         if (error) {
             NSLog(@"K get URL async %@ with Error %@",urlS, [error description]);
             NSString *datastr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -269,5 +269,87 @@
                          param:[NSDictionary dictionaryWithObjects:
                                 @[username, password, @"loginPassword"] forKeys:@[@"username",@"password",@"action"]]
                     interation:0];
+}
+-(id) uploadImage:(UIImage *)i {
+    NSString *urlS = [NSString stringWithFormat:@"%@app-upload-image/",K_API_ENDPOINT];
+    NSURL *url = [NSURL URLWithString:urlS];
+    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] init];
+    [urlRequest setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+    [urlRequest setHTTPShouldHandleCookies:NO];
+    [urlRequest setTimeoutInterval:60];
+    [urlRequest setHTTPMethod:@"POST"];
+    NSString *boundary = @"KONNECTboundary23--====";
+    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+    [urlRequest setValue:contentType forHTTPHeaderField: @"Content-Type"];
+    [urlRequest setValue:[NSString stringWithFormat:@"Bearer %@",[delegate.preferences objectForKey:K_ACCESS_TOKEN_KEY]] forHTTPHeaderField:@"authorization"];
+    [urlRequest setValue:@"no-cache" forHTTPHeaderField:@"cache-control"];
+    [urlRequest setURL:url];
+    
+    
+    
+    NSMutableData *body = [NSMutableData data];
+    
+    // append text
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", K_USER_OPENID] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"%@\r\n", [delegate.preferences objectForKey:K_USER_OPENID]] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    
+    //create file name
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyyMMddHHmmss"];
+    NSString *filename = [NSString stringWithFormat:@"%@%@",[formatter stringFromDate:[[NSDate alloc] init]],[delegate.preferences objectForKey:K_USER_NO]];
+    // append image
+    NSData *imageData = UIImageJPEGRepresentation(i, 1.0);
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@.jpg\"\r\n", @"cover_image", filename] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:imageData];
+    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+
+
+    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    // setting the body of the post to the reqeust
+    [urlRequest setHTTPBody:body];
+    // set the content-length
+    NSString *postLength = [NSString stringWithFormat:@"%lu",[body length]];
+    [urlRequest setValue:postLength forHTTPHeaderField: @"Content-Length"];
+    
+   
+    
+    NSURLResponse *resp = nil;
+    NSError *error = nil;
+    NSData *data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&resp error:&error];
+    if (error) {
+        NSLog(@"K get URL sync %@ with Error %@",urlS, [error description]);
+        return error;
+    } else {
+        NSDictionary *jsondata = [NSJSONSerialization
+                                  JSONObjectWithData:data
+                                  options:kNilOptions
+                                  error:&error];
+        if (error) {
+            NSLog(@"K get URL sync %@ with Error %@",urlS, [error description]);
+            NSString *datastr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"Invalid data: %@",datastr);
+            return error;
+        } else {
+            if ([[jsondata objectForKey:@"errcode"] intValue]==K_NOT_LOGGED_IN) {
+                // refresh token
+                if ([[self getKAccessToken:[self getKAuthCode]] isEqualToString:RETURN_OK]) {
+                    return [NSError errorWithDomain:@"KONNECT" code:K_AUTH_ERROR userInfo:nil];
+                } else {
+                    return [NSError errorWithDomain:@"KONNECT" code:K_AUTH_ERROR userInfo:nil];
+                    
+                }
+            } else if ([[jsondata objectForKey:@"rc"] intValue]==1) {
+                return [NSError errorWithDomain:@"KONNECT" code:K_AUTH_ERROR userInfo:jsondata];
+            }
+            return jsondata;
+        }
+    }
+    
 }
 @end

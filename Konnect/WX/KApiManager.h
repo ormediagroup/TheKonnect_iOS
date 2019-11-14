@@ -9,6 +9,7 @@
 #ifndef KApiManager_h
 #define KApiManager_h
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 @interface KApiManager : NSObject
 
 + (instancetype)sharedManager;
@@ -18,6 +19,8 @@
 -(id) setPassword:(NSString *)userToken password:(NSString *)password;
 -(id) tieWithWechat:(NSString *)unionID userToken:(NSString *)userToken;
 -(id) logWithWeChat:(NSString *)unionID;
+-(id) uploadImage:(UIImage *)i;
 -(id) logWithPassword:(NSString *)username withPassord:(NSString *)password;
+
 @end
 #endif /* KApiManager_h */

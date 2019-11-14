@@ -10,10 +10,12 @@
 @class AppDelegate;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface My : UITableViewController {
+@interface My : UITableViewController <UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
     AppDelegate *delegate;
     NSArray *labels;
     NSArray *iconsrc;
+    UIImagePickerController *imgpicker;
+    UIImageView *avatar;
 }
 
 @end

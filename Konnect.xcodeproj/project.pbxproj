@@ -49,6 +49,7 @@
 		4E167257237A72B600F6FD8E /* OfficeNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E167256237A72B600F6FD8E /* OfficeNotifications.m */; };
 		4E16725A237A9B3900F6FD8E /* MeetingRoomList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E167259237A9B3900F6FD8E /* MeetingRoomList.m */; };
 		4E16725D237AB24F00F6FD8E /* MeetingRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E16725C237AB24F00F6FD8E /* MeetingRoom.m */; };
+		4E16725F237BCAC500F6FD8E /* GoldBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E16725E237BCAC400F6FD8E /* GoldBg.png */; };
 		4E18D7842341EA5B00039811 /* logo-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7832341EA5B00039811 /* logo-small.png */; };
 		4E18D78A2341EAA600039811 /* scanqr.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7852341EAA500039811 /* scanqr.png */; };
 		4E18D78B2341EAA600039811 /* msg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7862341EAA500039811 /* msg.png */; };
@@ -199,6 +200,7 @@
 		4E167259237A9B3900F6FD8E /* MeetingRoomList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeetingRoomList.m; sourceTree = "<group>"; };
 		4E16725B237AB24F00F6FD8E /* MeetingRoom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeetingRoom.h; sourceTree = "<group>"; };
 		4E16725C237AB24F00F6FD8E /* MeetingRoom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeetingRoom.m; sourceTree = "<group>"; };
+		4E16725E237BCAC400F6FD8E /* GoldBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoldBg.png; sourceTree = "<group>"; };
 		4E18D7832341EA5B00039811 /* logo-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-small.png"; sourceTree = "<group>"; };
 		4E18D7852341EAA500039811 /* scanqr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scanqr.png; sourceTree = "<group>"; };
 		4E18D7862341EAA500039811 /* msg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = msg.png; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 		4E12D79923229C1400D4A545 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4E16725E237BCAC400F6FD8E /* GoldBg.png */,
 				4E6F69782355B34E003B52D3 /* wechatshare.png */,
 				4E6F69762355B0DE003B52D3 /* phone.png */,
 				4EE24A32234DD26B00E2C651 /* paybyali.png */,
@@ -750,6 +753,7 @@
 				4E02E221237267180006379B /* intro1.png in Resources */,
 				4E18D79D2344567F00039811 /* conferenceicon.png in Resources */,
 				4E02E228237267720006379B /* intro3.png in Resources */,
+				4E16725F237BCAC500F6FD8E /* GoldBg.png in Resources */,
 				4EEB84782340A2BD00853E76 /* regflow3.png in Resources */,
 				4EEB84792340A2BD00853E76 /* regflow2.png in Resources */,
 				4EEB846E233E0BC000853E76 /* phoneicon.png in Resources */,

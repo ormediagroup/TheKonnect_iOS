@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>KONNECT</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.9</string>
+	<string>1.0</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -42,6 +44,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>掃描QR Code</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>上載頭像照片至KONNECT</string>
 	<key>NSSupportsSuddenTermination</key>
 	<false/>
 	<key>UILaunchStoryboardName</key>

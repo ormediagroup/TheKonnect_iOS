@@ -211,6 +211,12 @@
 #define TEXT_EQUIPMENT @"設備"
 #define TEXT_PRICE @"價格"
 #define TEXT_SELECT_ACTION @"請選擇"
+#define TEXT_MEMBER_NO @"會員編號"
+#define TEXT_CHANGE_AVATAR @"更換頭像"
+#define TEXT_SELECT_AVATAR @"由相簿選擇新頭像"
+#define TEXT_DELETE_AVATAR @"刪除頭像"
+
+
 
 #define UNCHECK_BOX @"\U00002610"
 #define CHECK_BOX @"\U00002714"
@@ -234,6 +240,9 @@
 #define K_USER_NAME @"kuser"
 #define K_USER_GENDER @"kusergender"
 #define K_USER_EMAIL @"kuseremail"
+#define K_USER_TIER @"membertier"
+#define K_USER_NO @"kuserno"
+#define K_USER_AVATAR @"kuseravatar"
 
 #define PAYMENT_TOKEN @"paymenttoken"
 
@@ -277,6 +286,7 @@
 #define GO_SLIDE @"goslide"
 #define CHANGE_TITLE @"changetitle"
 #define LOAD_MESSAGE_DETAIL @"loadmd"
+#define CHANGE_AVATAR @"changeavatar"
 
 
 typedef enum {

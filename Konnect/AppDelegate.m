@@ -274,7 +274,7 @@
                             // check WX Auth Code
                             dispatch_async(dispatch_get_main_queue(),^{
                                 [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
-                                [self makeToast:@"註冊成功！歡迎你成為Konnect+會員。" duration:5 inView:self.window.rootViewController.view];
+                                [self makeToast:@"註冊成功！歡迎你成為KONNECT會員。" duration:5 inView:self.window.rootViewController.view];
                             });
                         }
                     } else {
@@ -302,6 +302,9 @@
                                                 [self->preferences setObject:[data objectForKey:K_USER_NAME] forKey:K_USER_NAME];
                                                 [self->preferences setObject:[data objectForKey:K_USER_GENDER] forKey:K_USER_GENDER];
                                                 [self->preferences setObject:[data objectForKey:K_USER_EMAIL] forKey:K_USER_EMAIL];
+                                                [self->preferences setObject:[data objectForKey:K_USER_NO] forKey:K_USER_NO];
+                                                [self->preferences setObject:[data objectForKey:K_USER_TIER] forKey:K_USER_TIER];
+                                                [self->preferences setObject:[data objectForKey:K_USER_AVATAR] forKey:K_USER_AVATAR];
                                                 [self->preferences synchronize];
                                                 NSLog(@"App Wechat Login: %@",data);
                                                 [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
@@ -328,6 +331,9 @@
     [preferences removeObjectForKey:K_USER_NAME];
     [preferences removeObjectForKey:K_USER_GENDER];
     [preferences removeObjectForKey:K_USER_EMAIL];
+    [preferences removeObjectForKey:K_USER_NO];
+    [preferences removeObjectForKey:K_USER_AVATAR];
+    [preferences removeObjectForKey:K_USER_TIER];
     [preferences synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:LOGOUT_SUCCESS object:nil];
 }

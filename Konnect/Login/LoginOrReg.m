@@ -279,6 +279,9 @@
                 [self->delegate.preferences setObject:[data objectForKey:K_USER_NAME] forKey:K_USER_NAME];
                 [self->delegate.preferences setObject:[data objectForKey:K_USER_GENDER] forKey:K_USER_GENDER];
                 [self->delegate.preferences setObject:[data objectForKey:K_USER_EMAIL] forKey:K_USER_EMAIL];
+                [self->delegate.preferences setObject:[data objectForKey:K_USER_TIER] forKey:K_USER_TIER];
+                [self->delegate.preferences setObject:[data objectForKey:K_USER_NO] forKey:K_USER_NO];
+                [self->delegate.preferences setObject:[data objectForKey:K_USER_AVATAR] forKey:K_USER_AVATAR];
                 [self->delegate.preferences synchronize];
                 [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
                 [self->password setText:@""];
