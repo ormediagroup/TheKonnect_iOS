@@ -22,10 +22,11 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    fields = @[@"帳戶（不可更改）",@"如何稱呼你",@"性別",@"聯絡電郵"];
+    fields = @[@"帳戶（不可更改）",TEXT_NICKNAME,TEXT_GENDER,@"聯絡電郵",TEXT_BIRTHDAY];
     emailAlertController = [UIAlertController alertControllerWithTitle: @"請輸入你的電郵"
                                                                               message:@""
                                                                        preferredStyle:UIAlertControllerStyleAlert];
+    
     [emailAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"稱呼";
         textField.textColor = [UIColor darkGrayColor];
@@ -45,8 +46,60 @@
     }]];
     [emailAlertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
     }]];
+    
+    
+    pickerViewToolbar = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.screenHeight)];
+    
+    UIView *touchbg = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.screenHeight)];
+    [touchbg setBackgroundColor:UICOLOR_ALPHA_BACKGROUND];
+    [touchbg addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeToolbar)]];
+    [pickerViewToolbar addSubview:touchbg];
+    
+    
+    CGFloat top = delegate.screenHeight-360;
+    
+    UIView *toolbar = [[UIView alloc] initWithFrame:CGRectMake(0,top,delegate.screenWidth,50)];
+    [toolbar setBackgroundColor:[UIColor whiteColor]];
+    [pickerViewToolbar addSubview:toolbar];
+    
+    UIButton *done = [UIButton buttonWithType:UIButtonTypeCustom];
+    [done setFrame:CGRectMake(delegate.screenWidth-100,0,100,50)];
+    [done setTitle:TEXT_DONE forState:UIControlStateNormal];
+    [done setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
+    [done addTarget:self action:@selector(selectPickerValue) forControlEvents:UIControlEventTouchUpInside];
+    [toolbar addSubview:done];
+    
+    pickerValue = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth-100-SIDE_PAD,50)];
+    [pickerValue setFont:[UIFont systemFontOfSize:FONT_M]];
+    [toolbar addSubview:pickerValue];
+    
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,top+50,delegate.screenWidth,10)];
+    [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
+    [pickerViewToolbar  addSubview:line];
+    
+    bday = [[UIDatePicker alloc] initWithFrame:CGRectMake(0,top+60,delegate.screenWidth,300)];
+    [bday setBackgroundColor:[UIColor whiteColor]];
+    [bday setDatePickerMode:UIDatePickerModeDate];
+    [bday addTarget:self action:@selector(bdayselect:) forControlEvents:UIControlEventValueChanged];
 }
-
+-(void) bdayselect:(UIDatePicker *)p {
+    NSDateFormatter *f = [[NSDateFormatter alloc] init];
+    f.dateFormat = @"yyyy-MM-dd";
+    [pickerValue setText:[f stringFromDate:bday.date]];
+}
+-(void) removeToolbar {
+    [pickerViewToolbar removeFromSuperview];
+}
+-(void) selectPickerValue {
+    UIDatePicker *picker = [pickerViewToolbar viewWithTag:1];
+    if (picker==bday) {
+        NSDateFormatter *f = [[NSDateFormatter alloc] init];
+        f.dateFormat = @"yyyy-MM-dd";
+        bdate = [f stringFromDate:bday.date];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    [pickerViewToolbar removeFromSuperview];
+}
 #pragma mark - Table view data source
 -(void) viewWillAppear:(BOOL)animated {
     edited = NO;
@@ -79,7 +132,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    return 4;
+    return 5;
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return LINE_HEIGHT+LINE_HEIGHT;
@@ -101,6 +154,9 @@
         [cell.detailTextLabel setText:[delegate.preferences objectForKey:K_USER_GENDER]];
     } else if (indexPath.row==3) {
         [cell.detailTextLabel setText:[delegate.preferences objectForKey:K_USER_EMAIL]];
+    } else if (indexPath.row==4) {
+        [cell.detailTextLabel setText:bdate];
+    
     }
     
     
@@ -112,11 +168,11 @@
                                                                                   message:@""
                                                                            preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = @"稱呼";
+            textField.placeholder = TEXT_NICKNAME;
             textField.textColor = [UIColor darkGrayColor];
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         }];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"更新" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [alertController addAction:[UIAlertAction actionWithTitle:TEXT_UPDATE style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             NSArray * textfields = alertController.textFields;
             UITextField * namefield = textfields[0];
             if ([namefield.text isEqualToString:@""]) {
@@ -130,7 +186,7 @@
             [self->delegate.preferences synchronize];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [alertController addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         }]];
         [self presentViewController:alertController animated:YES completion:nil];
     } else if (indexPath.row==2) {
@@ -158,7 +214,7 @@
             [self->delegate.preferences synchronize];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         }]];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [alertController addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         }]];
         [self presentViewController:alertController animated:YES completion:nil];
     } else if (indexPath.row==3) {
@@ -168,6 +224,10 @@
         } else {
             [emailAlertController.actions[0] setEnabled:NO];
         }
+    } else if (indexPath.row==4) {
+        [pickerViewToolbar addSubview:bday];
+        [pickerValue setText:bdate];
+        [self.view.window.rootViewController.view addSubview:pickerViewToolbar];
     }
 }
 - (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

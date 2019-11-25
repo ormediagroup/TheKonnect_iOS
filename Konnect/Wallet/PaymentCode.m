@@ -116,7 +116,7 @@
         [b setTitle:TEXT_PAY forState:UIControlStateNormal];
     }
     b.layer.cornerRadius = 10.0f;
-    [b setBackgroundColor:UICOLOR_PURPLE];
+    [b setBackgroundColor:[delegate getThemeColor]];
     [b setFrame:CGRectMake(SIDE_PAD_2,y,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2,50)];
     [b.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
     [b setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
@@ -319,7 +319,7 @@
                                                            [self->delegate raiseAlert:TEXT_PAYMENT_SUCCESS msg:@""];
                                                            [[NSNotificationCenter defaultCenter] postNotificationName:RESTORE_BACK_BTN object:nil];
                                                            [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
-                                                           if ([vendorid isEqualToString:@"print"]) {
+                                                           if ([self->vendorid isEqualToString:@"print"]) {
                                                                 [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
                                                            }
                                                        } else if ([[data objectForKey:@"rc"] intValue]==6) {

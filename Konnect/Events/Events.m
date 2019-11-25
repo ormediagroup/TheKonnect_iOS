@@ -206,7 +206,7 @@
             y+=m.frame.size.height + LINE_PAD;
         }
         UIButton *bookNow = [UIButton buttonWithType:UIButtonTypeCustom];
-        [bookNow setBackgroundColor:UICOLOR_PURPLE];
+        [bookNow setBackgroundColor:[delegate getThemeColor]];
         [bookNow setFrame:CGRectMake(delegate.screenWidth/2-75,y,150,50)];
         [bookNow.layer setCornerRadius:10.0f];
         bookNow.tag = indexPath.row;

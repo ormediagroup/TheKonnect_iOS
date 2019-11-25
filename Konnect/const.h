@@ -10,7 +10,9 @@
 #define const_h
 
 #define TEXT_INVOICE_TYPE_PENDING @"尚未繳付"
-
+#define TEXT_MEMBERTIER_MEMBER @"Member"
+#define TEXT_MEMBERTIER_VIP @"KONNECT VIP Member"
+#define TEXT_MEMBERTIER_LEGACY @"Club Legacy"
 
 #define FONT_XS 14
 #define FONT_S 16
@@ -26,14 +28,27 @@
 #define TEXT_K_ADDRESS @"香港灣仔謝斐道303號"
 #define TEXT_K_PHONE @"00000000"
 #define TEXT_K_EMAIL @"info@thekonnect.com.hk"
+#define TEXT_K_OFFICE_HOURS @"Mon-Sun 8:30 - 18:00"
+#define TEXT_K_OFFICE_PHONE @"11111111"
+#define TEXT_K_OFFICE_EMAIL @"officesupport@thekonnect.com.hk"
+#define TEXT_K_CON_PHONE @"22222222"
+#define TEXT_K_CON_EMAIL @"concierge@thekonnect.com.hk"
+
+
+
 #define TEXT_HOME @"首頁"
+#define TEXT_NICKNAME @"暱稱"
+#define TEXT_GENDER @"性別"
+#define TEXT_BIRTHDAY @"生日"
 #define TEXT_MY @"我的"
+#define TEXT_UPDATE @"更新"
 #define TEXT_EMAIL @"電郵"
 #define TEXT_MSG @"通知"
 #define TEXT_CS @"客服"
 #define BACK_TEXT @"返回"
 #define TEXT_NO @"否"
 #define TEXT_YES @"是"
+#define TEXT_LOGOUT @"登出"
 #define TEXT_COMPANY_INFO @"公司資料"
 #define TEXT_ERROR_MISSING_INFO @"請填寫所有資料"
 #define TEXT_BYOB @"自備酒精飲品"
@@ -48,7 +63,7 @@
 #define TEXT_DONE @"完成"
 #define TEXT_CLOSE @"關閉"
 #define TEXT_FNB @"餐飲"
-#define TEXT_SERVICE_OFFICE @"服務式辦公室"
+#define TEXT_SERVICE_OFFICE @"辦公室"
 #define TEXT_ACTIVITY @"活動"
 #define TEXT_CANCEL @"取消"
 #define TEXT_NETWORK_ERROR @"網絡出錯"
@@ -65,6 +80,7 @@
 #define TEXT_PAY_BY_ALIPAY @"支付寶支付"
 #define TEXT_SHOULD_PAY @"應付"
 #define TEXT_PAY @"支付"
+#define TEXT_PAY_NOW @"立即支付"
 #define TEXT_RECEIVE_PAYMENT @"收款"
 #define TEXT_TOPUP_SUCCESS @"充值成功"
 #define TEXT_NEW_BALANCE @"新積分結餘"
@@ -78,13 +94,13 @@
 #define TEXT_SET_PAYMENT_CODE_2 @"再次輸入付款密碼"
 #define TEXT_ENTER_PAYMENT_CODE @"輸入付款密碼"
 #define TEXT_PAYMENT_CODE @"付款密碼"
-#define TEXT_NEED_ROOM_MIN_PAY @"需要房間？ (最低消費 %d)"
-#define TEXT_NEED_ROOM_NO_MIN_PAY @"需要房間？ (最低消費 %@)"
+#define TEXT_NEED_ROOM_MIN_PAY @"需要房間？ (最低消費 %@)"
+#define TEXT_NEED_ROOM_NO_MIN_PAY @"需要房間？"
 #define TEXT_SET @"設置"
 #define TEXT_SAVE_SUCCESS @"儲存成功"
 #define TEXT_INPUT_ERROR @"輸入錯誤"
 #define TEXT_PASSWORD_DONT_MATCH @"兩次輸入的密碼不乎，請重新輸入"
-#define TEXT_PAY_POINTS @"消費積分"
+#define TEXT_PAY_POINTS @"付款總額"
 #define TEXT_CLEAR @"清除"
 #define TEXT_OPERATION_HOURS @"營業時間"
 #define TEXT_ADDRESS @"地址"
@@ -92,8 +108,7 @@
 #define TEXT_BOOK_NAME @"聯絡人名稱"
 #define TEXT_BOOKING_PHONE @"訂座電話"
 #define TEXT_RESTAURANT_INFO @"簡介"
-#define TEXT_INVOICE @"賬單"
-#define TEXT_BOOK_MEETING_ROOM @"預訂會議室"
+#define TEXT_BOOK_MEETING_ROOM @"預約會議室"
 #define TEXT_PRINT_BALANCE @"列印結餘"
 #define TEXT_OFFICE_TOU @"使用條款"
 #define TEXT_PHOTOS @"照片"
@@ -102,6 +117,7 @@
 #define TEXT_PHONE_INQUIRY @"電話查詢"
 #define TEXT_BROWSE_ALL @"瀏覽全部"
 #define TEXT_BOOK_RESTAURANT @"餐廳訂座"
+#define TEXT_BOOK_RESTAURANT_NOW @"立即訂座"
 #define TEXT_BOOK_FB_DATE @"訂座日期"
 #define TEXT_BOOK_FB_START_TIME @"入座時間"
 #define TEXT_BOOK_FB_NUMBER_PEOPLE @"訂座人數"
@@ -117,8 +133,13 @@
 #define TEXT_INQUIRY_TYPE @"查詢類型"
 #define TEXT_INQUIRY_GENERAL @"一般查詢"
 #define TEXT_INQUIRY_RENT @"租務查詢"
-#define TEXT_INQUIRY_SERVICE_OFFICE_SUPPORT @"服務式辦公室支援"
-#define TEXT_INQUIRY_SERVICE_OFFICE_TOU @"服務式辦公室使用條款"
+#define TEXT_INQUIRY_SERVICE_OFFICE_SUPPORT @"辦公室支援"
+#define TEXT_INQUIRY_SERVICE_OFFICE_TOU @"辦公室使用條款"
+#define TEXT_SERVICE_OFFICE_TOU @"服務式辦公室使用條款"
+#define TEXT_SERVICE_VIRTUAL_TOU @"虛擬辦公室使用條款"
+#define TEXT_NO_SERVICE_OFFICE @"你沒有租用辦公室"
+#define TEXT_NOTIFICATION @"通知"
+#define TEXT_NO_VIRTUAL_OFFICE @"你沒有租用虛擬辦公室"
 #define TEXT_INQUIRY_TECH @"技術支援"
 #define TEXT_INQUIRY_AD @"廣告查詢"
 #define TEXT_INQUIRY_BIZ @"商務合作"
@@ -128,6 +149,7 @@
 #define TEXT_INVOICE_TYPE_PAID @"已繳付"
 #define TEXT_INVOICE_TOTAL_PENDING @"尚未繳付總額"
 #define TEXT_BROWSE_PAST_INVOICE @"瀏覽過往賬單"
+#define TEXT_INVOICE @"賬單"
 #define TEXT_PAST_INVOICE @"過往賬單"
 #define TEXT_NO_INVOICE @"沒有賬單"
 #define TEXT_NO_PENDING_INVOICE @"沒有未繳賬單"
@@ -142,7 +164,7 @@
 #define TEXT_ONLY_SHOW_PAST_6_MONTHS_BILL @"只顯示過往6個月內已繳賬單"
 #define TEXT_SCAN_QR @"掃描二維碼"
 #define TEXT_PAYMENT_QR @"付款二維碼"
-#define TEXT_REFERRAL_QR @"介紹朋友二維碼"
+#define TEXT_REFERRAL_QR @"推薦給朋友"
 #define TEXT_COMPANY  @"公司"
 #define TEXT_NAME  @"名稱"
 #define TEXT_ADDRESS  @"地址"
@@ -162,9 +184,9 @@
 #define TEXT_BOOK_PARTIAL @"沒有會議室可用，以下是會議室預訂情況。"
 #define TEXT_BOOK_NONE @"沒有會議室可用"
 #define TEXT_BOOK_ROOM_NOW @"訂房"
-#define TEXT_BOOK_ROOM_SUCCESS @"你已成功預訂會議室"
-#define TEXT_CONFIRM_BOOK_ROOM @"你確定要訂這個會議室？"
-#define TEXT_BOOKED_ROOM @"已預訂會議室"
+#define TEXT_BOOK_ROOM_SUCCESS @"你已成功預約會議室"
+#define TEXT_CONFIRM_BOOK_ROOM @"你確定要約這個會議室？"
+#define TEXT_BOOKED_ROOM @"已預約會議室"
 #define TEXT_K_NEWS @"KONNECT 最新消息"
 #define TEXT_ABOUT_K @"關於 KONNECT"
 #define TEXT_DL_K_MARKETING @"下載KONNECT宣傳小冊子"
@@ -187,22 +209,30 @@
 #define TEXT_NO_BALANCE @"餘額不足"
 #define TEXT_PLEASE_TOP_UP @"請先充值"
 #define TEXT_CONFIRM_REGISTER @"你確定要報名？（費用：%@)"
+#define TEXT_CONFIRM @"確定"
+#define TEXT_CONFIRM_LOGOUT @"你確定要登出?"
 #define TEXT_REGISTERED @"你已報名"
 #define TEXT_NO_COUPON @"暫時未有優惠券"
 #define TEXT_COUPON @"優惠券"
+#define TEXT_PROMO @"優惠"
 #define TEXT_PAYMENT_SUCCESS @"支付成功"
 #define TEXT_MAX_3 @"最多選擇3個"
-#define TEXT_ASSOC_MEMBER @"我是商會會員"
+#define TEXT_ASSOC_MEMBER @"請選擇所屬的商會"
 #define TEXT_SELECT_ASSOC @"選擇商會"
+#define TEXT_ADD_ASSOC @"新增商會"
+#define TEXT_ADD @"新增"
+#define TEXT_ASSOC_NAME @"商會名稱"
 #define TEXT_AT_LEAST_1 @"請最少選擇一個商會"
 #define TEXT_SELECT_AGAIN @"再選擇"
 #define TEXT_NOT_ASSOC_MEMBER @"不是商會會員"
 #define TEXT_NOT_ASSOC_MEMBER @"不是商會會員"
+#define TEXT_JOIN_VIP @"成為 KONNECT VIP 會員"
 #define TEXT_TOP_UP @"充值"
 #define TEXT_PRINT @"列印"
 #define TEXT_SHEET @"張"
+#define TEXT_MY_WALLET @"我的錢包"
 #define TEXT_TOP_UP_PRINT @"購買列印數量"
-#define TEXT_SERVICE_OFFICE_NOTIFICATION @"服務辦公室通知"
+#define TEXT_SERVICE_OFFICE_NOTIFICATION @"辦公室通知"
 #define TEXT_NO_NOTIFICATION @"暫時沒有任何訊息或通知"
 #define TEXT_CONFIRM_ROOM_BOOK_MSG @"你確定要訂 %@ %@ 由 %@ 至 %@？"
 #define TEXT_PAY_CONFIRM @"確認消費 %d"
@@ -215,6 +245,12 @@
 #define TEXT_CHANGE_AVATAR @"更換頭像"
 #define TEXT_SELECT_AVATAR @"由相簿選擇新頭像"
 #define TEXT_DELETE_AVATAR @"刪除頭像"
+#define TEXT_NOT_APPLICABLE @"不適⽤"
+#define TEXT_CLICK_TO_SHARE_QR_CODE @"請點擊QR Code分享給朋友"
+#define TEXT_MY_OFFICE @"我的辦公室"
+#define TEXT_MY_VIRTUAL_OFFICE @"我的虛擬辦公室"
+#define TEXT_KONNECT_CONCERIGE @"KONNECT 禮賓服務"
+#define TEXT_OFFICE_CS_HOURS @"辦工時間"
 
 
 
@@ -240,7 +276,7 @@
 #define K_USER_NAME @"kuser"
 #define K_USER_GENDER @"kusergender"
 #define K_USER_EMAIL @"kuseremail"
-#define K_USER_TIER @"membertier"
+#define K_USER_TIER @"kusertier"
 #define K_USER_NO @"kuserno"
 #define K_USER_AVATAR @"kuseravatar"
 
@@ -323,7 +359,12 @@ typedef enum {
     VC_TYPE_PRINT_TOPUP = 30,
     VC_TYPE_OFFICE_NOTIFICATION = 31,
     VC_TYPE_OFFICE_INTRO = 32,
-    VC_TYPE_MEETING_ROOM = 33
+    VC_TYPE_MEETING_ROOM = 33,
+    VC_TYPE_JOIN_VIP=34,
+    VC_TYPE_VIRTUAL_OFFICE = 35,
+    VC_TYPE_OFFICE_PROMO = 36,
+    VC_TYPE_CONCIERGE = 37,
+    VC_TYPE_CONTACT_OFFICE = 38
 
 } VC_TYPE;
 

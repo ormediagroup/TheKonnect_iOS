@@ -44,7 +44,7 @@ typedef enum {
     UIButton *isAssoc;
     NSTimer *timer;
     AssoPIcker *assocPicker;
-    NSString *assoc;
+    UILabel *assoc;
     REG_TYPE regType;    
     LoginOrReg __weak *parent;
     BOOL showWXMessage;
@@ -54,7 +54,7 @@ typedef enum {
 @property (weak) LoginOrReg *parent;
 @property BOOL showWXMessage;
 @property REG_TYPE regType;
-@property NSString  *assoc;
+@property UILabel  *assoc;
 @end
 
 NS_ASSUME_NONNULL_END

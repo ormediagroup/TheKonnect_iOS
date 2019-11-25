@@ -113,6 +113,7 @@
     [bookingName setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0,0,10,50)]];
     [bookingName setTextAlignment:NSTextAlignmentRight];
     [bookingName setLeftViewMode:UITextFieldViewModeAlways];
+    [bookingName setText:[delegate.preferences objectForKey:K_USER_NAME]];    
     [bookingName setPlaceholder:TEXT_BOOK_NAME];
     [delegate addDoneToKeyboard:bookingName];
     bookingPhone = [[UITextField alloc] initWithFrame:CGRectMake(130,00,delegate.screenWidth-SIDE_PAD_2-130,46)];
@@ -120,6 +121,7 @@
     [bookingPhone setTextAlignment:NSTextAlignmentRight];
     [bookingPhone setLeftViewMode:UITextFieldViewModeAlways];
     [delegate addDoneToKeyboard:bookingPhone];
+    [bookingPhone setText:[delegate.preferences objectForKey:K_USER_PHONE]];
     [bookingPhone setKeyboardType:UIKeyboardTypePhonePad];
     [bookingPhone setPlaceholder:TEXT_BOOK_PHONE];
     bookRoom = TEXT_NO;
@@ -286,7 +288,7 @@
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     CGFloat y = delegate.headerHeight-delegate.statusBarHeight;
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,delegate.headerHeight-delegate.statusBarHeight,delegate.screenWidth,delegate.headerHeight-delegate.statusBarHeight+200)];
-    [v setBackgroundColor:UICOLOR_PURPLE];
+    [v setBackgroundColor:[delegate getThemeColor]];
     [v setClipsToBounds:YES];
     
     UIView *whiteBadge = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD,y+SIDE_PAD,delegate.screenWidth-SIDE_PAD_2,v.frame.size.height)];
@@ -425,6 +427,7 @@
         [cell.textLabel setText:TEXT_BOOK_FB_NUMBER_PEOPLE];
         [cell.detailTextLabel setText:[NSString stringWithFormat:@"%@%@",bookPeople,TEXT_PEOPLE]];
     } else if (indexPath.row==5) {
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
         [cell.textLabel setText:TEXT_OTHER_MESSAGE];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     } else if (indexPath.row==6) {
@@ -450,7 +453,7 @@
             [l setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
             [cell addSubview:l];
             bookNow = [UIButton buttonWithType:UIButtonTypeCustom];
-            [bookNow setBackgroundColor:UICOLOR_PURPLE];
+            [bookNow setBackgroundColor:[delegate getThemeColor]];
             [bookNow setFrame:CGRectMake(0,20,delegate.screenWidth,50)];
             [bookNow addTarget:self action:@selector(book) forControlEvents:UIControlEventTouchUpInside];
             [bookNow setTitle:TEXT_BOOK_RESTAURANT forState:UIControlStateNormal];
@@ -467,10 +470,10 @@
             [l setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
             [cell addSubview:l];
             bookNow = [UIButton buttonWithType:UIButtonTypeCustom];
-            [bookNow setBackgroundColor:UICOLOR_PURPLE];
+            [bookNow setBackgroundColor:[delegate getThemeColor]];
             [bookNow setFrame:CGRectMake(0,20,delegate.screenWidth,50)];
             [bookNow addTarget:self action:@selector(book) forControlEvents:UIControlEventTouchUpInside];
-            [bookNow setTitle:TEXT_BOOK_RESTAURANT forState:UIControlStateNormal];
+            [bookNow setTitle:TEXT_BOOK_RESTAURANT_NOW forState:UIControlStateNormal];
             [bookNow setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
             [cell addSubview:bookNow];
         }
@@ -479,7 +482,7 @@
         [l setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
         [cell addSubview:l];
         bookNow = [UIButton buttonWithType:UIButtonTypeCustom];
-        [bookNow setBackgroundColor:UICOLOR_PURPLE];
+        [bookNow setBackgroundColor:[delegate getThemeColor]];
         [bookNow setFrame:CGRectMake(0,20,delegate.screenWidth,50)];
         [bookNow addTarget:self action:@selector(book) forControlEvents:UIControlEventTouchUpInside];
         [bookNow setTitle:TEXT_BOOK_RESTAURANT forState:UIControlStateNormal];
@@ -519,16 +522,16 @@
                                                  self->bookRoom
                                                  ]
                                        forKeys:@[
-                                                 @"action",
-                                                 @"vendor_id",
-                                                 @"bookingname",
-                                                 @"bookingphone",
-                                                 @"bookingdate",
-                                                 @"bookingtime",
-                                                 @"bookingpeople",
-                                                 @"remarks",
-                                                 @"bookingalcohol",
-                                                 @"bookingroom"
+                                                         @"action",
+                                                         @"vendor_id",
+                                                         @"bookingname",
+                                                         @"bookingphone",
+                                                         @"bookingdate",
+                                                         @"bookingtime",
+                                                         @"bookingpeople",
+                                                         @"remarks",
+                                                         @"bookingalcohol",
+                                                         @"bookingroom"
                                                  ]]
          
                                          interation:0 callback:^(NSDictionary *data) {

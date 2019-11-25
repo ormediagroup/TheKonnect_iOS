@@ -46,6 +46,11 @@
 #import "OfficeNotifications.h"
 #import "MeetingRoomList.h"
 #import "MeetingRoom.h"
+#import "JoinVIPForm.h"
+#import "VirtualOffice.h"
+#import "OfficePromo.h"
+#import "ConceirgeService.h"
+#import "ContactOffice.h"
 @interface ViewController ()
 
 @end
@@ -91,6 +96,8 @@
                 [self->delegate stopLoading];
                 if ([data isKindOfClass:[NSError class]]) {
                     [self->delegate raiseAlert:[data description] msg:@""];
+                    self->nav = [[UINavigationController alloc] initWithRootViewController:lc];
+                    [self.view addSubview:self->nav.view];
                 } else if ([[data objectForKey:@"rc"] intValue]==0) {
                     [self->delegate.preferences setObject:[data objectForKey:K_USER_OPENID] forKey:K_USER_OPENID];
                     [self->delegate.preferences setObject:[data objectForKey:K_USER_PHONE] forKey:K_USER_PHONE];
@@ -101,7 +108,13 @@
                     [self->delegate.preferences setObject:[data objectForKey:K_USER_GENDER] forKey:K_USER_GENDER];
                     [self->delegate.preferences setObject:[data objectForKey:K_USER_AVATAR] forKey:K_USER_AVATAR];
                     [self->delegate.preferences synchronize];
+
                     [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
+                } else {
+                    // cannot find login ID
+                    [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
+                    self->nav = [[UINavigationController alloc] initWithRootViewController:self->lc];
+                    [self.view addSubview:self->nav.view];
                 }
             });
         });
@@ -363,7 +376,41 @@
             }
             meetingRoom.facilityID = [notif.object objectForKey:@"facilityID"];
             [self pushOrPop:meetingRoom];
-        }        
+        } else if (type==VC_TYPE_JOIN_VIP) {
+            if (!joinvip) {
+                joinvip = [[JoinVIPForm alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:joinvip];
+        } else if (type==VC_TYPE_VIRTUAL_OFFICE) {
+            if (!virtualoffice) {
+                virtualoffice = [[VirtualOffice alloc] initWithStyle:UITableViewStylePlain];
+            }
+            virtualoffice.officeID = [notif.object objectForKey:@"officeID"];
+            [self pushOrPop:virtualoffice];
+        } else if (type==VC_TYPE_OFFICE_PROMO) {
+            if (!officepromo) {
+                officepromo = [[OfficePromo alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:officepromo];
+        } else if (type==VC_TYPE_CONCIERGE) {
+            if (!conser) {
+                conser = [[ConceirgeService alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:conser];
+        } else if (type==VC_TYPE_CONTACT_OFFICE) {
+            if (!contactOffice) {
+                contactOffice = [[ContactOffice alloc] initWithStyle:UITableViewStylePlain];
+            }
+            
+            contactOffice.title =[notif.object objectForKey:@"title"];
+            [self pushOrPop:contactOffice];
+            if ([[notif.object objectForKey:@"inquirytype"] isKindOfClass:[NSString class]] && ![[notif.object objectForKey:@"inquirytype"] isEqualToString:@""]) {
+                contactOffice.inquirytype = [notif.object objectForKey:@"inquirytype"];
+                [contactOffice.tableView reloadData];
+            }
+        }
+        
+        
     }
     if ([nav.viewControllers count]>1) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SHOW_BACK_BTN object:nil];

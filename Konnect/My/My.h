@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSArray *labels;
     NSArray *iconsrc;
     UIImagePickerController *imgpicker;
-    UIImageView *avatar;
+    UIImageView *avatar;    
 }
 
 @end

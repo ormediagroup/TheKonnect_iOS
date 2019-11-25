@@ -17,25 +17,29 @@
 -(id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil withFrame:(CGRect)f {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         [self.view setFrame:f];
+       // NSLog (@"OR Carousel Init: %f",self.view.frame.size.width);
+        delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+        [self.view setBackgroundColor:[UIColor lightGrayColor]];
+        //   NSLog (@"OR Carousel ViewDidLoad: %f",self.view.frame.size.height);
+        scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height)];
+        [self.view addSubview:scroll];
+        [self.view setClipsToBounds:YES];
+        [scroll setClipsToBounds:YES];
+        [scroll setBounces:NO];
+        [scroll setDelegate:self];
+       // NSLog (@"OR Carousel Load d: %f",delegate.screenWidth);
+       // NSLog (@"OR Carousel Load: %f",self.view.frame.size.width);
     }
     return self;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
-    [self.view setBackgroundColor:[UIColor lightGrayColor]];
- //   NSLog (@"OR Carousel ViewDidLoad: %f",self.view.frame.size.height);
-    scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height)];
-    [self.view addSubview:scroll];
-    [self.view setClipsToBounds:YES];
-    [scroll setClipsToBounds:YES];
-    [scroll setBounces:NO];
-    [scroll setDelegate:self];
+    
 }
 -(void) pack:(NSArray *)data {
     i = 0;
-  //  NSLog (@"OR Carousel Pack: %f",self.view.frame.size.height);
+   // NSLog (@"OR Carousel Pack: %f",self.view.frame.size.width);
     indicators = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2-(DOT_SIZE*[data count]/2),self.view.frame.size.height-DOT_SIZE,DOT_SIZE*[data count],DOT_SIZE)];
     [self.view addSubview:indicators];
     for (NSDictionary *d in data) {
@@ -52,7 +56,7 @@
         i++;
     }
     [self setDot:0];
-    [scroll setContentSize:CGSizeMake(i*self.view.frame.size.width+SIDE_PAD_2,self.view.frame.size.height)];
+    [scroll setContentSize:CGSizeMake(i*self.view.frame.size.width,self.view.frame.size.height)];
 }
 -(UIView *) createDot:(CGRect)f withTag:(int)t{
     UIView *v = [[UIView alloc] initWithFrame:f];
@@ -76,7 +80,7 @@
 }
 -(void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
 
-    CGFloat kMaxIndex = i;
+    CGFloat kMaxIndex = i-1;
     CGFloat targetX = scrollView.contentOffset.x + velocity.x * 60.0;
     CGFloat targetIndex = 0.0;
     if (velocity.x > 0) {

@@ -13,7 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EditInfo : ORTableViewController <UITextFieldDelegate>{
     NSArray *fields;
     UIAlertController * emailAlertController;
+    UIDatePicker *bday;
     BOOL edited;
+    UIView *pickerViewToolbar;
+    UILabel *pickerValue;
+    NSString *bdate;
 }
 
 @end

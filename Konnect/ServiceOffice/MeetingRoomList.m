@@ -1,3 +1,4 @@
+//# This file is deprecated as of Version 1.2 functio not needed
 //
 //  MeetingRoomList.m
 //  Konnect
@@ -71,12 +72,13 @@
         y+=LINE_HEIGHT;
     }
     {
-        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+60,0,delegate.screenWidth-SIDE_PAD_2-60-SIDE_PAD,LINE_HEIGHT)];
+        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+60,0,delegate.screenWidth-SIDE_PAD_2-70-SIDE_PAD,LINE_HEIGHT)];
         [l setText:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"pricetag"]];
         [l setFont:[UIFont systemFontOfSize:FONT_S]];
         [l setTextAlignment:NSTextAlignmentRight];
         [cell addSubview:l];
     }
+   
     {
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+60,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
         [l setText:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"capacity"]];

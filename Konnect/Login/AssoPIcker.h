@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @class RegisterViewController;
 @interface AssoPIcker : ORTableViewController {
-    NSArray *fields;
+    NSMutableArray *fields;
     RegisterViewController __weak *parent;
     NSMutableArray *selected;
 }

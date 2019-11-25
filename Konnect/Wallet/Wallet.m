@@ -17,18 +17,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    dataSrc = @[TEXT_COUPON,TEXT_INVOICE];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.tableView.separatorStyle= UITableViewCellSeparatorStyleSingleLine;
+    
 }
 
 #pragma mark - Table view data source
 -(void) viewWillAppear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@"我的錢包"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:TEXT_MY_WALLET];
     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-transaction",K_API_ENDPOINT] param:
      [[NSDictionary alloc] initWithObjects:@[
                                              @"get-balance"
@@ -64,7 +65,7 @@
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,250)];
     UIView *bg = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,170)];
-    [bg setBackgroundColor:UICOLOR_PURPLE];
+    [bg setBackgroundColor:[delegate getThemeColor]];
     
     UIImageView *gold = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,20,delegate.screenWidth-SIDE_PAD_2,150)];
     [gold setImage:[UIImage imageNamed:@"300goldbg.png"]];
@@ -163,9 +164,18 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"wallet"];
+    [cell.textLabel setText:[dataSrc objectAtIndex:indexPath.row]];
     return cell;
 }
-
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row==0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_COUPON]] forKeys:@[@"type"]]];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_INVOICES],TEXT_INVOICE_TYPE_PENDING] forKeys:@[@"type",@"status"]]];
+    }
+}
 
 /*
 // Override to support conditional editing of the table view.

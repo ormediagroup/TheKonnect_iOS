@@ -46,6 +46,11 @@
 @class OfficeNotifications;
 @class MeetingRoomList;
 @class MeetingRoom;
+@class JoinVIPForm;
+@class VirtualOffice;
+@class OfficePromo;
+@class ConceirgeService;
+@class ContactOffice;
 @interface ViewController : UIViewController {
     Introduction *lc;
     UINavigationController *nav;
@@ -87,6 +92,11 @@
     OfficeNotifications *officenotif;
     MeetingRoomList *meetingRoomList;
     MeetingRoom *meetingRoom;
+    JoinVIPForm *joinvip;
+    VirtualOffice *virtualoffice;
+    OfficePromo *officepromo;
+    ConceirgeService *conser;
+    ContactOffice *contactOffice;
     
     
 }

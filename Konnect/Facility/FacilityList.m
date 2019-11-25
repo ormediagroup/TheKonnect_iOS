@@ -9,7 +9,7 @@
 #import "FacilityList.h"
 #import "AppDelegate.h"
 #import "const.h"
-#define FACILITIY_ROW_HEIGHT 250
+#define FACILITIY_ROW_HEIGHT 300
 @interface FacilityList ()
 
 @end
@@ -22,7 +22,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.tableView.backgroundColor = [delegate getThemeColor];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -57,12 +57,14 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
-
+-(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return delegate.footerHeight-delegate.headerHeight+delegate.statusBarHeight;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [datasrc count];
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return FACILITIY_ROW_HEIGHT;
+    return FACILITIY_ROW_HEIGHT+SIDE_PAD_2;
 }
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
@@ -70,26 +72,30 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"facilities"];
-    if ([[[datasrc objectAtIndex:indexPath.row] objectForKey:@"type"] containsString:@"vip"]) {
+    if ([[[datasrc objectAtIndex:indexPath.row] objectForKey:@"type"] containsString:@"fnblegacy"]) {
         [cell setBackgroundColor:UICOLOR_GREEN];
+    } else {
+        [cell setBackgroundColor:UICOLOR_PURPLE];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    UIImageView *i = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,SIDE_PAD/2,delegate.screenWidth-SIDE_PAD_2,FACILITIY_ROW_HEIGHT-SIDE_PAD)];
+    UIImageView *i = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,SIDE_PAD,delegate.screenWidth-SIDE_PAD_2,FACILITIY_ROW_HEIGHT-SIDE_PAD)];
     [i setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
+    [i setContentMode:UIViewContentModeScaleAspectFill];
     if ([[[datasrc objectAtIndex:indexPath.row] objectForKey:@"images"] isKindOfClass:[NSString class]] && ![[[datasrc objectAtIndex:indexPath.row] objectForKey:@"images"] isEqualToString:@""]) {
         [i setImage:[delegate getImage:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"images"] callback:^(UIImage *image) {
             [i setImage:image];
         }]];
     }
     i.layer.cornerRadius =10.0f;
+    i.layer.borderColor = [UICOLOR_VERY_LIGHT_GREY CGColor];
     [i setClipsToBounds:YES];
     {
         UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,i.frame.size.width,LINE_HEIGHT)];
-        [v setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.3]];
-        [i addSubview:v];
+        [v setBackgroundColor:[UIColor whiteColor]];
+     //   [i addSubview:v];
         
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,i.frame.size.width-SIDE_PAD_2,LINE_HEIGHT)];
-        [l setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"name_zh"]];
+      //  [l setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"name_zh"]];
         [l setTextColor:UICOLOR_GOLD];
         [l setFont:[UIFont boldSystemFontOfSize:FONT_XL]];
         [i addSubview:l];
@@ -99,7 +105,7 @@
     }
     {
         UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,i.frame.size.height-LINE_HEIGHT,i.frame.size.width,LINE_HEIGHT)];
-        [v setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.3]];
+        [v setBackgroundColor:[UIColor whiteColor]];
         [i addSubview:v];
         
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,i.frame.size.height-LINE_HEIGHT,i.frame.size.width-SIDE_PAD_2,LINE_HEIGHT)];

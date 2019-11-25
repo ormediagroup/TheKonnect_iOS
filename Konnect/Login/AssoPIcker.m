@@ -19,7 +19,8 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     selected = [[NSMutableArray alloc] initWithCapacity:3];
-    fields = @[
+    fields = [[NSMutableArray alloc] initWithObjects:
+                TEXT_NOT_APPLICABLE,
                 CLUB_1,
                 CLUB_2,
                 CLUB_3,
@@ -40,7 +41,7 @@
                 CLUB_18,
                 CLUB_19,
                 CLUB_20,
-                
+                nil
                ];
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -68,7 +69,7 @@
             [self presentViewController:alert animated:YES completion:nil];
         });
     } else {
-        parent.assoc = [selected componentsJoinedByString: @","];
+        parent.assoc.text = [selected componentsJoinedByString: @", "];
         [self.view.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
@@ -80,25 +81,73 @@
 }
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.headerHeight-delegate.statusBarHeight)];
-    [v setBackgroundColor:UICOLOR_PURPLE];
+    [v setBackgroundColor:[delegate getThemeColor]];
+    
     UIButton *back = [UIButton  buttonWithType:UIButtonTypeCustom];
-    [back setFrame:CGRectMake(SIDE_PAD,6,24,24)];
+    [back setFrame:CGRectMake(SIDE_PAD,6,100,24)];
     back.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [back setImage:[UIImage imageNamed:@"backbtnwhite.png"] forState:UIControlStateNormal];
-    [back.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    //[back setImage:[UIImage imageNamed:@"backbtnwhite.png"] forState:UIControlStateNormal];
+    //[back.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [back.titleLabel setFont:[UIFont systemFontOfSize:FONT_S]];
+    [back setTitle:[NSString stringWithFormat:@"%@ %@",LEFT_ARROW, TEXT_CONFIRM] forState:UIControlStateNormal];
+    [back setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:back];
     
     [v addSubview:back];
     
-    UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(0,6,delegate.screenWidth-SIDE_PAD,24)];
+    UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,6,delegate.screenWidth-SIDE_PAD_2,24)];
     [t setText:TEXT_MAX_3];
-    [t setTextAlignment:NSTextAlignmentRight];
+    [t setTextAlignment:NSTextAlignmentCenter];
     [t setFont:[UIFont systemFontOfSize:FONT_XS]];
     [t setTextColor:[UIColor whiteColor]];
     [v addSubview:t];
-    return v;
     
+    UIButton *add = [UIButton buttonWithType:UIButtonTypeCustom];
+    [add setFrame:CGRectMake(delegate.screenWidth-120,6,100,24)];
+    add.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    //[back setImage:[UIImage imageNamed:@"backbtnwhite.png"] forState:UIControlStateNormal];
+    //[back.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [add.titleLabel setFont:[UIFont systemFontOfSize:FONT_S]];
+    [add setTitle:[NSString stringWithFormat:@"+ %@", TEXT_ADD_ASSOC] forState:UIControlStateNormal];
+    [add setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [add addTarget:self action:@selector(addAssoc) forControlEvents:UIControlEventTouchUpInside];
+    
+    [v addSubview:add];
+    return v;
+}
+-(void) addAssoc {
+    if ([selected count]>=3) {
+        [delegate raiseAlert:TEXT_MAX_3 msg:@"" inViewController:self];
+    } else {
+        UIAlertController *alert= [UIAlertController
+                                   alertControllerWithTitle:TEXT_ADD_ASSOC
+                                   message:nil
+                                   preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* ok = [UIAlertAction actionWithTitle:TEXT_ADD style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action){
+                                                       //Do Some action here
+                                                       [self->fields addObject:alert.textFields[0].text];
+                                                       [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:([self->fields count]-1) inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
+                                                       [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:([self->fields count]-1) inSection:0] animated:YES scrollPosition:UITableViewScrollPositionBottom];
+                                                   }];
+        UIAlertAction* cancel = [UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+                                                           [alert dismissViewControllerAnimated:YES completion:nil];
+                                                           
+                                                       }];
+        
+        [alert addAction:ok];
+        [alert addAction:cancel];
+        
+        [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = TEXT_ASSOC_NAME;
+            textField.keyboardType = UIKeyboardTypeDefault;
+        }];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section==0) return [fields count];
@@ -118,17 +167,24 @@
     return cell;
 }
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if ([selected containsObject:[fields objectAtIndex:indexPath.row]]) {
-        [selected removeObject:[fields objectAtIndex:indexPath.row]];
+    if (indexPath.row==0) {
+        [selected removeAllObjects];
+        parent.assoc.text = @"";
+        [self.tableView reloadData];
+        [self.view.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        
     } else {
-        if ([selected count]>=3) {
-            [delegate raiseAlert:TEXT_MAX_3 msg:@"" inViewController:self];
+        if ([selected containsObject:[fields objectAtIndex:indexPath.row]]) {
+            [selected removeObject:[fields objectAtIndex:indexPath.row]];
         } else {
-            [selected addObject:[fields objectAtIndex:indexPath.row]];
+            if ([selected count]>=3) {
+                [delegate raiseAlert:TEXT_MAX_3 msg:@"" inViewController:self];
+            } else {
+                [selected addObject:[fields objectAtIndex:indexPath.row]];
+            }
         }
+        [self.tableView  reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
     }
-    [self.tableView  reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 /*

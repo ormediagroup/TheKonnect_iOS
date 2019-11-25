@@ -129,30 +129,6 @@
     [self.view addSubview:errorMessage];
     y+=LINE_HEIGHT+LINE_HEIGHT;
     
-    {
-        isAssoc = [UIButton buttonWithType:UIButtonTypeCustom];
-        [isAssoc setFrame:CGRectMake(0,y,delegate.screenWidth,LINE_HEIGHT)];
-        isAssoc.tag=0;
-        [isAssoc addTarget:self action:@selector(checkAssoc:) forControlEvents:UIControlEventTouchUpInside];
-        UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"unchecked.png"]];
-        tick.tag=99;
-        [isAssoc addSubview:tick];
-        UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,LINE_HEIGHT)];
-        [t setText:TEXT_ASSOC_MEMBER];
-        [t setTextAlignment:NSTextAlignmentLeft];
-        [t setFont:[UIFont systemFontOfSize:FONT_XS]];
-        [t setTextColor:[UIColor darkGrayColor]];
-        [t sizeToFit];
-        [t setFrame:CGRectMake((delegate.screenWidth-t.frame.size.width)/2,0,delegate.screenWidth,LINE_HEIGHT)];
-        [tick setFrame:CGRectMake(t.frame.origin.x-30,4,20,20)];
-        [isAssoc addSubview:t];
-    
-        [self.view addSubview:isAssoc];
-    
-    }
-    
-    y+=LINE_HEIGHT+20;
-     
     UIView *h = [[UIView alloc] initWithFrame:CGRectMake(delegate.screenWidth/2-120,y,240,LINE_HEIGHT)];
     [self.view addSubview:h];
     tou = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -179,8 +155,40 @@
     [goTOU.titleLabel setFont:[UIFont systemFontOfSize:FONT_XS]];
     [goTOU setFrame:CGRectMake(146,0,100,LINE_HEIGHT)];
     [h addSubview:goTOU];
+    y+=LINE_HEIGHT;
+    {
+        isAssoc = [UIButton buttonWithType:UIButtonTypeCustom];
+        [isAssoc setFrame:CGRectMake(0,y,delegate.screenWidth,LINE_HEIGHT)];
+        isAssoc.tag=0;
+        [isAssoc addTarget:self action:@selector(checkAssoc:) forControlEvents:UIControlEventTouchUpInside];
+        UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"unchecked.png"]];
+        tick.tag=99;
+        [isAssoc addSubview:tick];
+        UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,LINE_HEIGHT)];
+        [t setText:TEXT_ASSOC_MEMBER];
+        [t setTextAlignment:NSTextAlignmentLeft];
+        [t setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [t setTextColor:[UIColor darkGrayColor]];
+        [t sizeToFit];
+        [t setFrame:CGRectMake((delegate.screenWidth-t.frame.size.width)/2,0,delegate.screenWidth,LINE_HEIGHT)];
+        [tick setFrame:CGRectMake(t.frame.origin.x-30,4,20,20)];
+        [isAssoc addSubview:t];
     
-    y+=LINE_HEIGHT+LINE_HEIGHT;
+        [self.view addSubview:isAssoc];
+    
+    }
+    y+=LINE_HEIGHT-LINE_PAD;
+    assoc = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT*3)];    
+    [assoc setNumberOfLines:3];
+    [assoc setTextAlignment:NSTextAlignmentCenter];
+    [assoc setFont:[UIFont systemFontOfSize:FONT_XS]];
+    [assoc setTextColor:[UIColor darkGrayColor]];
+    [self.view addSubview:assoc];
+    
+    y+=LINE_HEIGHT+LINE_HEIGHT+LINE_HEIGHT;
+     
+    
+    
     
     UIButton *submit = [UIButton buttonWithType:UIButtonTypeCustom];
     [submit setImage:[UIImage imageNamed:@"goldbutton.png"] forState:UIControlStateNormal];
@@ -219,7 +227,7 @@
 -(void) viewWillAppear:(BOOL)animated {
     [self textFieldDidEndEditing:phone];
     [self textFieldDidEndEditing:verification];
-    if ([assoc isEqualToString:@""]) {
+    if ([assoc.text isEqualToString:@""]) {
         isAssoc.tag=0;
         UIImageView *i = [isAssoc viewWithTag:99];
         [i setImage:[UIImage imageNamed:@"unchecked.png"]];

@@ -63,7 +63,7 @@
     a.tag = 100;
     [paymentBar addSubview:a];
     UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
-    [b setBackgroundColor:UICOLOR_PURPLE];
+    [b setBackgroundColor:[delegate getThemeColor]];
     [b setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
     [b setTitle:TEXT_PAY forState:UIControlStateNormal];
     [b addTarget:self action:@selector(charge) forControlEvents:UIControlEventTouchUpInside];

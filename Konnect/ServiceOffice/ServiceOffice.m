@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "const.h"
 #import "ORCarousel.h"
-#define SERVICE_OFFICE_CAROUSEL_HEIGHT 500
+#define SERVICE_OFFICE_CAROUSEL_HEIGHT 260
 @interface ServiceOffice ()
 
 @end
@@ -20,6 +20,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:TEXT_SERVICE_OFFICE];
     if (![delegate isLoggedIn]) {
         datasrc = [NSDictionary dictionaryWithObject:@[@[],@[]]  forKey:@[@"company",@"office"] ];
+        [self.tableView reloadData];
     } else {
         [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-service-office",K_API_ENDPOINT] param:nil interation:0 callback:^(NSDictionary *data) {
             if ([data isKindOfClass:[NSDictionary class]] && [[data objectForKey:@"rc"] intValue]==0) {
@@ -35,7 +36,7 @@
     carousel = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,SERVICE_OFFICE_CAROUSEL_HEIGHT)];
     oc = [[ORCarousel alloc] initWithNibName:nil bundle:nil withFrame:CGRectMake(0, 0, self->delegate.screenWidth, SERVICE_OFFICE_CAROUSEL_HEIGHT)];
     [carousel addSubview:oc.view];
-
+    
     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-home",K_API_ENDPOINT] param:nil interation:0 callback:^(NSDictionary *data) {
         if ([data isKindOfClass:[NSDictionary class]] && [[data objectForKey:@"rc"] intValue]==0) {
             if ([[data objectForKey:@"top"] isKindOfClass:[NSArray class]]) {
@@ -56,32 +57,35 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    /*
     if (section==1) {
         return [[datasrc objectForKey:@"company"] count];
     } else if (section==2) {
         return [[datasrc objectForKey:@"office"] count];
-    } else if (section==3) {
-        return 7;
+    } else if (section==3) {*/
+    if (section==1) {
+        return 9;
     }
     return 1;
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section==0) {
         return delegate.headerHeight-delegate.statusBarHeight;
+        /*
     } else if (section==1 && [[datasrc objectForKey:@"company"] count]>0) {
         return UITableViewAutomaticDimension+LINE_PAD;
     } else if (section==2 && [[datasrc objectForKey:@"office"] count]>0) {
-        return UITableViewAutomaticDimension+LINE_PAD;
+        return UITableViewAutomaticDimension+LINE_PAD;*/
     } else {
         return 0;
     }
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section==3) {
+    if (section==2) {
         return delegate.footerHeight;
     }
     return 0;
@@ -89,6 +93,7 @@
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section==0) {
         return [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.headerHeight-delegate.statusBarHeight)];
+        /*
     } else if (section==1|| section==2){
         UIView *h = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,UITableViewAutomaticDimension+LINE_PAD)];
         UILabel *v = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,LINE_PAD,delegate.screenWidth-SIDE_PAD,UITableViewAutomaticDimension)];
@@ -100,7 +105,7 @@
             [v setText:TEXT_SERVICE_OFFICE];
         }
         [h addSubview:v];
-        return h;
+        return h;*/
     } else {
         return [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,UITableViewAutomaticDimension)];
     }
@@ -114,27 +119,31 @@
     if (indexPath.section==0) {
         [cell addSubview:carousel];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        /*
     } else if (indexPath.section==1) {
         [cell.textLabel setText:[[[datasrc objectForKey:@"company"] objectAtIndex:indexPath.row] objectForKey:@"company_zh"]];
     } else if (indexPath.section==2) {
         [cell.textLabel setText:[[[datasrc objectForKey:@"office"] objectAtIndex:indexPath.row] objectForKey:@"room"]];
-        
-    } else if (indexPath.section==3) {
+        */
+    } else if (indexPath.section==1) {
         if (indexPath.row==0) {
-            [cell.textLabel setText:TEXT_INVOICE];
+            [cell.textLabel setText:TEXT_MY_OFFICE];
         } else if (indexPath.row==1) {
-            [cell.textLabel setText:TEXT_SERVICE_OFFICE_DESCRIPTION];
+            [cell.textLabel setText:TEXT_MY_VIRTUAL_OFFICE];
         } else if (indexPath.row==2) {
-            [cell.textLabel setText:TEXT_BOOK_MEETING_ROOM];
+            [cell.textLabel setText:TEXT_KONNECT_CONCERIGE];
         } else if (indexPath.row==3) {
-            [cell.textLabel setText:TEXT_PRINT_BALANCE];
-            [cell.detailTextLabel setText:[datasrc objectForKey:@"printquota"]];
+            [cell.textLabel setText:TEXT_BOOK_MEETING_ROOM];
         } else if (indexPath.row==4) {
-            [cell.textLabel setText:TEXT_SERVICE_OFFICE_SERVICE];
+            [cell.textLabel setText:TEXT_PROMO];
         } else if (indexPath.row==5) {
-            [cell.textLabel setText:TEXT_CS];
+            [cell.textLabel setText:TEXT_INVOICE];
         } else if (indexPath.row==6) {
-            [cell.textLabel setText:TEXT_INQUIRY_SERVICE_OFFICE_TOU];
+            [cell.textLabel setText:TEXT_CS];
+        } else if (indexPath.row==7) {
+            [cell.textLabel setText:TEXT_SERVICE_OFFICE_TOU];
+        } else if (indexPath.row==8) {
+            [cell.textLabel setText:TEXT_SERVICE_VIRTUAL_TOU];
         }
     }
     
@@ -143,6 +152,7 @@
     return cell;
 }
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    /*
     if (indexPath.section==1) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_COMPANY],[[[datasrc objectForKey:@"company"] objectAtIndex:indexPath.row] objectForKey:@"ID"]] forKeys:@[@"type",@"companyID"]]];
@@ -150,37 +160,62 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE],[[[datasrc objectForKey:@"office"] objectAtIndex:indexPath.row] objectForKey:@"ID"]] forKeys:@[@"type",@"officeID"]]];
     } else if (indexPath.section==3) {
+     */
         if (indexPath.row==0) {
+            if ([delegate checkLogin]) {
+                if ([[datasrc objectForKey:@"office"] isKindOfClass:[NSArray class]] &&
+                    [[datasrc objectForKey:@"office"] count]>0) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE],[[[datasrc objectForKey:@"office"] objectAtIndex:0] objectForKey:@"ID"]] forKeys:@[@"type",@"officeID"]]];
+                } else {
+                    [delegate raiseAlert:TEXT_NO_SERVICE_OFFICE msg:@""];
+                }
+            }
+            /*
+            if ([delegate checkLogin]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                 [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_INVOICES],TEXT_INVOICE_TYPE_PENDING] forKeys:@[@"type",@"status"]]];
+            }*/
+        } else if (indexPath.row==1) {
+            if ([delegate checkLogin]) {
+                if ([[datasrc objectForKey:@"virtualoffice"] isKindOfClass:[NSArray class]] &&
+                    [[datasrc objectForKey:@"virtualoffice"] count]>0) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_VIRTUAL_OFFICE],[[[datasrc objectForKey:@"virtualoffice"] objectAtIndex:0] objectForKey:@"ID"]] forKeys:@[@"type",@"officeID"]]];
+                } else {
+                    [delegate raiseAlert:TEXT_NO_VIRTUAL_OFFICE msg:@""];
+                }
+            }
+        } else if (indexPath.row==2) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONCIERGE]] forKeys:@[@"type"]]];
+        } else if (indexPath.row==3) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SEARCH_MEETING_ROOM]] forKeys:@[@"type"]]];
+        } else if (indexPath.row==4) {
+            
+            // promo
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE_PROMO]] forKeys:@[@"type"]]];
+            
+        } else if (indexPath.row==5) {
             if ([delegate checkLogin]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
                  [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_INVOICES],TEXT_INVOICE_TYPE_PENDING] forKeys:@[@"type",@"status"]]];
             }
-        } else if (indexPath.row==1) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE_INTRO]] forKeys:@[@"type"]]];
-        } else if (indexPath.row==2) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SEARCH_MEETING_ROOM]] forKeys:@[@"type"]]];
-        } else if (indexPath.row==3) {
-            if ([delegate checkLogin]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-                 [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_PRINT_TOPUP]] forKeys:@[@"type"]]];
-            }
-        } else if (indexPath.row==4) {
-            if ([delegate checkLogin]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-                 [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE_NOTIFICATION]] forKeys:@[@"type"]]];
-            }
-        } else if (indexPath.row==5) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONTACT_US],TEXT_INQUIRY_SERVICE_OFFICE_SUPPORT] forKeys:@[@"type",@"inquirytype"]]];
         } else if (indexPath.row==6) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONTACT_OFFICE],TEXT_INQUIRY_SERVICE_OFFICE_SUPPORT] forKeys:@[@"type",@"inquirytype"]]];
+        } else if (indexPath.row==7) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@service-office-house-rules/",domain]] forKeys:@[@"type",@"url"]]];
-            
+        } else if (indexPath.row==8) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@virtual-office-house-rules/",domain]] forKeys:@[@"type",@"url"]]];
             
         }
-    }
+  //  }
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==0) {

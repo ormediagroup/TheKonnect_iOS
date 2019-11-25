@@ -109,6 +109,15 @@
 		4EE24A3A234F331E00E2C651 /* PaymentCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EE24A39234F331E00E2C651 /* PaymentCode.m */; };
 		4EE24A3D234F34A600E2C651 /* PaymentCodeDigit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EE24A3C234F34A600E2C651 /* PaymentCodeDigit.m */; };
 		4EE24A3F23502EF200E2C651 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4EE24A3E23502EF200E2C651 /* GoogleService-Info.plist */; };
+		4EEA6247238B99A40051A72D /* JoinVIPForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEA6246238B99A40051A72D /* JoinVIPForm.m */; };
+		4EEA6249238BA3470051A72D /* logo_qr-01.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EEA6248238BA3470051A72D /* logo_qr-01.png */; };
+		4EEA624E238BC5FD0051A72D /* VirtualOffice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEA624D238BC5FD0051A72D /* VirtualOffice.m */; };
+		4EEA6251238BC8970051A72D /* OfficePromo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEA6250238BC8970051A72D /* OfficePromo.m */; };
+		4EEA6254238BCABE0051A72D /* ConceirgeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEA6253238BCABE0051A72D /* ConceirgeService.m */; };
+		4EEA6257238BCF530051A72D /* ContactOffice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEA6256238BCF530051A72D /* ContactOffice.m */; };
+		4EEA6261238BFCBC0051A72D /* membertierlegacy.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EEA625E238BFCBB0051A72D /* membertierlegacy.png */; };
+		4EEA6262238BFCBC0051A72D /* membertiervip.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EEA625F238BFCBC0051A72D /* membertiervip.png */; };
+		4EEA6263238BFCBC0051A72D /* membertiermember.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EEA6260238BFCBC0051A72D /* membertiermember.png */; };
 		4EEB8447233B5D8200853E76 /* Home.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEB8446233B5D8100853E76 /* Home.m */; };
 		4EEB844A233CB36C00853E76 /* Header.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEB8449233CB36C00853E76 /* Header.m */; };
 		4EEB844D233DE0E200853E76 /* Footer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEB844C233DE0E200853E76 /* Footer.m */; };
@@ -290,6 +299,20 @@
 		4EE24A3B234F34A600E2C651 /* PaymentCodeDigit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaymentCodeDigit.h; sourceTree = "<group>"; };
 		4EE24A3C234F34A600E2C651 /* PaymentCodeDigit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaymentCodeDigit.m; sourceTree = "<group>"; };
 		4EE24A3E23502EF200E2C651 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4EEA6245238B99A40051A72D /* JoinVIPForm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoinVIPForm.h; sourceTree = "<group>"; };
+		4EEA6246238B99A40051A72D /* JoinVIPForm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JoinVIPForm.m; sourceTree = "<group>"; };
+		4EEA6248238BA3470051A72D /* logo_qr-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_qr-01.png"; sourceTree = "<group>"; };
+		4EEA624C238BC5FD0051A72D /* VirtualOffice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VirtualOffice.h; sourceTree = "<group>"; };
+		4EEA624D238BC5FD0051A72D /* VirtualOffice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VirtualOffice.m; sourceTree = "<group>"; };
+		4EEA624F238BC8970051A72D /* OfficePromo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OfficePromo.h; sourceTree = "<group>"; };
+		4EEA6250238BC8970051A72D /* OfficePromo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OfficePromo.m; sourceTree = "<group>"; };
+		4EEA6252238BCABE0051A72D /* ConceirgeService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConceirgeService.h; sourceTree = "<group>"; };
+		4EEA6253238BCABE0051A72D /* ConceirgeService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConceirgeService.m; sourceTree = "<group>"; };
+		4EEA6255238BCF530051A72D /* ContactOffice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactOffice.h; sourceTree = "<group>"; };
+		4EEA6256238BCF530051A72D /* ContactOffice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactOffice.m; sourceTree = "<group>"; };
+		4EEA625E238BFCBB0051A72D /* membertierlegacy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = membertierlegacy.png; sourceTree = "<group>"; };
+		4EEA625F238BFCBC0051A72D /* membertiervip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = membertiervip.png; sourceTree = "<group>"; };
+		4EEA6260238BFCBC0051A72D /* membertiermember.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = membertiermember.png; sourceTree = "<group>"; };
 		4EEB8445233B5D8100853E76 /* Home.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Home.h; sourceTree = "<group>"; };
 		4EEB8446233B5D8100853E76 /* Home.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Home.m; sourceTree = "<group>"; };
 		4EEB8448233CB36C00853E76 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
@@ -424,7 +447,11 @@
 		4E12D79923229C1400D4A545 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4EEA625E238BFCBB0051A72D /* membertierlegacy.png */,
+				4EEA6260238BFCBC0051A72D /* membertiermember.png */,
+				4EEA625F238BFCBC0051A72D /* membertiervip.png */,
 				4E16725E237BCAC400F6FD8E /* GoldBg.png */,
+				4EEA6248238BA3470051A72D /* logo_qr-01.png */,
 				4E6F69782355B34E003B52D3 /* wechatshare.png */,
 				4E6F69762355B0DE003B52D3 /* phone.png */,
 				4EE24A32234DD26B00E2C651 /* paybyali.png */,
@@ -530,6 +557,8 @@
 				4E9F7CD323757827005EB150 /* RefereralQR.m */,
 				4E1672492378EEBF00F6FD8E /* Reservations.h */,
 				4E16724A2378EEBF00F6FD8E /* Reservations.m */,
+				4EEA6245238B99A40051A72D /* JoinVIPForm.h */,
+				4EEA6246238B99A40051A72D /* JoinVIPForm.m */,
 			);
 			path = My;
 			sourceTree = "<group>";
@@ -547,6 +576,8 @@
 				4E9F7CD0237561DD005EB150 /* Invoice.m */,
 				4E1672332376617000F6FD8E /* Office.h */,
 				4E1672342376617000F6FD8E /* Office.m */,
+				4EEA624C238BC5FD0051A72D /* VirtualOffice.h */,
+				4EEA624D238BC5FD0051A72D /* VirtualOffice.m */,
 				4E167236237662A800F6FD8E /* Company.h */,
 				4E167237237662A800F6FD8E /* Company.m */,
 				4E1672392376943900F6FD8E /* SearchMeetingRoom.h */,
@@ -559,6 +590,10 @@
 				4E167259237A9B3900F6FD8E /* MeetingRoomList.m */,
 				4E16725B237AB24F00F6FD8E /* MeetingRoom.h */,
 				4E16725C237AB24F00F6FD8E /* MeetingRoom.m */,
+				4EEA624F238BC8970051A72D /* OfficePromo.h */,
+				4EEA6250238BC8970051A72D /* OfficePromo.m */,
+				4EEA6252238BCABE0051A72D /* ConceirgeService.h */,
+				4EEA6253238BCABE0051A72D /* ConceirgeService.m */,
 			);
 			path = ServiceOffice;
 			sourceTree = "<group>";
@@ -568,6 +603,8 @@
 			children = (
 				4E9F7CC623752AD7005EB150 /* ContactUs.h */,
 				4E9F7CC723752AD7005EB150 /* ContactUs.m */,
+				4EEA6255238BCF530051A72D /* ContactOffice.h */,
+				4EEA6256238BCF530051A72D /* ContactOffice.m */,
 			);
 			path = Contact;
 			sourceTree = "<group>";
@@ -728,6 +765,7 @@
 				4EE24A34234DD26B00E2C651 /* paybyali.png in Resources */,
 				4EEB8467233DF4FB00853E76 /* logo.png in Resources */,
 				4EC621362349D7FB00F4DCD9 /* dollaricon.png in Resources */,
+				4EEA6249238BA3470051A72D /* logo_qr-01.png in Resources */,
 				4E18D79C2344567F00039811 /* officeicon.png in Resources */,
 				4E18D7C123472D1000039811 /* pointshistory.png in Resources */,
 				4E18D78E2341EAA600039811 /* cs.png in Resources */,
@@ -737,8 +775,10 @@
 				4E18D78A2341EAA600039811 /* scanqr.png in Resources */,
 				4E18D78C2341EAA600039811 /* home.png in Resources */,
 				4EC621322349A47200F4DCD9 /* 300goldbg.png in Resources */,
+				4EEA6261238BFCBC0051A72D /* membertierlegacy.png in Resources */,
 				4E18D7C023472D1000039811 /* appointments.png in Resources */,
 				4E02E226237267720006379B /* intro5.png in Resources */,
+				4EEA6263238BFCBC0051A72D /* membertiermember.png in Resources */,
 				4E12D79823229B5000D4A545 /* icon64_appwx_logo.png in Resources */,
 				4E6F69792355B34E003B52D3 /* wechatshare.png in Resources */,
 				4E02E227237267720006379B /* intro2.png in Resources */,
@@ -775,6 +815,7 @@
 				4E02E22E2372854A0006379B /* LOGO in Resources */,
 				4EEB8473234088C800853E76 /* loginWechat.png in Resources */,
 				4E18D7A32345D7E700039811 /* notificationicon.png in Resources */,
+				4EEA6262238BFCBC0051A72D /* membertiervip.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -840,24 +881,29 @@
 				4EEB844D233DE0E200853E76 /* Footer.m in Sources */,
 				4E18D7B023470D6300039811 /* My.m in Sources */,
 				4E991C4C2374596500DEBE01 /* ServiceOffice.m in Sources */,
+				4EEA6251238BC8970051A72D /* OfficePromo.m in Sources */,
 				4E9F7CCB237541A4005EB150 /* Invoices.m in Sources */,
 				4EC62139234B038900F4DCD9 /* PaymentQR.m in Sources */,
 				4E9C0FAD23543C4B005285A4 /* ImageGallery.m in Sources */,
 				4E9C0FB023545984005285A4 /* Booking.m in Sources */,
 				4E16723E2377ECE300F6FD8E /* KonnectNews.m in Sources */,
 				4E18D7A62345FF3D00039811 /* MessageDetails.m in Sources */,
+				4EEA6254238BCABE0051A72D /* ConceirgeService.m in Sources */,
 				4E18D7A12345C21700039811 /* MessageList.m in Sources */,
+				4EEA6247238B99A40051A72D /* JoinVIPForm.m in Sources */,
 				4E3CA9FC2329F60300FE655B /* RegisterPassword.m in Sources */,
 				4E167238237662A800F6FD8E /* Company.m in Sources */,
 				4E12D77D2320D50200D4A545 /* Introduction.m in Sources */,
 				4E1672352376617000F6FD8E /* Office.m in Sources */,
 				4E9F7CCE237559E3005EB150 /* PastInvoices.m in Sources */,
+				4EEA624E238BC5FD0051A72D /* VirtualOffice.m in Sources */,
 				4E02E2312373E4300006379B /* FacilityList.m in Sources */,
 				4E12D796232297B900D4A545 /* RegisterViewController.m in Sources */,
 				4E12D7AE2322D38000D4A545 /* WXApiManager.m in Sources */,
 				4EE24A3A234F331E00E2C651 /* PaymentCode.m in Sources */,
 				4EE24A2D234C7E7C00E2C651 /* PointsHistory.m in Sources */,
 				4E065743231E7F9A00884D79 /* main.m in Sources */,
+				4EEA6257238BCF530051A72D /* ContactOffice.m in Sources */,
 				4E16724B2378EEBF00F6FD8E /* Reservations.m in Sources */,
 				4EE24A30234DBF6300E2C651 /* TopUp.m in Sources */,
 				4E02E22C23727ABA0006379B /* ORWebViewController.m in Sources */,

@@ -23,7 +23,7 @@
     {
         UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
         [b setTitle:TEXT_RESERVATION forState:UIControlStateNormal];
-        [b setBackgroundColor:UICOLOR_PURPLE];
+        [b setBackgroundColor:[delegate getThemeColor]];
         [b setFrame:CGRectMake(0,0,delegate.screenWidth-120,FB_TOOLBAR_HEIGHT)];
         [b setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
         [b addTarget:self action:@selector(makeBooking) forControlEvents:UIControlEventTouchUpInside];
@@ -77,7 +77,7 @@
         }
     } else {
         NSString *content = [NSString stringWithFormat:@"KONNECT - %@%@",[datasrc objectForKey:@"name_zh"],[datasrc objectForKey:@"name_en"]];
-        NSString *URL = [NSString stringWithFormat:@"http://eagenthk.com/site/?siteid=%@",[datasrc objectForKey:@"ID"]];
+        NSString *URL = [NSString stringWithFormat:@"%@/site/?siteid=%@",domain,[datasrc objectForKey:@"ID"]];
         NSURL *u = [NSURL URLWithString:[URL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         if ([[datasrc objectForKey:@"otherimages"] count]>0) {
             NSString *url = [[datasrc objectForKey:@"otherimages"]objectAtIndex:0];
@@ -127,6 +127,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:[d objectForKey:@"name_zh"]];
     if ([[d objectForKey:@"images"] isKindOfClass:[NSString class]] && [[d objectForKey:@"images"] length]>0) {
         UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,300)];
+        [v setContentMode:UIViewContentModeScaleAspectFill];
         [v setImage:[delegate getImage:[d objectForKey:@"images"] callback:^(UIImage *image) {
             [v setImage:image];
         }]];
@@ -168,7 +169,7 @@
         [p setFont:[UIFont systemFontOfSize:FONT_S]];
         [p setTextAlignment:NSTextAlignmentLeft];
         [p setText:TEXT_BOOKING_PHONE];
-        [scroll addSubview:p];
+
         
         
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(100,y+4,delegate.screenWidth-SIDE_PAD-100,LINE_HEIGHT)];
@@ -182,6 +183,7 @@
         if (hS) {
             [l setAttributedText:hS];
             [l sizeToFit];
+            [scroll addSubview:p];
             [scroll addSubview:l];
             y+=l.frame.size.height;
         }

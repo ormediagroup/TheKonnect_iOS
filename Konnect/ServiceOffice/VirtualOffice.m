@@ -1,23 +1,23 @@
 //
-//  Office.m
+//  VirtualOffice.m
 //  Konnect
 //
-//  Created by Jacky Mok on 9/11/2019.
+//  Created by Jacky Mok on 25/11/2019.
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
 
-#import "Office.h"
+#import "VirtualOffice.h"
 #import "AppDelegate.h"
-@interface Office ()
+@interface VirtualOffice ()
 
 @end
 
-@implementation Office
+@implementation VirtualOffice
 @synthesize officeID;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    fields = @[TEXT_COMPANY, TEXT_OFFICE_ROOM_NO,TEXT_OFFICE_ROOM_LOCATION,TEXT_ADDRESS, TEXT_OFFICE_ROOM_LEASE_END,TEXT_NOTIFICATION];
-    map = @[@"company_zh",@"room",@"location",@"address",@"lease_end",@""];
+    fields = @[TEXT_COMPANY,TEXT_ADDRESS, TEXT_OFFICE_ROOM_LEASE_END,TEXT_NOTIFICATION];
+    map = @[@"company_zh",@"address",@"lease_end",@""];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -25,10 +25,10 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 -(void) viewWillAppear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:TEXT_MY_OFFICE];
-
+    [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:TEXT_MY_VIRTUAL_OFFICE];
+    
     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-service-office",K_API_ENDPOINT]
-                                          param:[[NSDictionary alloc] initWithObjects:@[@"get-office",officeID]
+                                          param:[[NSDictionary alloc] initWithObjects:@[@"get-virtual-office",officeID]
                                                                               forKeys:@[@"action",@"officeID"]]
      
                                      interation:0 callback:^(NSDictionary *data) {
@@ -74,7 +74,7 @@
     } else {
         UIView *h = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,LINE_PAD)];
         [h setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
-        return h;    
+        return h;
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -98,50 +98,50 @@
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE_NOTIFICATION]] forKeys:@[@"type"]]];
     }
 }
-                   
+
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

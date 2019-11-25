@@ -293,7 +293,7 @@
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==1 && indexPath.row==3) {
-        return 70;
+        return LINE_HEIGHT*3;
     } else if (indexPath.section==2 || indexPath.section==0) {
         return 80;
     } else {
@@ -339,11 +339,11 @@
             [cell.textLabel setText:TEXT_BOOK_ROOM_END_TIME];
             [cell.detailTextLabel setText:[NSString stringWithFormat:@"%@:%@",bookEndTimeHr,bookEndTimeMin]];
         } else {
-            UIView *l = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,70)];
+            UIView *l = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,LINE_HEIGHT*3)];
             [l setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
             [cell addSubview:l];
             UIButton *bookNow = [UIButton buttonWithType:UIButtonTypeCustom];
-            [bookNow setBackgroundColor:UICOLOR_PURPLE];
+            [bookNow setBackgroundColor:[delegate getThemeColor]];
             [bookNow setFrame:CGRectMake(0,20,delegate.screenWidth,50)];
             [bookNow addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
             [bookNow setTitle:TEXT_SEARCH_MEETING_ROOM forState:UIControlStateNormal];
@@ -360,30 +360,43 @@
                 [i setImage:image];
             }]];
             [cell addSubview:i];
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
             int y=0;
             {
-                UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+60,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
+                UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+70,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
                 [l setText:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"name_zh"]];
                 [l setFont:[UIFont systemFontOfSize:FONT_S]];
                 [cell addSubview:l];
-                y+=LINE_HEIGHT;
+                y+=LINE_HEIGHT-10;
             }
+            
             {
-                UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+60,0,delegate.screenWidth-SIDE_PAD_2-60-SIDE_PAD,LINE_HEIGHT)];
+                UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+70,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
                 [l setText:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"pricetag"]];
-                [l setFont:[UIFont systemFontOfSize:FONT_S]];
-                [l setTextAlignment:NSTextAlignmentRight];
+                [l setFont:[UIFont systemFontOfSize:FONT_XS]];
                 [cell addSubview:l];
+                y+=LINE_HEIGHT-10;
             }
             {
-                UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+60,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
+                UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+70,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
                 [l setText:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"capacity"]];
                 [l setFont:[UIFont systemFontOfSize:FONT_XS]];
                 [l setTextColor:[UIColor darkTextColor]];
                 [cell addSubview:l];
             }
+            {
+                UIButton *b = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [b setFrame:CGRectMake(delegate.screenWidth-100,LINE_HEIGHT*2-10,80,LINE_HEIGHT)];
+                [b.titleLabel setTextAlignment:NSTextAlignmentRight];
+                [b setTitle:TEXT_BOOK_MEETING_ROOM forState:UIControlStateNormal];
+                [b.titleLabel setFont:[UIFont systemFontOfSize:FONT_XS]];
+                [b addTarget:self action:@selector(bookRoom:) forControlEvents:UIControlEventTouchUpInside];
+                b.tag = indexPath.row;
+                [cell addSubview:b];
+            }
         }
+        
+        
     }
     // Configure the cell...
     
@@ -410,6 +423,32 @@
                                          }
                                      }];
     
+}
+-(void) bookRoom:(UIButton *) b {
+    if ([delegate checkLogin]) {
+        CGFloat duration = (endTime - startTime)*2;
+        int cost = ceil(duration * [[[[datasrc objectAtIndex:b.tag] objectForKey:@"room"] objectForKey:@"price"] intValue]);
+        
+        
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:TEXT_PAY_CONFIRM,cost]
+                                                                       message:[NSString stringWithFormat:TEXT_CONFIRM_ROOM_BOOK_MSG,
+                                                                                [[[datasrc objectAtIndex:b.tag] objectForKey:@"room"] objectForKey:@"name_zh"],
+                                                                                bookDate,
+                                                                                [NSString stringWithFormat:@"%@:%@",bookStartTimeHr,bookStartTimeMin],
+                                                                                [NSString stringWithFormat:@"%@:%@",bookEndTimeHr,bookEndTimeMin]
+                                                                                ]
+                                                                preferredStyle:UIAlertControllerStyleAlert
+                                    ];
+        
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
+        [alert addAction:defaultAction];
+        [alert addAction:[UIAlertAction actionWithTitle:TEXT_BOOK_ROOM_NOW style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self bookNow:(int)b.tag];
+        }]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
+        });
+    }
 }
 -(void) bookNow:(int)rowid {
     /// [self->delegate raiseAlert:TEXT_BOOK_ROOM_SUCCESS msg:[NSString stringWithFormat:@"%@ %@:%@ - %@:%@",self->bookDate,self->bookStartTimeHr,self->bookStartTimeMin,self->bookStartTimeHr,self->bookStartTimeHr]];
@@ -488,30 +527,8 @@
         }
     } else if (indexPath.section==2) {
         if (status==ROOM_STATUS_TYPE_AVAIL) {
-            if ([delegate checkLogin]) {
-                CGFloat duration = (endTime - startTime)*2;
-                int cost = ceil(duration * [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"price"] intValue]);
-                
-                
-                UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:TEXT_PAY_CONFIRM,cost]
-                                                                               message:[NSString stringWithFormat:TEXT_CONFIRM_ROOM_BOOK_MSG,
-                                                                                        [[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"name_zh"],
-                                                                                        bookDate,
-                                                                                        [NSString stringWithFormat:@"%@:%@",bookStartTimeHr,bookStartTimeMin],
-                                                                                        [NSString stringWithFormat:@"%@:%@",bookEndTimeHr,bookEndTimeMin]
-                                                                                        ]
-                                                                        preferredStyle:UIAlertControllerStyleAlert
-                                            ];
-                
-                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
-                [alert addAction:defaultAction];
-                [alert addAction:[UIAlertAction actionWithTitle:TEXT_BOOK_ROOM_NOW style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                    [self bookNow:(int)indexPath.row];
-                }]];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
-                });
-            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MEETING_ROOM],[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"]objectForKey:@"ID"]] forKeys:@[@"type",@"facilityID"]]];
         }
     }
 }

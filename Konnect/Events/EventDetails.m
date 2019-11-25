@@ -27,7 +27,7 @@
     {
         UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
         [b setTitle:TEXT_REGISTER_EVENT forState:UIControlStateNormal];
-        [b setBackgroundColor:UICOLOR_PURPLE];
+        [b setBackgroundColor:[delegate getThemeColor]];
         b.tag=99;
         [b setFrame:CGRectMake(0,0,delegate.screenWidth-60,FB_TOOLBAR_HEIGHT)];
         [b setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
@@ -236,7 +236,7 @@
         [b setTitle:TEXT_REGISTERED forState:UIControlStateNormal];
     } else {
         [b setEnabled:YES];
-        [b setBackgroundColor:UICOLOR_PURPLE];
+        [b setBackgroundColor:[delegate getThemeColor]];
         [b setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
         [b setTitle:TEXT_REGISTER_EVENT forState:UIControlStateNormal];
     }

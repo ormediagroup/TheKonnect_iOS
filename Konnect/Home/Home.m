@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "const.h"
 #import "ORCarousel.h"
+#define CAROUSEL_H 140
 @interface Home ()
 
 @end
@@ -22,8 +23,8 @@
     delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:scroll];
-    UIView *bg = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,240)];
-    [bg setBackgroundColor:UICOLOR_PURPLE];
+    UIView *bg = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,140)];
+    [bg setBackgroundColor:[delegate getThemeColor]];
     [scroll addSubview:bg];
     
     int y = 0;
@@ -48,18 +49,20 @@
     [rightArrow setContentMode:UIViewContentModeScaleAspectFit];
     [submit addSubview:rightArrow];
     
-    memberTier = [[UIImageView alloc] initWithFrame:CGRectMake(30+nameLbl.frame.size.width,6,80,22)];
+    memberTier = [[UIImageView alloc] initWithFrame:CGRectMake(30+nameLbl.frame.size.width,0,80,34)];
     [memberTier setContentMode:UIViewContentModeScaleAspectFit];
-    
-    [memberTier setImage:[UIImage imageNamed:@"normalmember.png"]];
+   
     [submit addSubview:memberTier];
     
     y+=submit.frame.size.height+LINE_PAD;
+    /*
     carousel = [[ORCarousel alloc] initWithNibName:nil bundle:nil];
     [carousel.view setFrame:CGRectMake(SIDE_PAD, y, delegate.screenWidth-SIDE_PAD_2, 200)];
+     */
+    carousel = [[ORCarousel alloc] initWithNibName:nil bundle:nil withFrame:CGRectMake(SIDE_PAD, y, delegate.screenWidth-SIDE_PAD_2, CAROUSEL_H)];
     [scroll addSubview:carousel.view];
     
-    y+=200+LINE_PAD;
+    y+=CAROUSEL_H+LINE_PAD;
     UIView *btns = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,80)];
     [scroll addSubview:btns];
     [btns addSubview:[self makeBtn:0 withImageSrc:@"restauranticon.png" andText:TEXT_FNB]];
@@ -132,7 +135,7 @@
 -(void) goAccount {
     if ([delegate isLoggedIn]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MY]] forKeys:@[@"type"]]];
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MY_WALLET]] forKeys:@[@"type"]]];
     }
 }
 -(void) addBottomPart:(NSArray *)data {
@@ -197,8 +200,14 @@
         }
         [nameLbl sizeToFit];
         [nameLbl setFrame:CGRectMake(10,0,nameLbl.frame.size.width,34)];
-        [memberTier setFrame:CGRectMake(30+nameLbl.frame.size.width,6,80,22)];
-        [memberTier setImage:[UIImage imageNamed:@"normalmember.png"]];
+        [memberTier setFrame:CGRectMake(30+nameLbl.frame.size.width,0,80,34)];
+        if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_LEGACY]) {
+            [memberTier setImage:[UIImage imageNamed:@"membertierlegacy.png"]];
+        } else if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_VIP]) {
+            [memberTier setImage:[UIImage imageNamed:@"membertiervip.png"]];
+        } else {
+            [memberTier setImage:[UIImage imageNamed:@"membertiermember.png"]];
+        }
         [submit addSubview:memberTier];
     } else {
         [nameLbl setText:TEXT_VISITOR];

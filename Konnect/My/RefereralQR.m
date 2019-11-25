@@ -27,14 +27,7 @@
     [back.imageView setContentMode:UIViewContentModeScaleAspectFit];
     [back addTarget:self action:@selector(onBackPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:back];
-
     
-    UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,delegate.headerHeight-30 ,delegate.screenWidth-SIDE_PAD_2,24)];
-    [t setText:TEXT_REFERRAL_QR];
-    [t setTextColor:[UIColor whiteColor]];
-    [t setFont:[UIFont systemFontOfSize:FONT_M]];
-    [t setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:t];
     
     UIView *v = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD,100,delegate.screenWidth-SIDE_PAD_2,delegate.screenHeight-50-delegate.footerHeight-SIDE_PAD_2-SIDE_PAD_2)];
     v.layer.cornerRadius = 5.0f;
@@ -46,11 +39,11 @@
     CGFloat QRCodeSize = v.frame.size.width-SIDE_PAD_2-SIDE_PAD_2;
     
     UILabel *purple = [[UILabel alloc] initWithFrame:CGRectMake(0,0,v.frame.size.width,60)];
-    [purple setText:TEXT_REFERRAL_QR];
+    [purple setText:TEXT_CLICK_TO_SHARE_QR_CODE];
     [purple setTextColor:UICOLOR_GOLD];
-    [purple setFont:[UIFont systemFontOfSize:FONT_L]];
+    [purple setFont:[UIFont systemFontOfSize:FONT_M]];
     [purple setTextAlignment:NSTextAlignmentCenter];
-    [purple setBackgroundColor:UICOLOR_PURPLE];
+    [purple setBackgroundColor:[delegate getThemeColor]];
     [v addSubview:purple];
     
     
@@ -64,15 +57,19 @@
     UIBezierPath *shadowPath      = [UIBezierPath bezierPathWithRect:UIEdgeInsetsInsetRect(v.bounds, shadowInsets)];
     v.layer.shadowPath    = shadowPath.CGPath;
     
+    CGFloat whiteHeight = v.frame.size.height-60;
+    CGFloat qrCenterV = (whiteHeight-QRCodeSize)/2+60;
     
-    
-    qrImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD+20,v.frame.size.height-v.frame.size.width-SIDE_PAD_2+20,v.frame.size.width-SIDE_PAD_2-40,v.frame.size.width-SIDE_PAD_2-20)];
+    qrImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD_2,qrCenterV,QRCodeSize,QRCodeSize)];
     qrImageView.layer.borderColor = [UICOLOR_GOLD CGColor];
     qrImageView.layer.borderWidth = 0.5f;
+    [qrImageView setUserInteractionEnabled:YES];
+    UITapGestureRecognizer *tap= [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(share)];
+    [qrImageView addGestureRecognizer:tap];
+    
     
     [v addSubview:qrImageView];
     [self genQRCode:[NSString stringWithFormat:@"%@earlyregistration/?qr_code=%@",domain,[delegate.preferences objectForKey:K_USER_OPENID]]];
-   
 }
 -(void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:TEXT_REFERRAL_QR];
@@ -91,15 +88,31 @@
     
     qrImage = [qrImage imageByApplyingTransform:CGAffineTransformMakeScale(scaleX, scaleY)];
     
-    qrImageView.image = [UIImage imageWithCIImage:qrImage
-                                            scale:[UIScreen mainScreen].scale
-                                      orientation:UIImageOrientationUp];
+    UIGraphicsBeginImageContext(CGSizeMake(qrImageView.frame.size.width, qrImageView.frame.size.height));
+    [[UIImage imageWithCIImage:qrImage
+                        scale:[UIScreen mainScreen].scale
+                  orientation:UIImageOrientationUp] drawInRect:CGRectMake(0,0,qrImageView.frame.size.width, qrImageView.frame.size.height)];
+    [[UIImage imageNamed:@"logo_qr-01.png"] drawInRect:CGRectMake(qrImageView.frame.size.width/2-40, qrImageView.frame.size.height/2-40,80,80)];
+    UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    qrImageView.image = finalImage;
     
 }
 -(void) onBackPressed {
     [self.view.window.rootViewController dismissViewControllerAnimated:YES completion:^{
         
     }];
+}
+-(void) share{
+    NSData *idata = UIImagePNGRepresentation(qrImageView.image);
+    NSString *content = [NSString stringWithFormat:@"KONNECT %@",TEXT_REFERRAL_QR];
+    NSArray* sharedObjects=[NSArray arrayWithObjects:[UIImage imageWithData:idata],nil];
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:sharedObjects applicationActivities:nil];
+    activityViewController.popoverPresentationController.sourceView = self.view;
+    [self presentViewController:activityViewController animated:YES completion:nil];
+    
+
 }
 /*
  #pragma mark - Navigation

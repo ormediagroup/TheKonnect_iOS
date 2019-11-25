@@ -28,7 +28,7 @@
     [text1 setTextColor:UICOLOR_GOLD];
     [self.view addSubview:text1];
     y+=LINE_HEIGHT;
-    
+    /*
     text2 = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT)];
     [text2 setText:@"請選擇以下任一種登錄方式"];
     [text2 setTextAlignment:NSTextAlignmentLeft];
@@ -97,7 +97,7 @@
     [submit addSubview:btnLbl];
     [btnLbl setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:submit];
-    
+    */
     y+=44+LINE_PAD;
     
     UIButton *wxLogin = [UIButton buttonWithType:UIButtonTypeCustom];

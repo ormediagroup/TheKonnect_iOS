@@ -22,8 +22,8 @@
     // Do any additional setup after loading the view.
     delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     backEnabled = YES;
-    [self.view setBackgroundColor:UICOLOR_PURPLE];
-    
+    [self.view setBackgroundColor:[delegate getThemeColor]];
+
     back = [UIButton  buttonWithType:UIButtonTypeCustom];
     [back setFrame:CGRectMake(SIDE_PAD,delegate.headerHeight-30,24,24)];
     back.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;

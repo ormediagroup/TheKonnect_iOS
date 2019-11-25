@@ -56,7 +56,7 @@
     [purple setTextColor:UICOLOR_GOLD];
     [purple setFont:[UIFont systemFontOfSize:FONT_L]];
     [purple setTextAlignment:NSTextAlignmentCenter];
-    [purple setBackgroundColor:UICOLOR_PURPLE];
+    [purple setBackgroundColor:[delegate getThemeColor]];
     [v addSubview:purple];
     
     qrImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD+20,v.frame.size.height-v.frame.size.width-SIDE_PAD_2+20,v.frame.size.width-SIDE_PAD_2-40,v.frame.size.width-SIDE_PAD_2-20)];

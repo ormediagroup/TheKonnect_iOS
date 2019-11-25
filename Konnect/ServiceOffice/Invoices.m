@@ -70,7 +70,8 @@
 }
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==1) {
-        [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-payment-token",K_API_ENDPOINT]
+        if ([[datasrc objectForKey:@"pendingamount"] floatValue]>0) {
+            [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-payment-token",K_API_ENDPOINT]
                                               param:[[NSDictionary alloc] initWithObjects:@[@"get-token"]
                                                                                   forKeys:@[@"action"]]
          
@@ -104,13 +105,15 @@
                                                  [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
                                              }
                                          }];
-        
+        }
     } else if (indexPath.section==3) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_PAST_INVOICES]] forKeys:@[@"type"]]];
     } else if (indexPath.section==2) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_INVOICE],[[invoices objectAtIndex:indexPath.row] objectForKey:@"ID"]] forKeys:@[@"type",@"invoiceID"]]];
+        if ([invoices count] > indexPath.row) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_INVOICE],[[invoices objectAtIndex:indexPath.row] objectForKey:@"ID"]] forKeys:@[@"type",@"invoiceID"]]];
+        }
     }
 }
 
@@ -118,15 +121,22 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                    reuseIdentifier:TEXT_INVOICE];
     // Configure the cell...
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     if (indexPath.section==1) {
         [cell.textLabel setText:TEXT_INVOICE_TOTAL_PENDING];
-        [cell.detailTextLabel setText:[NSString stringWithFormat:@"$%@",[datasrc objectForKey:@"pendingamount"]]];
+        if ([[datasrc objectForKey:@"pendingamount"] floatValue]>0) {
+            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"$%@ (%@)",[datasrc objectForKey:@"pendingamount"],TEXT_PAY_NOW]];
+        } else {
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"$%@",[datasrc objectForKey:@"pendingamount"]]];
+        }
     } else if (indexPath.section==2) {
         if ([invoices count]==0) {
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
             [cell.textLabel setText:TEXT_NO_PENDING_INVOICE];
         } else {
+            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
             [cell.textLabel setText:[[invoices objectAtIndex:indexPath.row] objectForKey:@"invoice_no"]];
             [cell.detailTextLabel setText:[NSString stringWithFormat:@"$%@",[[invoices objectAtIndex:indexPath.row] objectForKey:@"amount"]]];
         }
@@ -141,11 +151,11 @@
     if (section==0) {
         return delegate.headerHeight-delegate.statusBarHeight;
     } else if (section==1) {
-        return UITableViewAutomaticDimension+LINE_PAD;
+        return LINE_HEIGHT;
     } else if (section==2) {
-        return UITableViewAutomaticDimension+LINE_PAD;
+        return LINE_HEIGHT;
     } else if (section==3) {
-        return UITableViewAutomaticDimension+LINE_PAD;
+        return LINE_HEIGHT;
     } else {
         return 0;
     }
@@ -160,8 +170,8 @@
     if (section==0) {
         return [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.headerHeight-delegate.statusBarHeight)];
     } else if (section==1|| section==2){
-        UIView *h = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,UITableViewAutomaticDimension+LINE_PAD)];
-        UILabel *v = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,LINE_PAD,delegate.screenWidth-SIDE_PAD,UITableViewAutomaticDimension)];
+        UIView *h = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,LINE_HEIGHT)];
+        UILabel *v = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth-SIDE_PAD,LINE_HEIGHT)];
         [v setFont:[UIFont boldSystemFontOfSize:FONT_XS]];
         [v setTextColor:[UIColor lightGrayColor]];
         if (section==1) {
@@ -172,11 +182,11 @@
         [h addSubview:v];
         return h;
     } else if (section==3) {
-        UIView *h = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,UITableViewAutomaticDimension+LINE_PAD)];
+        UIView *h = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,LINE_PAD)];
         [h setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
         return h;
     } else {
-        return [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,UITableViewAutomaticDimension)];
+        return [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,LINE_PAD)];
     }
 }
 /*

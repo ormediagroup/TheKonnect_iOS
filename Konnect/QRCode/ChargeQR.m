@@ -108,7 +108,7 @@
     UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
     [b setTitle:TEXT_RECEIVE_PAYMENT forState:UIControlStateNormal];
     b.layer.cornerRadius = 10.0f;
-    [b setBackgroundColor:UICOLOR_PURPLE];
+    [b setBackgroundColor:[delegate getThemeColor]];
     [b setFrame:CGRectMake(SIDE_PAD_2,y,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2,50)];
     [b.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
     [b setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];

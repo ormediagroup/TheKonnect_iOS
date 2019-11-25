@@ -6,7 +6,28 @@
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
 /* TODO : Invoice Create per item details
- Verion 0.10
+ 
+ Version 1.3 (26/11/2019)
+ 1) Registraion - Revised Association list
+ 2) Home page update member tier icon
+ 3) F&B page updated
+ 4) F&B Text Update
+ 5) Service Office Page overhaul
+ 6) Contact Us splitted into Biz / Concierge / Normal
+ 7) Added Concierge Page
+ 8) Misc. Text changes
+ 
+ Version 1.2
+ 1) Fixed a problem with old Wechat UnionID cannot login
+ 
+ Version 1.1
+ 1) Fixed a logout problem (not clearing company and offices in service office)
+ 2) Change HTTP to HTTPS
+ 3) Fixed a SEGFAULT on past bills (AOB)
+ 4) Fixed formatting issue on no min pay booking for FNB
+ 
+ 
+ Verion 1.0 (14/11/2019)
  1) Fixed a display problem during first login on Membership bar
  2) Add Membership Icon badge in My Page
  3) Changed App name to all caps KONNECT
@@ -47,7 +68,6 @@ version 0.5
  
  
 // China Domain
-/*
 #define domain @"https://thekonnect.cn/"
 #define K_API_ENDPOINT @"https://thekonnect.cn/app/"
 #define OAUTH_CLIENT_ID @"0zkD0RRsP3LFxm7qGeSiu0CP4H1zA2UBCeeD666V"
@@ -57,8 +77,8 @@ version 0.5
  */
 
  // HK Domain
-#define domain @"http://thekonnect.com.hk/"
-#define K_API_ENDPOINT @"http://thekonnect.com.hk/app/"
+#define domain @"https://thekonnect.com.hk/"
+#define K_API_ENDPOINT @"https://thekonnect.com.hk/app/"
 #define OAUTH_CLIENT_ID @"WrLzj4dYnEhk43qVohbnWAlTCcRZs1BosmXLraJP"
 #define OAUTH_CLIENT_SECRET @"P09U4zQsR2QNCcHfozfRAQf2ddOFoyuezD8DdY64"
 #define WX_APP_ID @"wxe777ccc4f64f1c9e"
@@ -111,6 +131,7 @@ version 0.5
 -(void) networkError;
 -(void) logout;
 -(BOOL) checkLogin;
+-(UIColor *) getThemeColor;
 -(NSString *) getPaymentCode;
 
 @end

@@ -24,8 +24,14 @@
     // self.clearsSelectionOnViewWillAppear = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeAvatar:) name:CHANGE_AVATAR object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(login) name:LOGIN_SUCCESS object:nil];
-    labels = @[@"我的資料",@"我的錢包",@"積分記錄",@"預約記錄",TEXT_COUPON,TEXT_SERVICE_OFFICE,TEXT_REFERRAL_QR];
-    iconsrc = @[@"editinfo.png",@"waller.png",@"pointshistory.png",@"appointments.png",@"coupons.png",@"office.png",@"referral.png"];
+    if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_MEMBER]) {
+        iconsrc = @[@"editinfo.png",@"waller.png",@"pointshistory.png",@"appointments.png",@"coupons.png",@"office.png",@"referral.png",@"referral.png"];
+        labels = @[@"我的資料",@"我的錢包",@"積分記錄",@"預約記錄",TEXT_COUPON,TEXT_SERVICE_OFFICE,TEXT_REFERRAL_QR,TEXT_JOIN_VIP];
+    } else {
+        iconsrc = @[@"editinfo.png",@"waller.png",@"pointshistory.png",@"appointments.png",@"coupons.png",@"office.png",@"referral.png"];
+        labels = @[@"我的資料",@"我的錢包",@"積分記錄",@"預約記錄",TEXT_COUPON,TEXT_SERVICE_OFFICE,TEXT_REFERRAL_QR];
+    }
+    
     
     avatar = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,SIDE_PAD,AVATAR_SIZE,AVATAR_SIZE)];
     avatar.layer.cornerRadius = 10.0f;
@@ -35,7 +41,6 @@
     [avatar addGestureRecognizer:tap];
     [avatar setBackgroundColor:UICOLOR_LIGHT_GREY];
     avatar.tag =0;
-    NSLog(@"My : %@",[delegate.preferences objectForKey:K_USER_AVATAR] );
     if ([[delegate.preferences objectForKey:K_USER_AVATAR] isKindOfClass:[NSString class]] && [[delegate.preferences objectForKey:K_USER_AVATAR] length]>0) {
         avatar.tag = 1;
         [avatar setBackgroundColor:[UIColor clearColor]];
@@ -120,7 +125,7 @@
         CGFloat l =SIDE_PAD_2+AVATAR_SIZE;
         CGFloat w =delegate.screenWidth-SIDE_PAD_2-SIDE_PAD-AVATAR_SIZE;
         UIView *p = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,50+delegate.statusBarHeight)];
-        [p setBackgroundColor:UICOLOR_PURPLE];
+        [p setBackgroundColor:[delegate getThemeColor]];
         [cell addSubview:p];
         
         UIImageView *bg = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,0, delegate.screenWidth-SIDE_PAD, AVATAR_SIZE + SIDE_PAD_2)];
@@ -142,11 +147,18 @@
         y+=LINE_HEIGHT+4;
         
         //207 x 52
-        UIImageView *badge = [[UIImageView alloc] initWithFrame:CGRectMake(l,y,69,18)];
-        [badge setImage:[UIImage imageNamed:@"normalmember.png"]];
+        UIImageView *badge = [[UIImageView alloc] initWithFrame:CGRectMake(l,y,100,30)];
+        
+        if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_LEGACY]) {
+            [badge setImage:[UIImage imageNamed:@"membertierlegacy.png"]];
+        } else if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_VIP]) {
+            [badge setImage:[UIImage imageNamed:@"membertiervip.png"]];
+        } else {
+            [badge setImage:[UIImage imageNamed:@"membertiermember.png"]];
+        }
         [badge setContentMode:UIViewContentModeScaleAspectFit];
         [bg addSubview:badge];
-        y+=22;
+        y+=36;
         
         UILabel *memberno = [[UILabel alloc] initWithFrame:CGRectMake(l,y,w,LINE_HEIGHT)];
         [memberno setTextColor:[UIColor darkGrayColor]];
@@ -170,7 +182,7 @@
     } else if (indexPath.section==2) {
         [cell setAccessoryType:UITableViewCellAccessoryNone];
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,LINE_HEIGHT+LINE_HEIGHT)];
-        [title setText:@"退出登錄"];
+        [title setText:TEXT_LOGOUT];
         [title setTextAlignment:NSTextAlignmentCenter];
         [title setFont:[UIFont systemFontOfSize:FONT_L]];
         [title setTextColor:UICOLOR_GOLD];
@@ -203,16 +215,19 @@
         } else if (indexPath.row==7) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_REFERER_QR]] forKeys:@[@"type"]]];
+        } else if (indexPath.row==8) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_JOIN_VIP]] forKeys:@[@"type"]]];
         }
         
     } if (indexPath.section==2) {
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"你確定要退出登錄?"
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_CONFIRM_LOGOUT
                                                                        message:@""
                                                                 preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_BACK style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
         [alert addAction:defaultAction];
-        UIAlertAction* logout = [UIAlertAction actionWithTitle:@"退出登錄" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+        UIAlertAction* logout = [UIAlertAction actionWithTitle:TEXT_LOGOUT style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
             [self->delegate logout];
         }];
         [alert addAction:logout];
