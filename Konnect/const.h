@@ -94,7 +94,7 @@
 #define TEXT_SET_PAYMENT_CODE_2 @"再次輸入付款密碼"
 #define TEXT_ENTER_PAYMENT_CODE @"輸入付款密碼"
 #define TEXT_PAYMENT_CODE @"付款密碼"
-#define TEXT_NEED_ROOM_MIN_PAY @"需要房間？ (最低消費 %@)"
+#define TEXT_NEED_ROOM_MIN_PAY @"需要房間？ (含最低消費)"
 #define TEXT_NEED_ROOM_NO_MIN_PAY @"需要房間？"
 #define TEXT_SET @"設置"
 #define TEXT_SAVE_SUCCESS @"儲存成功"
@@ -124,7 +124,7 @@
 #define TEXT_OTHER_MESSAGE @"其他信息"
 #define TEXT_PEOPLE @"人"
 #define TEXT_BOOK_FB_CONFIRM @"你確定訂座?"
-#define TEXT_BOOK_FB_SUCCESS @"你已成功訂座！"
+#define TEXT_BOOK_FB_SUCCESS @"我們已經收到你的預約，我們會有專人盡快和你聯絡。"
 #define LEFT_ARROW @"\U000025C0"
 #define DOWN_ARROW @"\U000025BC"
 #define SMALL_DOWN_ARROW @"\U000025BE"
@@ -145,6 +145,8 @@
 #define TEXT_INQUIRY_BIZ @"商務合作"
 #define TEXT_INQUIRY_CONFIRM @"你確定發送?"
 #define TEXT_INQUIRY_SUCCESS @"感謝你的查詢，我們會盡快回復。！"
+#define TEXT_PAST_ACTIVITIES @"活動回顧"
+#define TEXT_PAST_ACTIVITIES_PHOTO @"活動照片"
 
 #define TEXT_INVOICE_TYPE_PAID @"已繳付"
 #define TEXT_INVOICE_TOTAL_PENDING @"尚未繳付總額"
@@ -193,10 +195,13 @@
 #define TEXT_DL_K_PERSONAL_FORM @"下載KONNECT個人會員入會登記表"
 #define TEXT_DL_K_CORPORATE_FORM @"下載KONNECT團體會員入會登記表"
 #define TEXT_K_EVENT @"KONNECT活動"
-#define TEXT_RENT_K_SPACE @"租用空間"
-#define TEXT_RENT_POPUP @"租用Popup Lounge"
-#define TEXT_RENT_EVENT_SPACE @"租用Polyform Event Space"
-#define TEXT_RENT_MEETING_ROOM @"租用會議室"
+#define TEXT_RENT_K_SPACE @"預約場地或會議室"
+#define TEXT_RENT_POPUP @"Pop Up Lounge 活動場地"
+#define TEXT_RENT_EVENT_SPACE @"Polyform Event Space 活動場地"
+#define TEXT_RENT_MEETING_ROOM @"會議室"
+#define TEXT_RENT_MEETING_ROOM_NOW @"立即預約"
+#define TEXT_CANCEL_MEETING_ROOM @"取消預約"
+#define TEXT_CANNOT_CANCEL_NOW @"只能在24小時前取消"
 #define TEXT_FEE @"費用"
 #define TEXT_DATE @"日期"
 #define TEXT_TIME @"時間"
@@ -213,6 +218,9 @@
 #define TEXT_CONFIRM_LOGOUT @"你確定要登出?"
 #define TEXT_REGISTERED @"你已報名"
 #define TEXT_NO_COUPON @"暫時未有優惠券"
+#define TEXT_ONLY_SHOW @"只顯示"
+#define TEXT_CANCEL_SEARCH_FILTER_DISPLAY_OTHERS @"要取消這個選項並搜尋其他會議室？"
+#define TEXT_CANCEL_FILTER @"取消這個選項"
 #define TEXT_COUPON @"優惠券"
 #define TEXT_PROMO @"優惠"
 #define TEXT_PAYMENT_SUCCESS @"支付成功"
@@ -251,7 +259,9 @@
 #define TEXT_MY_VIRTUAL_OFFICE @"我的虛擬辦公室"
 #define TEXT_KONNECT_CONCERIGE @"KONNECT 禮賓服務"
 #define TEXT_OFFICE_CS_HOURS @"辦工時間"
-
+#define TEXT_FUNCTION_NOTAVAIL @"此功能尚未開放"
+#define TEXT_UPDATE_AVAIL @"KONNECT 有新版本!"
+#define TEXT_PROCEED_TO_UPDATE @"請前往App Store更新"
 
 
 #define UNCHECK_BOX @"\U00002610"
@@ -279,6 +289,7 @@
 #define K_USER_TIER @"kusertier"
 #define K_USER_NO @"kuserno"
 #define K_USER_AVATAR @"kuseravatar"
+#define K_USER_SORRY_TIER_NOT_SUFFICIENT @"抱歉，會籍必須是 %@ 才可預約"
 
 #define PAYMENT_TOKEN @"paymenttoken"
 
@@ -286,7 +297,8 @@
 #define K_NOT_LOGGED_IN 400001
 #define K_AUTH_ERROR 400002
 
-
+// AppleID
+#define APPLE_USER_ID @"apple_id"
 
 #define UICOLOR_GOLD UIColorFromRGB(0xD3A06B)
 #define UICOLOR_DARK_GREY UIColorFromRGB(0x333333)
@@ -364,8 +376,9 @@ typedef enum {
     VC_TYPE_VIRTUAL_OFFICE = 35,
     VC_TYPE_OFFICE_PROMO = 36,
     VC_TYPE_CONCIERGE = 37,
-    VC_TYPE_CONTACT_OFFICE = 38
-
+    VC_TYPE_CONTACT_OFFICE = 38,
+    VC_TYPE_PAST_ACTIVITIES = 39,
+    VC_TYPE_RESERVE_NOW = 40
 } VC_TYPE;
 
 #endif /* const_h */

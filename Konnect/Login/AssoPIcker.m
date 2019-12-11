@@ -61,7 +61,7 @@
         UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_SELECT_AGAIN style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
         [alert addAction:defaultAction];
         UIAlertAction* cal = [UIAlertAction actionWithTitle:TEXT_NOT_ASSOC_MEMBER style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            parent.assoc = [selected componentsJoinedByString: @","];
+            parent.assoc.text = [selected componentsJoinedByString: @","];
             [self.view.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
         }];
         [alert addAction:cal];

@@ -79,7 +79,6 @@
 }
 
 - (void)onReq:(BaseReq *)req {
-    NSLog(@"CRAZY ON REQ");
     if ([req isKindOfClass:[GetMessageFromWXReq class]]) {
         if (_delegate
             && [_delegate respondsToSelector:@selector(managerDidRecvGetMessageReq:)]) {

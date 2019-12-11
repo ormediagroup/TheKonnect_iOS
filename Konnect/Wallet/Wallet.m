@@ -92,7 +92,7 @@
     [points setTextAlignment:NSTextAlignmentLeft];
     [points setText:[numberFormatter stringFromNumber:[NSNumber numberWithFloat:balance]]];
     [gold addSubview:points];
-    
+    /*
     UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
     [b setFrame:CGRectMake(gold.frame.size.width-SIDE_PAD-90,85,90,30)];
     [b setTitle:TEXT_TOP_UP_POINTS forState:UIControlStateNormal];
@@ -103,6 +103,7 @@
     [b.layer setBorderColor:[[UIColor whiteColor] CGColor]];
     [b.layer setCornerRadius:3.0f];
     [gold addSubview:b];
+     */
     {
         UIButton *b1 = [UIButton buttonWithType:UIButtonTypeCustom];
         [b1 setFrame:CGRectMake(0,v.frame.size.height-80,delegate.screenWidth/2,60)];
@@ -151,8 +152,12 @@
     }];
 }
 -(void) topup {
+    
+    return;
+    /*
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
      [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOP_UP]] forKeys:@[@"type"]]];
+     */
 }
 -(void) goPointsHistory {
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:

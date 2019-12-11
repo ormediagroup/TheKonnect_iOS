@@ -6,6 +6,26 @@
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
 /* TODO : Invoice Create per item details
+ Version 1.5 (11/12/2019)
+ 1) Fixed a bug with registration with no associate
+ 2) Fixed a display issue with logout
+ 3) Add swipe left to go back
+ 4) Add promo spot to FNB
+ 5) Fixed Booking Confirmation messaging
+ 6) Retain Search Query for meeting room booking
+ 7) Changed FNB Booking Interval to 30 mins
+ 8) Add Meeting Room Booking in Meeting Room Details
+ 9) Added Meeting Room Cancellation
+ 10) Changed Event Layout
+ 11) Added Past Event List
+ 12) Added ReserveNow Page
+ 13) Change MeetingRoom so you can book a room directly
+ 14) Added Apple ID Sign in
+ 
+ Version 1.4
+ 1) Temp disable Top up
+ 2) Create Update / Force update
+ 3) Temp disable sharing
  
  Version 1.3 (26/11/2019)
  1) Registraion - Revised Association list
@@ -77,8 +97,8 @@ version 0.5
  */
 
  // HK Domain
-#define domain @"https://thekonnect.com.hk/"
-#define K_API_ENDPOINT @"https://thekonnect.com.hk/app/"
+#define domain @"http://thekonnect.com.hk/"
+#define K_API_ENDPOINT @"http://thekonnect.com.hk/app/"
 #define OAUTH_CLIENT_ID @"WrLzj4dYnEhk43qVohbnWAlTCcRZs1BosmXLraJP"
 #define OAUTH_CLIENT_SECRET @"P09U4zQsR2QNCcHfozfRAQf2ddOFoyuezD8DdY64"
 #define WX_APP_ID @"wxe777ccc4f64f1c9e"
@@ -110,7 +130,7 @@ version 0.5
     NSCache *imageCache;
     NSUserDefaults *preferences;
     UIActivityIndicatorView *loading;
-    BOOL WXisRegistration, isX;
+    BOOL WXisRegistration, isX, AppleIsRegistration;
 }
 -(BOOL) isLoggedIn;
 -(void) addDoneToKeyboard:(UITextField *)t;
@@ -132,7 +152,6 @@ version 0.5
 -(void) logout;
 -(BOOL) checkLogin;
 -(UIColor *) getThemeColor;
--(NSString *) getPaymentCode;
 
 @end
 

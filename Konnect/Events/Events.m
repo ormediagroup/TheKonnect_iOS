@@ -30,6 +30,7 @@
                                          if ([[data objectForKey:@"rc"] intValue]==0) {
                                              self->datasrc = [data objectForKey:@"data"];
                                              [self.tableView reloadData];
+                                             
                                          } else {
                                              [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
                                          }
@@ -38,7 +39,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -48,13 +49,14 @@
 
 #pragma mark - Table view data source
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section==0) return [super tableView:tableView heightForHeaderInSection:0]+60;
-    else {
+    if (section==0) {
+        return [super tableView:tableView heightForHeaderInSection:0]+60;
+    } else {
         return 60;
     }
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section==1) return delegate.footerHeight;
+    if (section==2) return delegate.footerHeight;
     else return 0;
 }
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -67,8 +69,16 @@
         [v setText:TEXT_K_EVENT];
         [h addSubview:v];
         return h;
-        
     } else if (section==1){
+        UIView *h = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,60)];
+        [h setBackgroundColor:[UIColor whiteColor]];
+        UILabel *v = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth-SIDE_PAD,60)];
+        [v setFont:[UIFont boldSystemFontOfSize:FONT_M]];
+        [v setTextColor:UICOLOR_GOLD];
+        [v setText:TEXT_PAST_ACTIVITIES];
+        [h addSubview:v];
+        return h;
+    } else if (section==2){
         UIView *h = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,60)];
         [h setBackgroundColor:[UIColor whiteColor]];
         UILabel *v = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth-SIDE_PAD,60)];
@@ -86,60 +96,20 @@
         CGFloat w = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:1] floatValue];
         CGFloat h = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:2] floatValue];
         CGFloat newg = h/w*(delegate.screenWidth-SIDE_PAD_2);
-        int y = 0;
-        UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,newg)];
-        [v setImage:[delegate getImage:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:0] callback:^(UIImage *image) {
-            [v setImage:image];
-        }]];
-        y+=newg+LINE_PAD;
-        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth,LINE_HEIGHT)];
-        [l setFont:[UIFont systemFontOfSize:FONT_M]];
-        [l setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"title"]];
-        [l sizeToFit];
-        y+=l.frame.size.height;
-        {
-            NSString *dateString =[[datasrc objectAtIndex:indexPath.row] objectForKey:@"startdate"];
-            if (![[[datasrc objectAtIndex:indexPath.row] objectForKey:@"startdate"] isEqualToString:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"enddate"]]) {
-                dateString = [NSString stringWithFormat:@"%@ - %@",[[datasrc objectAtIndex:indexPath.row] objectForKey:@"startdate"],[[datasrc objectAtIndex:indexPath.row] objectForKey:@"enddate"]];
-            }
-            UILabel *m = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth,LINE_HEIGHT)];
-            [m setFont:[UIFont systemFontOfSize:FONT_S]];
-            [m setText:dateString];
-            [m sizeToFit];
-            y+=m.frame.size.height;
-        }
-        {
-            NSString *timeString =[[datasrc objectAtIndex:indexPath.row] objectForKey:@"starttime"];
-            if (![[[datasrc objectAtIndex:indexPath.row] objectForKey:@"endtime"] isEqualToString:@""] &&
-                ![[[datasrc objectAtIndex:indexPath.row] objectForKey:@"starttime"] isEqualToString:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"endtime"]]) {
-                timeString = [NSString stringWithFormat:@"%@ - %@",[[datasrc objectAtIndex:indexPath.row] objectForKey:@"starttime"],[[datasrc objectAtIndex:indexPath.row] objectForKey:@"endtime"]];
-            }
-            UILabel *m = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth,LINE_HEIGHT)];
-            [m setFont:[UIFont systemFontOfSize:FONT_S]];
-            [m setText:timeString];
-            [m sizeToFit];
-            y+=m.frame.size.height;
-        }
-        {
-            UILabel *m = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth,LINE_HEIGHT)];
-            [m setFont:[UIFont systemFontOfSize:FONT_S]];
-            [m setText:[NSString stringWithFormat:@"%@: %@",TEXT_FEE, [[datasrc objectAtIndex:indexPath.row] objectForKey:@"fee"]]];
-            [m sizeToFit];
-            y+=m.frame.size.height + LINE_PAD;
-        }
-        y+=50+LINE_PAD+LINE_PAD;
-        return y;
+        return newg+LINE_PAD;
     } else {
         return UITableViewAutomaticDimension;
     }
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section==0) {
         return [datasrc count];
+    } else if (section==1) {
+        return 1;
     } else {
         return 3;
     }
@@ -150,76 +120,24 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TEXT_K_EVENT];
     
     if (indexPath.section==0) {
-        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@""];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         CGFloat w = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:1] floatValue];
         CGFloat h = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:2] floatValue];
         CGFloat newg = h/w*(delegate.screenWidth-SIDE_PAD_2);
-        int y = 0;
-        UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,newg)];
+        UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,LINE_PAD/2,delegate.screenWidth-SIDE_PAD_2,newg)];
         [v setImage:[delegate getImage:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:0] callback:^(UIImage *image) {
             [v setImage:image];
         }]];
+       
         [cell addSubview:v];
-        y+=newg+LINE_PAD;
-        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth,LINE_HEIGHT)];
-        [l setFont:[UIFont systemFontOfSize:FONT_M]];
-        [l setTextColor:UICOLOR_GOLD];
-        [l setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"title"]];
-        [l sizeToFit];
-        [cell addSubview:l];
-        y+=l.frame.size.height;
-        {
-            NSString *dateString =[[datasrc objectAtIndex:indexPath.row] objectForKey:@"startdate"];
-            if (![[[datasrc objectAtIndex:indexPath.row] objectForKey:@"startdate"] isEqualToString:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"enddate"]]) {
-                dateString = [NSString stringWithFormat:@"%@: %@ - %@",TEXT_DATE,[[datasrc objectAtIndex:indexPath.row] objectForKey:@"startdate"],[[datasrc objectAtIndex:indexPath.row] objectForKey:@"enddate"]];
-            }
-            UILabel *m = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth,LINE_HEIGHT)];
-            [m setFont:[UIFont systemFontOfSize:FONT_S]];
-            [m setTextColor:[UIColor darkTextColor]];
-            [m setText:dateString];
-            [m sizeToFit];
-            [cell addSubview:m];
-            y+=m.frame.size.height;
-        }
-        {
-            NSString *timeString =[[datasrc objectAtIndex:indexPath.row] objectForKey:@"starttime"];
-            if (![[[datasrc objectAtIndex:indexPath.row] objectForKey:@"endtime"] isEqualToString:@""] &&
-                ![[[datasrc objectAtIndex:indexPath.row] objectForKey:@"starttime"] isEqualToString:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"endtime"]]) {
-                timeString = [NSString stringWithFormat:@"%@: %@ - %@",TEXT_TIME,[[datasrc objectAtIndex:indexPath.row] objectForKey:@"starttime"],[[datasrc objectAtIndex:indexPath.row] objectForKey:@"endtime"]];
-            }
-            UILabel *m = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth,LINE_HEIGHT)];
-            [m setFont:[UIFont systemFontOfSize:FONT_S]];
-            [m setTextColor:[UIColor darkTextColor]];
-            [m setText:timeString];
-            [m sizeToFit];
-            [cell addSubview:m];
-            y+=m.frame.size.height + LINE_PAD;
-        }
-        {
-            UILabel *m = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth,LINE_HEIGHT)];
-            [m setFont:[UIFont systemFontOfSize:FONT_S]];
-            [m setTextColor:[UIColor darkTextColor]];
-            [m setText:[NSString stringWithFormat:@"%@: %@",TEXT_FEE, [[datasrc objectAtIndex:indexPath.row] objectForKey:@"fee"]]];
-            [m sizeToFit];
-            [cell addSubview:m];
-            y+=m.frame.size.height + LINE_PAD;
-        }
-        UIButton *bookNow = [UIButton buttonWithType:UIButtonTypeCustom];
-        [bookNow setBackgroundColor:[delegate getThemeColor]];
-        [bookNow setFrame:CGRectMake(delegate.screenWidth/2-75,y,150,50)];
-        [bookNow.layer setCornerRadius:10.0f];
-        bookNow.tag = indexPath.row;
-        [bookNow addTarget:self action:@selector(book:) forControlEvents:UIControlEventTouchUpInside];
-        [bookNow setTitle:TEXT_LEARN_MORE forState:UIControlStateNormal];
-        [bookNow setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
-        [cell addSubview:bookNow];
-        
-        y+=50+LINE_PAD;
-    
         return cell;
-    } else {
-        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TEXT_REGISTER_EVENT];
+    } else if (indexPath.section==1) {
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        [cell.textLabel setText:TEXT_PAST_ACTIVITIES_PHOTO];
+        [cell.detailTextLabel setText:@""];
+    } else if (indexPath.section==2) {
+
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         if (indexPath.row==0) {
@@ -245,6 +163,11 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_EVENT_DETAILS],[[datasrc objectAtIndex:indexPath.row] objectForKey:@"ID"]] forKeys:@[@"type",@"eventID"]]];
     } else if (indexPath.section==1) {
+        if (indexPath.row==0) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_PAST_ACTIVITIES]] forKeys:@[@"type"]]];
+        }
+    } else if (indexPath.section==2) {
         if (indexPath.row==0) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_FACILITY],@"60"] forKeys:@[@"type",@"facilityID"]]];
@@ -302,3 +225,4 @@
 */
 
 @end
+

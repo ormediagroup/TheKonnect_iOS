@@ -14,11 +14,12 @@
 @end
 
 @implementation MeetingRoom
-@synthesize facilityID;
+@synthesize facilityID, bookDate, bookStartTime, bookEndTime, cost, startTime, endTime, bookingInfo;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
      [self.view addSubview:scroll];
+
 }
 -(void) viewWillAppear:(BOOL)animated {
     if (facilityID && ![facilityID isEqualToString:@""]) {
@@ -146,6 +147,86 @@
         y+=l.frame.size.height;
     }
     y+=LINE_PAD;
+    if (bookingInfo) {
+        UIView *v = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,10)];
+        [v.layer setBorderColor:[UICOLOR_GOLD CGColor]];
+        v.layer.borderWidth = 1.0f;
+        v.layer.cornerRadius = 5.0f;
+        
+        int y2 = LINE_PAD;
+        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y2,v.frame.size.width-SIDE_PAD_2,LINE_HEIGHT)];
+        [l setNumberOfLines:-1];
+        [l setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [l setText:[bookingInfo objectForKey:@"description"]];
+        [l setTextAlignment:NSTextAlignmentCenter];
+        [v addSubview:l];
+        y2+=l.frame.size.height;
+        
+        
+        UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
+        [b setTitle:TEXT_CANCEL_MEETING_ROOM forState:UIControlStateNormal];
+        [v addSubview:b];
+        [b setTitleColor:UICOLOR_ERROR forState:UIControlStateNormal];
+        [b addTarget:self action:@selector(cancel:) forControlEvents:UIControlEventTouchUpInside];
+        [b setFrame:CGRectMake(0, y2, v.frame.size.width, 30)];
+        y2+= 30+LINE_PAD;
+        
+        if ([[bookingInfo objectForKey:@"cancancel"] isEqualToString:@"0"]) {
+            [b setEnabled:NO];
+            [b setTitle:TEXT_CANNOT_CANCEL_NOW forState:UIControlStateNormal];
+            [b setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        }
+        
+        [v setFrame:CGRectMake(v.frame.origin.x,v.frame.origin.y,v.frame.size.width,y2)];
+        [scroll addSubview:v];
+        y+=y2+LINE_PAD;
+    } else if (bookDate && ![bookDate isEqualToString:@""]) {
+        
+        UIView *v = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,10)];
+        [v.layer setBorderColor:[UICOLOR_GOLD CGColor]];
+        v.layer.borderWidth = 1.0f;
+        v.layer.cornerRadius = 5.0f;
+        
+        int y2 = LINE_PAD;
+        UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y2,v.frame.size.width-SIDE_PAD_2,LINE_HEIGHT)];
+        [l setNumberOfLines:-1];
+        [l setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [l setText:[NSString stringWithFormat:@"%@: %@",TEXT_DATE,bookDate]];
+        [l setTextAlignment:NSTextAlignmentCenter];
+        [v addSubview:l];
+        y2+=l.frame.size.height;
+        
+        UILabel *l2 = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y2,v.frame.size.width-SIDE_PAD_2,LINE_HEIGHT)];
+        [l2 setNumberOfLines:-1];
+        [l2 setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [l2 setText:[NSString stringWithFormat:@"%@: %@-%@",TEXT_TIME,bookStartTime, bookEndTime]];
+        [l2 setTextAlignment:NSTextAlignmentCenter];
+        [v addSubview:l2];
+        y2+=l2.frame.size.height;
+        
+        UILabel *l3 = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y2,v.frame.size.width-SIDE_PAD_2,LINE_HEIGHT)];
+        [l3 setNumberOfLines:-1];
+        [l3 setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [l3 setText:[NSString stringWithFormat:@"%@: HKD %d",TEXT_PRICE, cost]];
+        [l3 setTextAlignment:NSTextAlignmentCenter];
+        [v addSubview:l3];
+        y2+=l3.frame.size.height;
+        
+        UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
+        [b setTitle:TEXT_RENT_MEETING_ROOM_NOW forState:UIControlStateNormal];
+        [v addSubview:b];
+        [b setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
+        [b addTarget:self action:@selector(book) forControlEvents:UIControlEventTouchUpInside];
+        [b setFrame:CGRectMake(0, y2, v.frame.size.width, 30)];
+        y2+= 30+LINE_PAD;
+        
+        [v setFrame:CGRectMake(v.frame.origin.x,v.frame.origin.y,v.frame.size.width,y2)];
+        [scroll addSubview:v];
+        y+=y2+LINE_PAD;
+    }
+    
+    
+    y+=LINE_PAD;
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,y-1,delegate.screenWidth,1)];
     [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY_BORDER];
     [scroll addSubview:line];
@@ -212,8 +293,93 @@
         y+=h;
     }
     y+=LINE_PAD;
+    
+    if (bookingInfo) {
+    } else if (bookDate && ![bookDate isEqualToString:@""]) {
+    } else {
+        UIView *toolbar = [[UIView alloc] initWithFrame:CGRectMake(0,delegate.screenHeight-delegate.footerHeight-60,delegate.screenWidth,60)];
+        [toolbar setBackgroundColor:[UIColor whiteColor]];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,1)];
+        [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY_BORDER];
+        [toolbar addSubview:line];
+        {
+            UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
+            [b setTitle:TEXT_RENT_MEETING_ROOM_NOW forState:UIControlStateNormal];
+            [b setBackgroundColor:[delegate getThemeColor]];
+            b.tag=99;
+            [b setFrame:CGRectMake(0,0,delegate.screenWidth,60)];
+            [b setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
+            [b addTarget:self action:@selector(makeBooking) forControlEvents:UIControlEventTouchUpInside];
+            [toolbar addSubview:b];
+        }
+        [self.view addSubview:toolbar];
+        y+=60;
+    }
 
     [scroll setContentSize:CGSizeMake(delegate.screenWidth,y+LINE_PAD)];
+}
+-(void) makeBooking{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SEARCH_MEETING_ROOM],@"search",datasrc] forKeys:@[@"type",@"action",@"facility"]]];
+}
+-(void) book{
+    /// [self->delegate raiseAlert:TEXT_BOOK_ROOM_SUCCESS msg:[NSString stringWithFormat:@"%@ %@:%@ - %@:%@",self->bookDate,self->bookStartTimeHr,self->bookStartTimeMin,self->bookStartTimeHr,self->bookStartTimeHr]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
+    [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-meeting-room",K_API_ENDPOINT] param:
+     [[NSDictionary alloc] initWithObjects:@[bookDate,[NSNumber numberWithFloat:startTime],[NSNumber numberWithFloat:endTime],
+                                             facilityID,@"book"
+                                             ]
+                                   forKeys:@[@"bookingdate",@"bookingstarttime",@"bookingendtime",@"vendor_id",@"action"]]
+                                     interation:0 callback:^(NSDictionary *bookdata) {
+                                         if ([bookdata isKindOfClass:[NSDictionary class]] && [[bookdata objectForKey:@"rc"] intValue]==0) {
+                                             [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-payment-token",K_API_ENDPOINT]
+                                                                                   param:[[NSDictionary alloc] initWithObjects:@[@"get-token"]
+                                                                                                                       forKeys:@[@"action"]]
+                                              
+                                                                              interation:0 callback:^(NSDictionary *data) {
+                                                                                  if ([[data objectForKey:@"rc"] intValue]==0) {
+                                                                                      [[NSNotificationCenter defaultCenter] postNotificationName:RECEIVE_TRANSACTION_REQUEST object:[[NSDictionary alloc] initWithObjects:@[[data objectForKey:@"data"],[NSNumber numberWithInt:self->cost],@"meetingroom",[bookdata objectForKey:@"bookingid"]] forKeys:@[PAYMENT_TOKEN,@"amount",@"vendorid",@"remarks"]]];
+                                                                                      
+                                                                                  } else if ([[data objectForKey:@"rc"] intValue]==2) {
+                                                                                      UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_TITLE_NO_PAYMENT_CODE
+                                                                                                                                                     message:TEXT_NO_PAYMENT_CODE
+                                                                                                                                              preferredStyle:UIAlertControllerStyleAlert];
+                                                                                      
+                                                                                      UIAlertAction* setCodeAction = [UIAlertAction actionWithTitle:TEXT_SET_PAYMENT_CODE style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                                          [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                                                                                           [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_PAYMENT_CODE]] forKeys:@[@"type"]]];
+                                                                                          [self dismissViewControllerAnimated:YES
+                                                                                                                   completion:^{}];
+                                                                                      }];
+                                                                                      [alert addAction:setCodeAction];
+                                                                                      UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_BACK style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                                                                                          [self dismissViewControllerAnimated:YES
+                                                                                                                   completion:^{
+                                                                                                                   }];
+                                                                                      }];
+                                                                                      [alert addAction:defaultAction];
+                                                                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                          [self presentViewController:alert animated:YES completion:nil];
+                                                                                      });
+                                                                                  } else {
+                                                                                      [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
+                                                                                  }
+                                                                              }];
+                                         } else {
+                                             [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[bookdata objectForKey:@"errmsg"]];
+                                         }
+                                     }];
+    
+}
+-(void) cancel:(UIButton *)b{
+    [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
+    [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-meeting-room",K_API_ENDPOINT] param:
+     [[NSDictionary alloc] initWithObjects:@[[bookingInfo objectForKey:@"bookingID"],@"cancel-booking"
+                                             ]
+                                   forKeys:@[@"booking_id",@"action"]]
+                                     interation:0 callback:^(NSDictionary *bookdata) {
+                                         [self->delegate raiseAlert:[NSString stringWithFormat:@"%@%@",TEXT_CANCEL_MEETING_ROOM,TEXT_SAVE_SUCCESS] msg:@""];
+                                  }];
 }
 -(void) imagePressed {
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:

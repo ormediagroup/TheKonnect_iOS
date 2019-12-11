@@ -12,7 +12,8 @@
 NS_ASSUME_NONNULL_BEGIN
 typedef enum {
     REG_TYPE_PHONE = 0,
-    REG_TYPE_WECHAT =1    
+    REG_TYPE_WECHAT =1,
+    REG_TYPE_APPLE = 2
 } REG_TYPE;
 #define CLUB_1 @"香港菁英會"
 #define CLUB_2 @"國酒茅台之友協會"

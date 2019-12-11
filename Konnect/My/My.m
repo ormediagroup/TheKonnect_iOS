@@ -74,6 +74,7 @@
 -(void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@"我的"];
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    [self.tableView reloadData];    
     [super viewWillAppear:animated];
 }
 #pragma mark - Table view data source
@@ -124,7 +125,7 @@
     if (indexPath.section==0 && indexPath.row==0) {
         CGFloat l =SIDE_PAD_2+AVATAR_SIZE;
         CGFloat w =delegate.screenWidth-SIDE_PAD_2-SIDE_PAD-AVATAR_SIZE;
-        UIView *p = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,50+delegate.statusBarHeight)];
+        UIView *p = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,30+delegate.statusBarHeight)];
         [p setBackgroundColor:[delegate getThemeColor]];
         [cell addSubview:p];
         
@@ -147,7 +148,7 @@
         y+=LINE_HEIGHT+4;
         
         //207 x 52
-        UIImageView *badge = [[UIImageView alloc] initWithFrame:CGRectMake(l,y,100,30)];
+        UIImageView *badge = [[UIImageView alloc] initWithFrame:CGRectMake(l,y,200,30)];
         
         if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_LEGACY]) {
             [badge setImage:[UIImage imageNamed:@"membertierlegacy.png"]];

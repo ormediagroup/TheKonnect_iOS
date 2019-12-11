@@ -24,7 +24,6 @@
         showWXMessage=NO;
         assocPicker = [[AssoPIcker alloc] initWithStyle:UITableViewStyleGrouped];
         assocPicker.parent = self;
-        assoc = @"";
     }
     return self;
 }
@@ -237,6 +236,9 @@
     if (regType == REG_TYPE_WECHAT && showWXMessage==YES) {
         showWXMessage = NO;
         [delegate raiseAlert:@"微訊綁定成功" msg:@"請輸入你的手機號碼完成註冊。"];
+    } else if (regType == REG_TYPE_APPLE && showWXMessage==YES) {
+    showWXMessage = NO;
+    [delegate raiseAlert:@"AppleID 綁定成功" msg:@"請輸入你的手機號碼完成註冊。"];
     }
 }
 -(void) toggleCheck {
@@ -325,6 +327,26 @@
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self->delegate stopLoading];
                 [self submitComplete:data];
+            });
+        });
+    } else if (regType == REG_TYPE_APPLE) {
+        dispatch_async(createQueue, ^(){
+            NSDictionary *data = [[KApiManager sharedManager] verifyAppleUser:[NSString stringWithFormat:@"%@%@",areacodetext,phonetext] verification:vtext appleID:[[NSUserDefaults standardUserDefaults] objectForKey:APPLE_USER_ID]];
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                [self->delegate stopLoading];
+                if ([[data objectForKey:@"errcode"] intValue]!=0) {
+                    [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
+                } else {
+                    if ([[data objectForKey:@"rc"] intValue]==0) {
+                        [self->delegate.preferences setObject:[data objectForKey:K_USER_OPENID] forKey:K_USER_OPENID];
+                        [self->delegate.preferences setObject:[data objectForKey:K_USER_PHONE] forKey:K_USER_PHONE];
+                        [self->delegate.preferences synchronize];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
+                        [self->delegate makeToast:@"註冊成功！歡迎你成為KONNECT會員。" duration:5 inView:self->delegate.window.rootViewController.view];
+                    } else {
+                         [self->errorMessage setText:@"驗證碼不正確"];
+                    }
+                }
             });
         });
     } else {

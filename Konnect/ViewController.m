@@ -51,6 +51,8 @@
 #import "OfficePromo.h"
 #import "ConceirgeService.h"
 #import "ContactOffice.h"
+#import "PastEventsList.h"
+#import "ReserveNow.h"
 @interface ViewController ()
 
 @end
@@ -82,11 +84,15 @@
     #if DEBUG
         #if TARGET_IPHONE_SIMULATOR
             [delegate.preferences setObject:@"oyhE7w3wBH5m7PdUF7RrwsN9bGgk" forKey:WX_USER_UNION_ID];
+            [delegate.preferences setObject:@"001297.b8f4a40661ee405b927017a4d3064552.1430" forKey:APPLE_USER_ID];
+
             [delegate.preferences synchronize];
+    
         #else
         #endif
     
     #endif
+    
     if ([[delegate.preferences objectForKey:WX_USER_UNION_ID] isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:WX_USER_UNION_ID] isEqualToString:@""]) {
         [delegate startLoading];
         dispatch_queue_t createQueue = dispatch_queue_create("SerialQueue", nil);
@@ -94,9 +100,10 @@
             NSDictionary *data = [[KApiManager sharedManager] logWithWeChat:[self->delegate.preferences objectForKey:WX_USER_UNION_ID]];
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self->delegate stopLoading];
+                NSLog(@"ViewController: %@",[data description]);
                 if ([data isKindOfClass:[NSError class]]) {
                     [self->delegate raiseAlert:[data description] msg:@""];
-                    self->nav = [[UINavigationController alloc] initWithRootViewController:lc];
+                    self->nav = [[UINavigationController alloc] initWithRootViewController:self->lc];
                     [self.view addSubview:self->nav.view];
                 } else if ([[data objectForKey:@"rc"] intValue]==0) {
                     [self->delegate.preferences setObject:[data objectForKey:K_USER_OPENID] forKey:K_USER_OPENID];
@@ -112,12 +119,43 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
                 } else {
                     // cannot find login ID
-                    [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
+                    [self->delegate raiseAlert:@"" msg:[data objectForKey:@"errmsg"]];
                     self->nav = [[UINavigationController alloc] initWithRootViewController:self->lc];
                     [self.view addSubview:self->nav.view];
                 }
             });
         });
+    } else if ([[delegate.preferences objectForKey:APPLE_USER_ID] isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:APPLE_USER_ID] isEqualToString:@""]) {
+           [delegate startLoading];
+           dispatch_queue_t createQueue = dispatch_queue_create("SerialQueue", nil);
+           dispatch_async(createQueue, ^(){
+               NSDictionary *data = [[KApiManager sharedManager] logWithApple:[self->delegate.preferences objectForKey:APPLE_USER_ID]];
+               dispatch_async(dispatch_get_main_queue(), ^(){
+                   [self->delegate stopLoading];
+                   if ([data isKindOfClass:[NSError class]]) {
+                       [self->delegate raiseAlert:[data description] msg:@""];
+                       self->nav = [[UINavigationController alloc] initWithRootViewController:self->lc];
+                       [self.view addSubview:self->nav.view];
+                   } else if ([[data objectForKey:@"rc"] intValue]==0) {
+                       [self->delegate.preferences setObject:[data objectForKey:K_USER_OPENID] forKey:K_USER_OPENID];
+                       [self->delegate.preferences setObject:[data objectForKey:K_USER_PHONE] forKey:K_USER_PHONE];
+                       [self->delegate.preferences setObject:[data objectForKey:K_USER_NAME] forKey:K_USER_NAME];
+                       [self->delegate.preferences setObject:[data objectForKey:K_USER_EMAIL] forKey:K_USER_EMAIL];
+                       [self->delegate.preferences setObject:[data objectForKey:K_USER_TIER] forKey:K_USER_TIER];
+                       [self->delegate.preferences setObject:[data objectForKey:K_USER_NO] forKey:K_USER_NO];
+                       [self->delegate.preferences setObject:[data objectForKey:K_USER_GENDER] forKey:K_USER_GENDER];
+                       [self->delegate.preferences setObject:[data objectForKey:K_USER_AVATAR] forKey:K_USER_AVATAR];
+                       [self->delegate.preferences synchronize];
+
+                       [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
+                   } else {
+                       // cannot find login ID
+                       [self->delegate raiseAlert:@"" msg:[data objectForKey:@"errmsg"]];
+                       self->nav = [[UINavigationController alloc] initWithRootViewController:self->lc];
+                       [self.view addSubview:self->nav.view];
+                   }
+               });
+           });
     } else {
         nav = [[UINavigationController alloc] initWithRootViewController:lc];
         [self.view addSubview:nav.view];
@@ -131,9 +169,15 @@
     nav = [[UINavigationController alloc] initWithRootViewController:home];
     [nav setNavigationBarHidden:YES];
     [nav setToolbarHidden:YES];
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    [swipe setDirection:UISwipeGestureRecognizerDirectionRight];
+    [nav.view addGestureRecognizer:swipe];
     [self.view addSubview:nav.view];
     [self.view addSubview:header.view];
     [self.view addSubview:footer.view];
+}
+-(void) swipe:(UISwipeGestureRecognizer *)swipe {
+    [self onBackPressed];
 }
 -(void) goLogout {
     nav = [[UINavigationController alloc] initWithRootViewController:lc];
@@ -318,6 +362,9 @@
             if (!searchroom) {
                 searchroom = [[SearchMeetingRoom alloc] initWithStyle:UITableViewStylePlain];
             }
+            if ([notif.object objectForKey:@"facility"] && [[notif.object objectForKey:@"facility"] isKindOfClass:[NSDictionary class]]) {
+                searchroom.facility =[notif.object objectForKey:@"facility"];
+            }
             [self pushOrPop:searchroom];
         } else if (type==VC_TYPE_KONNECT_NEWS) {
             if (!knews) {
@@ -353,6 +400,12 @@
             }
             
             [self pushOrPop:reservation];
+        } else if (type==VC_TYPE_RESERVE_NOW) {
+            if (!reserveNow) {
+                reserveNow = [[ReserveNow alloc] initWithStyle:UITableViewStylePlain];
+            }
+            
+            [self pushOrPop:reserveNow];
         } else if (type==VC_TYPE_PRINT_TOPUP) {
             if (!printTopup) {
                 printTopup = [[BuyPrintQuota alloc] initWithStyle:UITableViewStylePlain];
@@ -375,6 +428,31 @@
                 meetingRoom = [[MeetingRoom alloc] initWithNibName:nil bundle:nil];
             }
             meetingRoom.facilityID = [notif.object objectForKey:@"facilityID"];
+            if ([[notif.object objectForKey:@"queryType"] isKindOfClass:[NSString class]] && [[notif.object objectForKey:@"queryType"] isEqualToString:@"book"]) {
+                meetingRoom.bookStartTime = [notif.object objectForKey:@"bookingstarttime"];
+                meetingRoom.bookDate = [notif.object objectForKey:@"bookingdate"];
+                meetingRoom.bookEndTime = [notif.object objectForKey:@"bookingendtime"];
+                meetingRoom.cost = [[notif.object objectForKey:@"cost"] intValue];
+                meetingRoom.startTime = [[notif.object objectForKey:@"startTime"] floatValue];
+                meetingRoom.endTime = [[notif.object objectForKey:@"endTime"] floatValue];
+                meetingRoom.bookingInfo = nil;
+            } else if ([[notif.object objectForKey:@"queryType"] isKindOfClass:[NSString class]] && [[notif.object objectForKey:@"queryType"] isEqualToString:@"cancel"]) {
+                meetingRoom.bookingInfo = [notif.object objectForKey:@"bookingInfo"];
+                meetingRoom.bookStartTime = @"";
+                meetingRoom.bookDate = @"";
+                meetingRoom.bookEndTime = @"";
+                meetingRoom.cost = 0;
+                meetingRoom.startTime = 0;
+                meetingRoom.endTime = 0;
+            } else {
+                meetingRoom.bookStartTime = @"";
+                meetingRoom.bookDate = @"";
+                meetingRoom.bookEndTime = @"";
+                meetingRoom.cost = 0;
+                meetingRoom.startTime = 0;
+                meetingRoom.endTime = 0;
+                meetingRoom.bookingInfo = nil;
+            }
             [self pushOrPop:meetingRoom];
         } else if (type==VC_TYPE_JOIN_VIP) {
             if (!joinvip) {
@@ -408,6 +486,11 @@
                 contactOffice.inquirytype = [notif.object objectForKey:@"inquirytype"];
                 [contactOffice.tableView reloadData];
             }
+        } else if (type==VC_TYPE_PAST_ACTIVITIES) {
+            if (!pastEvents) {
+                pastEvents = [[PastEventsList alloc] initWithStyle:UITableViewStylePlain];
+            }
+            [self pushOrPop:pastEvents];      
         }
         
         

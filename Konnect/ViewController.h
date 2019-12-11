@@ -51,6 +51,9 @@
 @class OfficePromo;
 @class ConceirgeService;
 @class ContactOffice;
+@class PastEventsList;
+@class ReserveNow;
+
 @interface ViewController : UIViewController {
     Introduction *lc;
     UINavigationController *nav;
@@ -97,6 +100,8 @@
     OfficePromo *officepromo;
     ConceirgeService *conser;
     ContactOffice *contactOffice;
+    PastEventsList *pastEvents;
+    ReserveNow *reserveNow;
     
     
 }

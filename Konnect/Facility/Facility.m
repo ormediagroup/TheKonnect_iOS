@@ -76,6 +76,9 @@
             return;
         }
     } else {
+        [delegate raiseAlert:TEXT_FUNCTION_NOTAVAIL msg:@""];
+        return;
+        /*
         NSString *content = [NSString stringWithFormat:@"KONNECT - %@%@",[datasrc objectForKey:@"name_zh"],[datasrc objectForKey:@"name_en"]];
         NSString *URL = [NSString stringWithFormat:@"%@/site/?siteid=%@",domain,[datasrc objectForKey:@"ID"]];
         NSURL *u = [NSURL URLWithString:[URL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -93,6 +96,7 @@
             activityViewController.popoverPresentationController.sourceView = self.view;
             [self presentViewController:activityViewController animated:YES completion:nil];
         }
+         */
     }
 }
 -(void) viewWillAppear:(BOOL)animated {
@@ -189,8 +193,6 @@
         }
         
     }
-    
-    
     {
         UILabel *p = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT)];
         [p setTextColor:UICOLOR_LIGHT_GREY];
@@ -212,9 +214,23 @@
         [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY_BORDER];
         [scroll addSubview:line];
         y+=LINE_PAD;
+    }    
+    {
+        if ([[d objectForKey:@"ads"] isKindOfClass:[NSArray class]] && [[d objectForKey:@"ads"] count]>0) {
+            for (NSString *url in [d objectForKey:@"ads"]) {
+                UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(0,y,delegate.screenWidth,80)];
+                [v setContentMode:UIViewContentModeScaleAspectFill];
+                [v setImage:[delegate getImage:url callback:^(UIImage *image) {
+                    [v setImage:image];
+                }]];
+                [scroll addSubview:v];
+                y+=80;
+            }
+            y+=LINE_PAD;
+        }
+        
+        
     }
-    [scroll setContentSize:CGSizeMake(delegate.screenWidth, y)];
-    
     {
         UILabel *p = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT)];
         [p setTextColor:UICOLOR_GOLD];
@@ -320,8 +336,10 @@
 }
 -(void) makeBooking {
     if ([delegate isLoggedIn]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_RESTAURANT_BOOKING],datasrc] forKeys:@[@"type",@"facility"]]];
+       // if ([self checkTier]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_RESTAURANT_BOOKING],datasrc] forKeys:@[@"type",@"facility"]]];
+     //   }
     } else {
         UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_PLEASE_LOGIN
                                                                        message:nil
@@ -337,6 +355,26 @@
             [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
         });
     }
+}
+-(BOOL) checkTier {
+    if ([delegate isLoggedIn]) {
+        if ([[datasrc objectForKey:@"type"] isEqualToString:@"fnbvip"]) {
+            if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_MEMBER]) {
+                [delegate raiseAlert:[NSString stringWithFormat:K_USER_SORRY_TIER_NOT_SUFFICIENT,TEXT_MEMBERTIER_VIP] msg:@""];
+                return NO;
+            } else {
+                return YES;
+            }
+        } else if ([[datasrc objectForKey:@"type"] isEqualToString:@"fnblegacy"]) {
+            if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_LEGACY]) {
+                return YES;
+            } else {
+                [delegate raiseAlert:[NSString stringWithFormat:K_USER_SORRY_TIER_NOT_SUFFICIENT,TEXT_MEMBERTIER_LEGACY] msg:@""];
+                return NO;
+            }
+        }
+    }
+    return NO;
 }
 -(void) imagePressed {
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:

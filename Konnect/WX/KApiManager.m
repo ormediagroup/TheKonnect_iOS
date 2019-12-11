@@ -55,7 +55,7 @@
     }
 }
 -(NSString *)getKAccessToken:(NSString *)code {
-    NSString *urlS = [NSString stringWithFormat:@"%@%@",domain,OAUTH_TOKEN_ENDPOINT,OAUTH_CLIENT_ID];
+    NSString *urlS = [NSString stringWithFormat:@"%@%@",domain,OAUTH_TOKEN_ENDPOINT];
     NSURL *url = [NSURL URLWithString:urlS];
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] init];
     [urlRequest setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
@@ -138,6 +138,7 @@
     // set the content-length
     [urlRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [urlRequest setValue:[NSString stringWithFormat:@"Bearer %@",[pref objectForKey:K_ACCESS_TOKEN_KEY]] forHTTPHeaderField:@"authorization"];
+    
     [urlRequest setValue:@"no-cache" forHTTPHeaderField:@"cache-control"];
     [urlRequest setURL:url];
     NSURLResponse *resp = nil;
@@ -246,6 +247,12 @@
                                 @[username, code, unionid, @"verifycodeWX"] forKeys:@[@"username",@"code",@"unionid",@"action"]]
                     interation:0];
 }
+-(NSDictionary *) verifyAppleUser:(NSString *)username verification:(NSString *)code appleID:(NSString *)appleid{
+    return [self getResultSync:[NSString stringWithFormat:@"%@app-reg-user",K_API_ENDPOINT]
+                         param:[NSDictionary dictionaryWithObjects:
+                                @[username, code, appleid, @"verifycodeApple"] forKeys:@[@"username",@"code",@"appleid",@"action"]]
+                    interation:0];
+}
 -(id) setPassword:(NSString *)userToken password:(NSString *)password {    
     return [self getResultSync:[NSString stringWithFormat:@"%@app-reg-user",K_API_ENDPOINT]
                          param:[NSDictionary dictionaryWithObjects:
@@ -258,10 +265,17 @@
                                 @[userToken, unionID, @"tieWechat"] forKeys:@[K_USER_OPENID,@"unionid",@"action"]]
                     interation:0];
 }
+
 -(id) logWithWeChat:(NSString *)unionID {
     return [self getResultSync:[NSString stringWithFormat:@"%@app-reg-user",K_API_ENDPOINT]
                          param:[NSDictionary dictionaryWithObjects:
                                 @[unionID, @"loginWechat"] forKeys:@[@"unionid",@"action"]]
+                    interation:0];
+}
+-(id) logWithApple:(NSString *)appleID {
+    return [self getResultSync:[NSString stringWithFormat:@"%@app-reg-user",K_API_ENDPOINT]
+                         param:[NSDictionary dictionaryWithObjects:
+                                @[appleID, @"loginApple"] forKeys:@[@"apple_id",@"action"]]
                     interation:0];
 }
 -(id) logWithPassword:(NSString *)username withPassord:(NSString *)password {

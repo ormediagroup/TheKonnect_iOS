@@ -21,7 +21,8 @@
 @synthesize parent;
 
 - (void)viewDidLoad {
-    [super viewDidLoad];    
+    [super viewDidLoad];
+        
 
     UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
     [back setFrame:CGRectMake(SIDE_PAD,SIDE_PAD,36,36)];
@@ -191,6 +192,14 @@
     [wxLogin addSubview:wxicon];
     
     y+=36+LINE_HEIGHT;
+    if (@available(iOS 13.2, *)) {
+        ASAuthorizationAppleIDButton
+        *apple = [ASAuthorizationAppleIDButton buttonWithType:ASAuthorizationAppleIDButtonTypeSignUp style:ASAuthorizationAppleIDButtonStyleBlack];
+        [apple addTarget:self action:@selector(signinWithApple) forControlEvents:UIControlEventTouchUpInside];
+        [apple setFrame:CGRectMake(SIDE_PAD_2,y,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2,44)];
+        [loginView.view addSubview:apple];
+        y+=50+LINE_PAD;
+    }
     
     {
         UIButton *fop = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -227,6 +236,86 @@
   //  if ([WXApi isWXAppInstalled]) {
     
   //  }
+}
+-(void) signinWithApple {
+    if (@available(iOS 13.2, *)) {
+        ASAuthorizationAppleIDProvider *appleIDProvider = [[ASAuthorizationAppleIDProvider alloc] init];
+        ASAuthorizationAppleIDRequest *req = [appleIDProvider createRequest];
+        [req setRequestedScopes:@[@"fullName",@"email"]];
+        
+        ASAuthorizationController *asc = [[ASAuthorizationController alloc] initWithAuthorizationRequests:@[req]];
+        asc.delegate = self;
+        asc.presentationContextProvider = self;
+        [asc performRequests];
+    }
+    /*
+    let appleIDProvider = ASAuthorizationAppleIDProvider()
+    let request = appleIDProvider.createRequest()
+    request.requestedScopes = [.fullName, .email]
+        
+    let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+    authorizationController.delegate = self
+    authorizationController.presentationContextProvider = self
+    authorizationController.performRequests()
+     */
+}
+-(void) authorizationController:(ASAuthorizationController *)controller didCompleteWithError:(NSError *)error  API_AVAILABLE(ios(13.0)){
+    
+    NSLog(@"LoginOrReg :%@",[error description]);
+    
+}
+
+-(void) authorizationController:(ASAuthorizationController *)controller didCompleteWithAuthorization:(ASAuthorization *)authorization  API_AVAILABLE(ios(13.0)){
+    
+    if ([authorization.credential isKindOfClass:[ASAuthorizationAppleIDCredential class]]) {
+        ASAuthorizationAppleIDCredential *cred = authorization.credential;
+        NSLog(@"Apple ID Cred: %@",cred.user);
+        [delegate.preferences setObject:cred.user forKey:APPLE_USER_ID];
+        [delegate.preferences synchronize];
+    } else if ([authorization.credential isKindOfClass:[ASPasswordCredential class]]) {
+        ASPasswordCredential *cred = authorization.credential;
+        NSLog(@"Apple ID Cred: %@",cred.user);
+        [delegate.preferences setObject:cred.user forKey:APPLE_USER_ID];
+        [delegate.preferences synchronize];
+    }
+   
+     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-reg-user",K_API_ENDPOINT] param:
+        [[NSDictionary alloc] initWithObjects:@[
+                                                [delegate.preferences objectForKey:APPLE_USER_ID],
+                                                @"loginApple",
+                                                ]
+                                      forKeys:@[
+                                                APPLE_USER_ID,
+                                                @"action",
+                                                ]]
+        
+                                        interation:0 callback:^(NSDictionary *data) {
+                                            //NSLog(@"Wallet %@",data);
+                                            if ([[data objectForKey:@"rc"] intValue]==0) {
+                                                [self->delegate.preferences setObject:[data objectForKey:K_USER_OPENID] forKey:K_USER_OPENID];
+                                                [self->delegate.preferences setObject:[data objectForKey:K_USER_PHONE] forKey:K_USER_PHONE];
+                                                [self->delegate.preferences setObject:[data objectForKey:K_USER_NAME] forKey:K_USER_NAME];
+                                                [self->delegate.preferences setObject:[data objectForKey:K_USER_GENDER] forKey:K_USER_GENDER];
+                                                [self->delegate.preferences setObject:[data objectForKey:K_USER_EMAIL] forKey:K_USER_EMAIL];
+                                                [self->delegate.preferences setObject:[data objectForKey:K_USER_TIER] forKey:K_USER_TIER];
+                                                [self->delegate.preferences setObject:[data objectForKey:K_USER_NO] forKey:K_USER_NO];
+                                                [self->delegate.preferences setObject:[data objectForKey:K_USER_AVATAR] forKey:K_USER_AVATAR];
+                                                [self->delegate.preferences synchronize];
+                                                [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
+                                                [self->password setText:@""];
+                                                [self->delegate makeToast:@"登入成功" duration:5 inView:self->delegate.window.rootViewController.view];
+                                                
+                                            } else {
+                                               self->regView.regType = REG_TYPE_APPLE;
+                                               self->regView.showWXMessage = YES;
+                                               NSLog(@"Going into Apple Register");
+                                               [self RegStage1];
+                                            }
+                                        }];
+       
+}
+- (ASPresentationAnchor)presentationAnchorForAuthorizationController:(ASAuthorizationController *)controller {
+    return self.view.window;
 }
 -(void) wxLoginSuccess {
    

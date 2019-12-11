@@ -78,8 +78,41 @@
     bottom = [[UIView alloc] initWithFrame:CGRectMake(0,y,delegate.screenWidth,100)];
     [scroll addSubview:bottom];
     
-    [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-home",K_API_ENDPOINT] param:nil interation:0 callback:^(NSDictionary *data) {
+    [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-home",K_API_ENDPOINT] param:[[NSDictionary alloc] initWithObjects:@[@"ios"] forKeys:@[@"platform"]] interation:0 callback:^(NSDictionary *data) {
         if ([data isKindOfClass:[NSDictionary class]] && [[data objectForKey:@"rc"] intValue]==0) {
+            NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+            if ([[data objectForKey:@"forceupdateversion"] floatValue] >= [version floatValue]) {
+                
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_UPDATE_AVAIL
+                                                                               message:TEXT_PROCEED_TO_UPDATE
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_UPDATE style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                    NSString *iTunesLink = @"itms-apps://itunes.apple.com/app/apple-store/id1479001446?mt=8";
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink] options:@{} completionHandler:^(BOOL success) {}];
+                }];
+                [alert addAction:defaultAction];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
+                });
+                
+            } else if ([[data objectForKey:@"updateversion"] floatValue] >= [version floatValue]) {
+                
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_UPDATE_AVAIL
+                                                                               message:TEXT_PROCEED_TO_UPDATE
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_UPDATE style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                    NSString *iTunesLink = @"itms-apps://itunes.apple.com/app/apple-store/id1479001446?mt=8";
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:iTunesLink] options:@{} completionHandler:^(BOOL success) {}];
+                }];
+                [alert addAction:defaultAction];
+                [alert addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
+                });
+                
+            }
             if ([[data objectForKey:@"top"] isKindOfClass:[NSArray class]]) {
                 [self->carousel pack:[data objectForKey:@"top"]];
                 [self->ad setImage:[self->delegate getImage:[[[[data objectForKey:@"ad"] objectAtIndex:0] objectForKey:@"image"] objectAtIndex:0] callback:^(UIImage *image) {
@@ -171,7 +204,7 @@
     if (tap.view.tag==0) {
         if ([delegate checkLogin]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_RESERVATIONS]] forKeys:@[@"type"]]];
+             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_RESERVE_NOW]] forKeys:@[@"type"]]];
         }
     } else if (tap.view.tag==1) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
@@ -200,7 +233,7 @@
         }
         [nameLbl sizeToFit];
         [nameLbl setFrame:CGRectMake(10,0,nameLbl.frame.size.width,34)];
-        [memberTier setFrame:CGRectMake(30+nameLbl.frame.size.width,0,80,34)];
+        [memberTier setFrame:CGRectMake(30+nameLbl.frame.size.width,0,150,34)];
         if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_LEGACY]) {
             [memberTier setImage:[UIImage imageNamed:@"membertierlegacy.png"]];
         } else if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_VIP]) {
@@ -211,7 +244,8 @@
         [submit addSubview:memberTier];
     } else {
         [nameLbl setText:TEXT_VISITOR];
-        
+        [nameLbl sizeToFit];
+        [nameLbl setFrame:CGRectMake(10,0,nameLbl.frame.size.width,34)];
         [memberTier removeFromSuperview];
     }
     

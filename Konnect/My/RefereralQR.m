@@ -92,7 +92,7 @@
     [[UIImage imageWithCIImage:qrImage
                         scale:[UIScreen mainScreen].scale
                   orientation:UIImageOrientationUp] drawInRect:CGRectMake(0,0,qrImageView.frame.size.width, qrImageView.frame.size.height)];
-    [[UIImage imageNamed:@"logo_qr-01.png"] drawInRect:CGRectMake(qrImageView.frame.size.width/2-40, qrImageView.frame.size.height/2-40,80,80)];
+    [[UIImage imageNamed:@"logo_qr-012.png"] drawInRect:CGRectMake(qrImageView.frame.size.width/2-40, qrImageView.frame.size.height/2-40,80,80)];
     UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
     
     UIGraphicsEndImageContext();

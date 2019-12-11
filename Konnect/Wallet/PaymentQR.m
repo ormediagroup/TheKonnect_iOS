@@ -40,6 +40,8 @@
     v.layer.borderWidth = 0.5f;
     v.layer.borderColor = [UICOLOR_LIGHT_GREY CGColor];
     [self.view addSubview:v];
+
+    CGFloat QRCodeSize = v.frame.size.width-SIDE_PAD_2-SIDE_PAD_2;
     
     v.layer.shadowRadius  = 10.0f;
     v.layer.shadowColor   = [UIColor colorWithRed:176.f/255.f green:199.f/255.f blue:226.f/255.f alpha:0.7f].CGColor;
@@ -59,7 +61,10 @@
     [purple setBackgroundColor:[delegate getThemeColor]];
     [v addSubview:purple];
     
-    qrImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD+20,v.frame.size.height-v.frame.size.width-SIDE_PAD_2+20,v.frame.size.width-SIDE_PAD_2-40,v.frame.size.width-SIDE_PAD_2-20)];
+    CGFloat whiteHeight = v.frame.size.height-60;
+    CGFloat qrCenterV = (whiteHeight-QRCodeSize)/2+60;
+    
+    qrImageView = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD_2,qrCenterV,QRCodeSize,QRCodeSize)];
     qrImageView.layer.borderColor = [UICOLOR_GOLD CGColor];
     qrImageView.layer.borderWidth = 0.5f;
     

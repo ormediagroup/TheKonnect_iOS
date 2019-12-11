@@ -13,6 +13,7 @@
 @end
 
 @implementation SearchMeetingRoom
+@synthesize facility;
 -(void) viewWillAppear:(BOOL)animated {
     [self setEditing:NO];
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:TEXT_SEARCH_MEETING_ROOM];
@@ -34,7 +35,7 @@
     }
 }
 -(void) viewWillDisappear:(BOOL)animated {
-    datasrc = @[];
+  //  datasrc = @[];    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -240,14 +241,18 @@
 }
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section==0) {
+        
         UIView *h  = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.headerHeight-delegate.statusBarHeight+60)];
         
         [h setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
-        UILabel *v = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,delegate.headerHeight-delegate.statusBarHeight,delegate.screenWidth-SIDE_PAD,60)];
-        [v setFont:[UIFont boldSystemFontOfSize:FONT_M]];
-        [v setTextColor:[UIColor darkTextColor]];
-        [v setText:TEXT_BOOKED_ROOM];
-        [h addSubview:v];
+        if ([bookedrooms count]>0) {
+
+            UILabel *v = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,delegate.headerHeight-delegate.statusBarHeight,delegate.screenWidth-SIDE_PAD,60)];
+            [v setFont:[UIFont boldSystemFontOfSize:FONT_M]];
+            [v setTextColor:[UIColor darkTextColor]];
+            [v setText:TEXT_BOOKED_ROOM];
+            [h addSubview:v];
+        }
         return h;
     } else if (section==1) {
         UIView *h = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,60)];
@@ -282,6 +287,9 @@
         return [bookedrooms count];
     }
     else if (section==1) {
+        if (facility && [facility isKindOfClass:[NSDictionary class]]) {
+            return 5;
+        }
         return 4;
     } else {
         if (status==ROOM_STATUS_TYPE_NONE) {
@@ -293,6 +301,12 @@
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==1 && indexPath.row==3) {
+        if (facility && [facility isKindOfClass:[NSDictionary class]]) {
+            return 60;
+        } else {
+            return LINE_HEIGHT*3;
+        }
+    } else if (indexPath.section==1 && indexPath.row==4) {
         return LINE_HEIGHT*3;
     } else if (indexPath.section==2 || indexPath.section==0) {
         return 80;
@@ -338,6 +352,31 @@
         } else if (indexPath.row==2) {
             [cell.textLabel setText:TEXT_BOOK_ROOM_END_TIME];
             [cell.detailTextLabel setText:[NSString stringWithFormat:@"%@:%@",bookEndTimeHr,bookEndTimeMin]];
+        } else if (indexPath.row==3 && (facility && [facility isKindOfClass:[NSDictionary class]])){
+            UIImageView *i = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,60,60)];
+            [i setContentMode:UIViewContentModeScaleAspectFill];
+            [i setClipsToBounds:YES];
+            [i setImage:[delegate getImage:[facility objectForKey:@"images"] callback:^(UIImage *image) {
+                [i setImage:image];
+            }]];
+            [cell addSubview:i];
+            [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+            int y=0;
+            
+            {
+                UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD+60,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
+                [l setText:[NSString stringWithFormat:@"%@%@",TEXT_ONLY_SHOW,[facility objectForKey:@"name_zh"]]];
+                [l setFont:[UIFont systemFontOfSize:FONT_S]];
+                [cell addSubview:l];
+                y+=LINE_HEIGHT;
+            }
+            {
+                UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD+60,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
+                [l setText:[facility objectForKey:@"capacity"]];
+                [l setFont:[UIFont systemFontOfSize:FONT_XS]];
+                [l setTextColor:[UIColor darkTextColor]];
+                [cell addSubview:l];
+            }
         } else {
             UIView *l = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,LINE_HEIGHT*3)];
             [l setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
@@ -403,9 +442,13 @@
     return cell;
 }
 -(void) search {
+    NSString *facilityID = @"";
+    if (facility && [facility isKindOfClass:[NSDictionary class]]) {
+        facilityID = [facility objectForKey:@"ID"];
+    }
     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-meeting-room",K_API_ENDPOINT] param:
-     [[NSDictionary alloc] initWithObjects:@[bookDate,[NSNumber numberWithFloat:startTime],[NSNumber numberWithFloat:endTime]]
-                                   forKeys:@[@"bookingdate",@"bookingstarttime",@"bookingendtime"]]
+     [[NSDictionary alloc] initWithObjects:@[bookDate,[NSNumber numberWithFloat:startTime],[NSNumber numberWithFloat:endTime],facilityID]
+                                   forKeys:@[@"bookingdate",@"bookingstarttime",@"bookingendtime",@"facilityID"]]
                                      interation:0 callback:^(NSDictionary *data) {
                                          if ([data isKindOfClass:[NSDictionary class]] && [[data objectForKey:@"rc"] intValue]==0) {
                                              if ([[data objectForKey:@"available"] count]>0) {
@@ -509,8 +552,8 @@
     if (indexPath.section==0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MEETING_ROOM],
-                                                 [[bookedrooms objectAtIndex:indexPath.row] objectForKey:@"roomID"] 
-                                                 ] forKeys:@[@"type",@"facilityID"]]];
+                                                 [[bookedrooms objectAtIndex:indexPath.row] objectForKey:@"roomID"],@"cancel",[bookedrooms objectAtIndex:indexPath.row]
+                                                 ] forKeys:@[@"type",@"facilityID",@"queryType",@"bookingInfo"]]];
     } else if (indexPath.section==1) {
         if (indexPath.row==0) {
             [pickerViewToolbar addSubview:datepicker];
@@ -524,11 +567,38 @@
             [pickerViewToolbar addSubview:endtimepicker];
             [pickerValue setText:[NSString stringWithFormat:@"%@:%@",bookEndTimeHr,bookEndTimeMin]];
             [self.view.window.rootViewController.view addSubview:pickerViewToolbar];
+        } else if (indexPath.row==3 && facility && [facility isKindOfClass:[NSDictionary class]]) {
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_CANCEL_SEARCH_FILTER_DISPLAY_OTHERS
+                                                                           message:nil
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_CANCEL_FILTER style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                self->facility = nil;
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
+                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
+            }];
+            [alert addAction:defaultAction];
+            [alert addAction:[UIAlertAction actionWithTitle:TEXT_BACK style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
+            });
         }
     } else if (indexPath.section==2) {
         if (status==ROOM_STATUS_TYPE_AVAIL) {
+            CGFloat duration = (endTime - startTime)*2;
+            int cost = ceil(duration * [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"price"] intValue]);
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-             [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MEETING_ROOM],[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"]objectForKey:@"ID"]] forKeys:@[@"type",@"facilityID"]]];
+             [[NSDictionary alloc] initWithObjects:@[
+                                                     [NSNumber numberWithInt:VC_TYPE_MEETING_ROOM],
+                                                     [[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"]objectForKey:@"ID"],
+                                                     @"book",
+                                                     bookDate,
+                                                     [NSString stringWithFormat:@"%@:%@",bookStartTimeHr,bookStartTimeMin],
+                                                     [NSString stringWithFormat:@"%@:%@",bookEndTimeHr,bookEndTimeMin],
+                                                     [NSNumber numberWithInteger:cost],
+                                                     [NSNumber numberWithFloat:startTime],
+                                                     [NSNumber numberWithFloat:endTime]
+                                                     ]                                forKeys:@[@"type",@"facilityID",@"queryType",@"bookingdate",@"bookingstarttime",@"bookingendtime",@"cost",@"startTime",@"endTime"]]];
         }
     }
 }

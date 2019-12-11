@@ -121,7 +121,7 @@
                                                                                 @"useremail"]]
          
                                          interation:0 callback:^(NSDictionary *data) {
-                                             
+                                   //          NSLog(@"%@",[delegate.preferences objectForKey:K_USER_NAME]);
                                          }];
 
     }

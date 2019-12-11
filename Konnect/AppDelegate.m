@@ -340,6 +340,7 @@
     [preferences removeObjectForKey:K_USER_NO];
     [preferences removeObjectForKey:K_USER_AVATAR];
     [preferences removeObjectForKey:K_USER_TIER];
+    [preferences removeObjectForKey:APPLE_USER_ID];
     [preferences synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:LOGOUT_SUCCESS object:nil];
 }

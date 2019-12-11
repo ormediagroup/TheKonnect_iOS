@@ -5,15 +5,17 @@
 //  Created by Jacky Mok on 6/9/2019.
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
-
+#import <AuthenticationServices/AuthenticationServices.h>
 #import "ORViewController.h"
+
 @class Introduction;
 @class RegisterViewController;
 @class RegisterPassword;
 @class TieWeChat;
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LoginOrReg : ORViewController <UITextFieldDelegate> {
+@interface LoginOrReg : ORViewController <UITextFieldDelegate, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding> {
     Introduction __weak *parent;
     UIButton *login, *reg;
     UINavigationController *nav;

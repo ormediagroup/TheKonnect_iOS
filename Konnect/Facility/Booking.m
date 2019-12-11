@@ -131,17 +131,21 @@
 -(void) viewWillAppear:(BOOL)animated {
     [self setEditing:NO];
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:TEXT_BOOK_RESTAURANT];
-    if ([[facility objectForKey:@"ID"] intValue] ==10 || [[facility objectForKey:@"ID"] intValue] ==11) {
+    if ([[facility objectForKey:@"privateroom"] isKindOfClass:[NSArray class]] && [[facility objectForKey:@"privateroom"] count]>0) {
         hasPrivateRoom = YES;
+    } else {
+        hasPrivateRoom = NO;
+        bookAlcohol = TEXT_NO;
+    }
+    if ([[facility objectForKey:@"ID"] intValue] ==10 || [[facility objectForKey:@"ID"] intValue] ==11) {
         hasBringAlcohol = YES;
     } else if ([[facility objectForKey:@"ID"] intValue] ==12 || [[facility objectForKey:@"ID"] intValue] ==14) {
-        hasPrivateRoom = NO;
         hasBringAlcohol = YES;
     } else {
         hasPrivateRoom = NO;
         hasBringAlcohol = NO;
         bookRoom = TEXT_NO;
-        bookAlcohol = TEXT_NO;
+        
     }
     [self.tableView reloadData];
 }
@@ -211,11 +215,13 @@
         if (component==0) {
             return [NSString stringWithFormat:@"%02d",(int)row+9];
         } else {
-            return [NSString stringWithFormat:@"%02d",(int)row*15];
+            return [NSString stringWithFormat:@"%02d",(int)row*30];
         }
     } else if (pickerView==peoplepicker) {
         return [NSString stringWithFormat:@"%d",(int)row+1];
-    } else if (pickerView == roompicker || pickerView == alcoholpicker) {
+    } else if (pickerView == roompicker) {
+        return [[facility objectForKey:@"privateroom"] objectAtIndex:row];
+    } else if (pickerView == alcoholpicker) {
         if (row==0) {
             return TEXT_NO;
         } else {
@@ -239,11 +245,13 @@
         if (component==0) {
             return 12;
         } else {
-            return 3;
+            return 2;
         }
     } else if (pickerView == peoplepicker) {
         return 23;
-    } else if (pickerView == roompicker || pickerView == alcoholpicker) {
+    } else if (pickerView == roompicker) {
+        return [[facility objectForKey:@"privateroom"] count];
+    } else if (pickerView == alcoholpicker) {
         return 2;
     } else {
         return 0;
@@ -258,18 +266,14 @@
         if (component==0) {
             bookTimeHr = [NSString stringWithFormat:@"%02d",(int)row+9];
         } else {
-            bookTimeMin = [NSString stringWithFormat:@"%02d",(int)row*15];
+            bookTimeMin = [NSString stringWithFormat:@"%02d",(int)row*30];
         }
         [pickerValue setText:[NSString stringWithFormat:@"%@:%@",bookTimeHr,bookTimeMin]];
     } else if (pickerView==peoplepicker) {
         bookPeople = [NSString stringWithFormat:@"%d",(int)row+1];
         [pickerValue setText:[NSString stringWithFormat:@"%@%@",bookPeople,TEXT_PEOPLE]];
     } else if (pickerView==roompicker) {
-        if (row==0) {
-            bookRoom = TEXT_NO;
-        } else {
-            bookRoom = TEXT_YES;
-        }
+        bookRoom = [[facility objectForKey:@"privateroom"] objectAtIndex:row];
         [pickerValue setText:bookRoom];
     } else if (pickerView==alcoholpicker) {
         if (row==0) {
@@ -436,11 +440,7 @@
         [cell setAccessoryType:UITableViewCellAccessoryNone];
     } else if (indexPath.row==7) {
         if (hasPrivateRoom ) {
-            if ([[facility objectForKey:@"mincharge"]intValue]>0) {
-                [cell.textLabel setText:[NSString stringWithFormat:TEXT_NEED_ROOM_MIN_PAY,[[facility objectForKey:@"mincharge"]intValue]]];
-            } else {
-                [cell.textLabel setText:TEXT_NEED_ROOM_NO_MIN_PAY];
-            }
+            [cell.textLabel setText:TEXT_NEED_ROOM_MIN_PAY];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             [cell.detailTextLabel setText:bookRoom];
         } else if (hasBringAlcohol) {
@@ -478,22 +478,25 @@
             [cell addSubview:bookNow];
         }
     } else {
-        UIView *l = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,40)];
-        [l setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
-        [cell addSubview:l];
-        bookNow = [UIButton buttonWithType:UIButtonTypeCustom];
-        [bookNow setBackgroundColor:[delegate getThemeColor]];
-        [bookNow setFrame:CGRectMake(0,20,delegate.screenWidth,50)];
-        [bookNow addTarget:self action:@selector(book) forControlEvents:UIControlEventTouchUpInside];
-        [bookNow setTitle:TEXT_BOOK_RESTAURANT forState:UIControlStateNormal];
-        [bookNow setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
-        [cell addSubview:bookNow];
+        
+            UIView *l = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,40)];
+            [l setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
+            [cell addSubview:l];
+            bookNow = [UIButton buttonWithType:UIButtonTypeCustom];
+            [bookNow setBackgroundColor:[delegate getThemeColor]];
+            [bookNow setFrame:CGRectMake(0,20,delegate.screenWidth,50)];
+            [bookNow addTarget:self action:@selector(book) forControlEvents:UIControlEventTouchUpInside];
+            [bookNow setTitle:TEXT_BOOK_RESTAURANT forState:UIControlStateNormal];
+            [bookNow setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
+            [cell addSubview:bookNow];
+        
     }
     
     // Configure the cell...
         
     return cell;
 }
+
 -(void) book {
     if ([bookingPhone.text isEqualToString:@""] ||[bookingName.text isEqualToString:@""]) {
         [delegate raiseAlert:TEXT_INPUT_ERROR msg:TEXT_ERROR_MISSING_INFO];

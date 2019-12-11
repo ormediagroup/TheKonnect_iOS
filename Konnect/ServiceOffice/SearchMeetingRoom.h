@@ -24,9 +24,10 @@ typedef enum {
     UIView *pickerViewToolbar;
     UILabel *pickerValue;
     ROOM_STATUS_TYPE status;
+    NSDictionary *facility;
     NSArray *bookedrooms;
 }
-
+@property NSDictionary *facility;
 @end
 
 NS_ASSUME_NONNULL_END
