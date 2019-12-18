@@ -26,15 +26,13 @@
 #define LINE_PAD 20
 
 #define TEXT_K_ADDRESS @"香港灣仔謝斐道303號"
-#define TEXT_K_PHONE @"00000000"
+#define TEXT_K_PHONE @"2722 3456"
 #define TEXT_K_EMAIL @"info@thekonnect.com.hk"
 #define TEXT_K_OFFICE_HOURS @"Mon-Sun 8:30 - 18:00"
-#define TEXT_K_OFFICE_PHONE @"11111111"
-#define TEXT_K_OFFICE_EMAIL @"officesupport@thekonnect.com.hk"
-#define TEXT_K_CON_PHONE @"22222222"
+#define TEXT_K_OFFICE_PHONE @"2722 3456"
+#define TEXT_K_OFFICE_EMAIL @"servicedoffice@thekonnect.com.hk"
+#define TEXT_K_CON_PHONE @"2722 3456"
 #define TEXT_K_CON_EMAIL @"concierge@thekonnect.com.hk"
-
-
 
 #define TEXT_HOME @"首頁"
 #define TEXT_NICKNAME @"暱稱"

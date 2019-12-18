@@ -196,7 +196,7 @@
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
 }
 -(UIColor *) getThemeColor {
-    if ([[preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_LEGACY]) {
+    if ([[preferences objectForKey:K_USER_TIER]  isKindOfClass:[NSString class]] && [[preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_LEGACY]) {
         return UICOLOR_GREEN;
     } else {
         return UICOLOR_PURPLE;

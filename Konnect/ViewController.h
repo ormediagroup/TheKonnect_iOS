@@ -54,8 +54,9 @@
 @class PastEventsList;
 @class ReserveNow;
 
-@interface ViewController : UIViewController {
+@interface ViewController : UIViewController <UINavigationControllerDelegate> {
     Introduction *lc;
+    BOOL showingController;
     UINavigationController *nav;
     Home *home;
     AppDelegate *delegate;
@@ -102,6 +103,7 @@
     ContactOffice *contactOffice;
     PastEventsList *pastEvents;
     ReserveNow *reserveNow;
+    
     
     
 }

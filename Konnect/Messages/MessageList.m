@@ -35,6 +35,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = TEXT_OTHER_MESSAGE;
     delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 

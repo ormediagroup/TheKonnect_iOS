@@ -23,24 +23,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
         
-
+    
     UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
-    [back setFrame:CGRectMake(SIDE_PAD,SIDE_PAD,36,36)];
+    [back setFrame:CGRectMake(SIDE_PAD,0,36,36)];
     [back setImage:[UIImage imageNamed:@"backbtn.png"] forState:UIControlStateNormal];
     [back addTarget:self
             action:@selector(backPressed) forControlEvents:UIControlEventTouchUpInside];
     [scroll addSubview:back];
     
     regFlow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"regflow1.png"]];
-    [regFlow setFrame:CGRectMake(delegate.screenWidth/2-50,SIDE_PAD+13,100,10)];
+    [regFlow setFrame:CGRectMake(delegate.screenWidth/2-50,13,100,10)];
     [regFlow setContentMode:UIViewContentModeScaleAspectFit];
     [scroll addSubview:regFlow];
     [self changeRegFlowState:0];
     
-    
-    topLine = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD+26,100+LINE_HEIGHT,20,2)];
-    [topLine setBackgroundColor:UICOLOR_GOLD];
-    [scroll addSubview:topLine];
+    int y=50;
     {
         login = [UIButton buttonWithType:UIButtonTypeCustom];
         [login setTitle:@"登錄" forState:UIControlStateNormal];
@@ -48,7 +45,7 @@
         [login setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
         [login.titleLabel setFont:[UIFont boldSystemFontOfSize:FONT_M]];
         login.tag = SIDE_PAD+26;
-        [login setFrame:CGRectMake(SIDE_PAD_2,100,100,LINE_HEIGHT)];
+        [login setFrame:CGRectMake(SIDE_PAD_2,y,100,LINE_HEIGHT)];
         [login addTarget:self action:@selector(goLogin:) forControlEvents:UIControlEventTouchUpInside];
         [scroll addSubview:login];
     }
@@ -61,10 +58,15 @@
         reg.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [reg setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [reg.titleLabel setFont:[UIFont systemFontOfSize:FONT_S]];
-        [reg setFrame:CGRectMake(60+SIDE_PAD_2,100,100,LINE_HEIGHT)];
+        [reg setFrame:CGRectMake(60+SIDE_PAD_2,y,100,LINE_HEIGHT)];
         [reg addTarget:self action:@selector(goLogin:) forControlEvents:UIControlEventTouchUpInside];
         [scroll addSubview:reg];
     }
+    y=50+LINE_HEIGHT;
+    topLine = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD+26,y,20,2)];
+    [topLine setBackgroundColor:UICOLOR_GOLD];
+    [scroll addSubview:topLine];
+    y+=LINE_HEIGHT;
     loginView = [[UIViewController alloc] initWithNibName:nil bundle:nil];
     [self setupLogin];
     regPass = [[RegisterPassword alloc] initWithNibName:nil bundle:nil];
@@ -72,7 +74,7 @@
     regView = [[RegisterViewController alloc] initWithNibName:nil bundle:nil];
     regView.parent = self;    
     nav = [[UINavigationController alloc] initWithRootViewController:loginView];
-    [nav.view setFrame:CGRectMake(0,200,delegate.screenWidth,delegate.screenHeight-200)];
+    [nav.view setFrame:CGRectMake(0,y,delegate.screenWidth,delegate.screenHeight-y)];
     [nav setNavigationBarHidden:YES];
     [nav setToolbarHidden:YES];
     [scroll addSubview:nav.view];
@@ -194,8 +196,9 @@
     y+=36+LINE_HEIGHT;
     if (@available(iOS 13.2, *)) {
         ASAuthorizationAppleIDButton
-        *apple = [ASAuthorizationAppleIDButton buttonWithType:ASAuthorizationAppleIDButtonTypeSignUp style:ASAuthorizationAppleIDButtonStyleBlack];
+        *apple = [ASAuthorizationAppleIDButton buttonWithType:ASAuthorizationAppleIDButtonTypeSignIn style:ASAuthorizationAppleIDButtonStyleBlack];
         [apple addTarget:self action:@selector(signinWithApple) forControlEvents:UIControlEventTouchUpInside];
+        [apple setCornerRadius:0.0f];
         [apple setFrame:CGRectMake(SIDE_PAD_2,y,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2,44)];
         [loginView.view addSubview:apple];
         y+=50+LINE_PAD;
@@ -210,6 +213,16 @@
         [fop.titleLabel setFont:[UIFont systemFontOfSize:FONT_S]];
         [fop addTarget:self action:@selector(forgotPassword) forControlEvents:UIControlEventTouchUpInside];
         [loginView.view addSubview:fop];
+        
+        
+        UIButton *skip = [UIButton buttonWithType:UIButtonTypeCustom];
+       [skip setTitle:TEXT_GO_HOMEPAGE forState:UIControlStateNormal];
+       [skip setFrame:CGRectMake(delegate.screenWidth/2-158, y, 316, LINE_HEIGHT)];
+       [skip setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
+       [self.view addSubview:skip];
+       [skip addTarget:self action:@selector(skip) forControlEvents:UIControlEventTouchUpInside];
+       [loginView.view addSubview:skip];
+
         
         UIButton *tou = [UIButton buttonWithType:UIButtonTypeCustom];
         [tou setFrame:CGRectMake(delegate.screenWidth-SIDE_PAD_2-100,y,100,LINE_HEIGHT)];
@@ -236,6 +249,9 @@
   //  if ([WXApi isWXAppInstalled]) {
     
   //  }
+}
+-(void) skip {
+    [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
 }
 -(void) signinWithApple {
     if (@available(iOS 13.2, *)) {

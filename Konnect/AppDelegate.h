@@ -6,6 +6,18 @@
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
 /* TODO : Invoice Create per item details
+ Version 1.6
+ 1) 2nd Fixed a bug with unknown member tier
+ 2) Changed layout to fit an iPad simulator screen
+ 3) Fixed a crash with people clicking too fast with navigation controller
+ 
+ 
+ Version 1.6(11/12/2019)
+ 1) Fixed a bug with unknown member tier
+ 2) Changed Apple Sign in button to square corner
+ 3) Added a "skip to homepage" in registration / sign in page
+ 
+ 
  Version 1.5 (11/12/2019)
  1) Fixed a bug with registration with no associate
  2) Fixed a display issue with logout

@@ -53,6 +53,7 @@
 #import "ContactOffice.h"
 #import "PastEventsList.h"
 #import "ReserveNow.h"
+#define SKIP_AUTO_LOGIN 0
 @interface ViewController ()
 
 @end
@@ -61,9 +62,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    showingController = false;
     lc = [[Introduction alloc] initWithNibName:nil bundle:nil];
-    [self.navigationController pushViewController:lc animated:NO];    ;
+    [self.navigationController pushViewController:lc animated:NO];
+    
     delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
 
     
@@ -93,7 +95,7 @@
     
     #endif
     
-    if ([[delegate.preferences objectForKey:WX_USER_UNION_ID] isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:WX_USER_UNION_ID] isEqualToString:@""]) {
+    if (SKIP_AUTO_LOGIN&&[[delegate.preferences objectForKey:WX_USER_UNION_ID] isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:WX_USER_UNION_ID] isEqualToString:@""]) {
         [delegate startLoading];
         dispatch_queue_t createQueue = dispatch_queue_create("SerialQueue", nil);
         dispatch_async(createQueue, ^(){
@@ -104,6 +106,7 @@
                 if ([data isKindOfClass:[NSError class]]) {
                     [self->delegate raiseAlert:[data description] msg:@""];
                     self->nav = [[UINavigationController alloc] initWithRootViewController:self->lc];
+                    self->nav.delegate = self;;
                     [self.view addSubview:self->nav.view];
                 } else if ([[data objectForKey:@"rc"] intValue]==0) {
                     [self->delegate.preferences setObject:[data objectForKey:K_USER_OPENID] forKey:K_USER_OPENID];
@@ -121,11 +124,12 @@
                     // cannot find login ID
                     [self->delegate raiseAlert:@"" msg:[data objectForKey:@"errmsg"]];
                     self->nav = [[UINavigationController alloc] initWithRootViewController:self->lc];
+                    self->nav.delegate = self;;
                     [self.view addSubview:self->nav.view];
                 }
             });
         });
-    } else if ([[delegate.preferences objectForKey:APPLE_USER_ID] isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:APPLE_USER_ID] isEqualToString:@""]) {
+    } else if (SKIP_AUTO_LOGIN&&[[delegate.preferences objectForKey:APPLE_USER_ID] isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:APPLE_USER_ID] isEqualToString:@""]) {
            [delegate startLoading];
            dispatch_queue_t createQueue = dispatch_queue_create("SerialQueue", nil);
            dispatch_async(createQueue, ^(){
@@ -135,6 +139,7 @@
                    if ([data isKindOfClass:[NSError class]]) {
                        [self->delegate raiseAlert:[data description] msg:@""];
                        self->nav = [[UINavigationController alloc] initWithRootViewController:self->lc];
+                       self->nav.delegate = self;;
                        [self.view addSubview:self->nav.view];
                    } else if ([[data objectForKey:@"rc"] intValue]==0) {
                        [self->delegate.preferences setObject:[data objectForKey:K_USER_OPENID] forKey:K_USER_OPENID];
@@ -152,12 +157,14 @@
                        // cannot find login ID
                        [self->delegate raiseAlert:@"" msg:[data objectForKey:@"errmsg"]];
                        self->nav = [[UINavigationController alloc] initWithRootViewController:self->lc];
+                       self->nav.delegate = self;;
                        [self.view addSubview:self->nav.view];
                    }
                });
            });
     } else {
         nav = [[UINavigationController alloc] initWithRootViewController:lc];
+        nav.delegate = self;;
         [self.view addSubview:nav.view];
     };
     // Do any additional setup after loading the view.
@@ -169,6 +176,7 @@
     nav = [[UINavigationController alloc] initWithRootViewController:home];
     [nav setNavigationBarHidden:YES];
     [nav setToolbarHidden:YES];
+    nav.delegate = self;;
     UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     [swipe setDirection:UISwipeGestureRecognizerDirectionRight];
     [nav.view addGestureRecognizer:swipe];
@@ -183,6 +191,7 @@
     nav = [[UINavigationController alloc] initWithRootViewController:lc];
     [nav setNavigationBarHidden:YES];
     [nav setToolbarHidden:YES];
+    nav.delegate = self;;
     [self.view addSubview:nav.view];
     [header.view removeFromSuperview];
     [footer.view removeFromSuperview];
@@ -191,6 +200,7 @@
     nav = [[UINavigationController alloc] initWithRootViewController:lc];
     [nav setNavigationBarHidden:YES];
     [nav setToolbarHidden:YES];
+    nav.delegate = self;;
     [self.view addSubview:nav.view];
     [header.view removeFromSuperview];
     [footer.view removeFromSuperview];
@@ -205,7 +215,14 @@
     
     [self pushOrPop:paymentcode];
 }
+-(void) navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    showingController = NO;
+}
+-(void) navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    showingController = YES;
+}
 -(void) goSlide:(NSNotification *)notif {
+    if (showingController) return;
     if ([notif.object isKindOfClass:[NSDictionary class]]) {
         int type = [[notif.object objectForKey:@"type"] intValue];
         if (type==VC_TYPE_HOME) {
@@ -502,6 +519,7 @@
     }
 }
 -(void) pushOrPop:(UIViewController *)v {
+    
     if ([nav.viewControllers containsObject:v]) {
         [nav popToViewController:v animated:YES];
     } else {

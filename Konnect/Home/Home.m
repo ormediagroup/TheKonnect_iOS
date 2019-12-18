@@ -234,9 +234,10 @@
         [nameLbl sizeToFit];
         [nameLbl setFrame:CGRectMake(10,0,nameLbl.frame.size.width,34)];
         [memberTier setFrame:CGRectMake(30+nameLbl.frame.size.width,0,150,34)];
-        if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_LEGACY]) {
+        
+        if ([[delegate.preferences objectForKey:K_USER_TIER] isKindOfClass:[NSString class]] && [[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_LEGACY]) {
             [memberTier setImage:[UIImage imageNamed:@"membertierlegacy.png"]];
-        } else if ([[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_VIP]) {
+        } else if ([[delegate.preferences objectForKey:K_USER_TIER] isKindOfClass:[NSString class]] && [[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_VIP]) {
             [memberTier setImage:[UIImage imageNamed:@"membertiervip.png"]];
         } else {
             [memberTier setImage:[UIImage imageNamed:@"membertiermember.png"]];

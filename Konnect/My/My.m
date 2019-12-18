@@ -17,6 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = TEXT_MY;
     delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     [self.tableView setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
     //[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
