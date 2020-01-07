@@ -214,7 +214,7 @@
          [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_ABOUT_KONNECT]] forKeys:@[@"type"]]];
     } else if (tap.view.tag==3) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONTACT_US]] forKeys:@[@"type"]]];
+         [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONCIERGE]] forKeys:@[@"type"]]];
     }
 }
 -(void) viewWillAppear:(BOOL)animated {

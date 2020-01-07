@@ -16,7 +16,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -60,6 +59,7 @@
     
     UIView *toolbar = [[UIView alloc] initWithFrame:CGRectMake(0,top,delegate.screenWidth,50)];
     [toolbar setBackgroundColor:[UIColor whiteColor]];
+    [delegate setSystemBG:toolbar];
     [pickerViewToolbar addSubview:toolbar];
     
     UIButton *done = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -80,7 +80,10 @@
     bday = [[UIDatePicker alloc] initWithFrame:CGRectMake(0,top+60,delegate.screenWidth,300)];
     [bday setBackgroundColor:[UIColor whiteColor]];
     [bday setDatePickerMode:UIDatePickerModeDate];
+    bday.tag = 1;
+    [delegate setSystemBG:bday];
     [bday addTarget:self action:@selector(bdayselect:) forControlEvents:UIControlEventValueChanged];
+    bdate = [delegate.preferences objectForKey:K_USER_BDAY];
 }
 -(void) bdayselect:(UIDatePicker *)p {
     NSDateFormatter *f = [[NSDateFormatter alloc] init];
@@ -96,6 +99,9 @@
         NSDateFormatter *f = [[NSDateFormatter alloc] init];
         f.dateFormat = @"yyyy-MM-dd";
         bdate = [f stringFromDate:bday.date];
+        [delegate.preferences setObject:bdate forKey:K_USER_BDAY];
+        [delegate.preferences synchronize];
+        self->edited = YES;
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     }
     [pickerViewToolbar removeFromSuperview];
@@ -112,13 +118,14 @@
                                                                                 @"update-user-info",
                                                                                 [delegate.preferences objectForKey:K_USER_NAME],
                                                                                 [delegate.preferences objectForKey:K_USER_GENDER],
-                                                                                [delegate.preferences objectForKey:K_USER_EMAIL]                                                                    
+                                                                                [delegate.preferences objectForKey:K_USER_EMAIL], [delegate.preferences objectForKey:K_USER_BDAY]
                                                                                 ]
                                                                       forKeys:@[
                                                                                 @"action",
                                                                                 @"username",
                                                                                 @"usergender",
-                                                                                @"useremail"]]
+                                                                                @"useremail",
+                                                                                @"userbday"]]
          
                                          interation:0 callback:^(NSDictionary *data) {
                                    //          NSLog(@"%@",[delegate.preferences objectForKey:K_USER_NAME]);
@@ -142,7 +149,10 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"editinfo"];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     [cell.textLabel setText:[fields objectAtIndex:indexPath.row]];
-    
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+    [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
+    [cell setBackgroundColor:[UIColor whiteColor]];
     // Configure the cell...
     
     if (indexPath.row ==0) {
@@ -156,10 +166,7 @@
         [cell.detailTextLabel setText:[delegate.preferences objectForKey:K_USER_EMAIL]];
     } else if (indexPath.row==4) {
         [cell.detailTextLabel setText:bdate];
-    
     }
-    
-    
     return cell;
 }
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -226,7 +233,7 @@
         }
     } else if (indexPath.row==4) {
         [pickerViewToolbar addSubview:bday];
-        [pickerValue setText:bdate];
+        [pickerValue setText:bdate];        
         [self.view.window.rootViewController.view addSubview:pickerViewToolbar];
     }
 }

@@ -39,13 +39,15 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"non"];
-    
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:[UIColor darkTextColor]];
     
     UILabel *m = [[UILabel alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,60)];
     [m setTextAlignment:NSTextAlignmentCenter];
     [m setFont:[UIFont systemFontOfSize:FONT_L]];
     [m setTextColor:[UIColor darkTextColor]];
     [m setText:TEXT_NO_COUPON];
+    [m setBackgroundColor:[UIColor whiteColor]];
     [cell addSubview:m];
     
     return cell;

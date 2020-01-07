@@ -61,12 +61,44 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:TEXT_PAST_ACTIVITIES];
-    [cell.imageView setImage:[delegate getImage:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:0] callback:^(UIImage *image) {
-        [cell.imageView setImage:image];
-    }]];
-    [cell.textLabel setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"title"]];
-    [cell.detailTextLabel setText:[NSString stringWithFormat:@"%lu %@",(unsigned long)[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"album"] count], TEXT_PAST_ACTIVITIES_PHOTO]];
-     
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    
+    UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,0,140,100)];
+    [img setClipsToBounds:YES];
+    [img setContentMode:UIViewContentModeScaleAspectFill];
+    [img setImage:[delegate getImage:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:0] callback:^(UIImage *image) {
+           [img setImage:image];
+       }]];
+    [img setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
+    [cell addSubview:img];
+   
+    UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(100+SIDE_PAD_2+SIDE_PAD_2,10,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2-100,20)];
+    [l setFont:[UIFont systemFontOfSize:FONT_M]];
+    [l setTextColor:UICOLOR_GOLD];
+    [l setNumberOfLines:1];
+    [l setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"title"]];
+    [cell addSubview:l];
+    
+    UILabel *t = [[UILabel alloc] initWithFrame:CGRectMake(100+SIDE_PAD_2+SIDE_PAD_2,40,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2-100,20)];
+    [t setFont:[UIFont systemFontOfSize:FONT_S]];
+    [t setTextColor:[UIColor darkTextColor]];
+    [t setNumberOfLines:1];
+    [t setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"title"]];
+    [t setText:[NSString stringWithFormat:@"%@",[[datasrc objectAtIndex:indexPath.row] objectForKey:@"startdate"]]];
+    [cell addSubview:t];
+    
+    UILabel *d = [[UILabel alloc] initWithFrame:CGRectMake(100+SIDE_PAD_2+SIDE_PAD_2,60,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2-100,20)];
+    [d setFont:[UIFont systemFontOfSize:FONT_S]];
+    [d setTextColor:[UIColor darkTextColor]];
+    [d setNumberOfLines:1];
+    [d setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"title"]];
+    [d setText:[NSString stringWithFormat:@"%lu %@",(unsigned long)[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"album"] count], TEXT_PAST_ACTIVITIES_PHOTO]];
+    [cell addSubview:d];
+   
+    
+    
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     // Configure the cell...
     
@@ -122,3 +154,4 @@
 */
 
 @end
+

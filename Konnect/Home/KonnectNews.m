@@ -64,6 +64,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+    [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     int y = LINE_PAD;
     UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth,LINE_HEIGHT)];

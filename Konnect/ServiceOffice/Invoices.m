@@ -122,6 +122,9 @@
                                                    reuseIdentifier:TEXT_INVOICE];
     // Configure the cell...
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+    [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
     if (indexPath.section==1) {
         [cell.textLabel setText:TEXT_INVOICE_TOTAL_PENDING];
         if ([[datasrc objectForKey:@"pendingamount"] floatValue]>0) {

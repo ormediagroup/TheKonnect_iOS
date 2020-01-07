@@ -71,6 +71,9 @@
     
     if (indexPath.section==0) {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@""];
+        [cell setBackgroundColor:[UIColor whiteColor]];
+        [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+        [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         CGFloat w = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:1] floatValue];
         CGFloat h = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:2] floatValue];
@@ -83,6 +86,9 @@
         return cell;
     } else {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TEXT_CS];
+        [cell setBackgroundColor:[UIColor whiteColor]];
+        [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+        [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         if (indexPath.row==0) {

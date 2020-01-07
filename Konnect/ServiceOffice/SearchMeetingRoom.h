@@ -25,7 +25,9 @@ typedef enum {
     UILabel *pickerValue;
     ROOM_STATUS_TYPE status;
     NSDictionary *facility;
-    NSArray *bookedrooms;
+    NSArray *bookedrooms;    
+    BOOL isToday, refreshDate;
+    CGFloat startHr, startMin;
 }
 @property NSDictionary *facility;
 @end

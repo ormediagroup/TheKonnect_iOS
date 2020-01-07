@@ -40,7 +40,7 @@
     int y=50;
     {
         login = [UIButton buttonWithType:UIButtonTypeCustom];
-        [login setTitle:@"登錄" forState:UIControlStateNormal];
+        [login setTitle:TEXT_LOGIN forState:UIControlStateNormal];
         login.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [login setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
         [login.titleLabel setFont:[UIFont boldSystemFontOfSize:FONT_M]];
@@ -52,7 +52,7 @@
     {
         
         reg = [UIButton buttonWithType:UIButtonTypeCustom];
-        [reg setTitle:@"註冊" forState:UIControlStateNormal];
+        [reg setTitle:TEXT_REGISTER forState:UIControlStateNormal];
         [reg.titleLabel setTextAlignment:NSTextAlignmentLeft];
         reg.tag = SIDE_PAD+88;
         reg.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -103,6 +103,7 @@
         [parent backToIntro];
     }
 }
+
 -(void) setupLogin {
     int y = 0;
     
@@ -113,6 +114,7 @@
     areaCode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     UITextField *arrow = [[UITextField alloc] initWithFrame:CGRectMake(70,0,10,LINE_HEIGHT)];
     [arrow setText:DOWN_ARROW];
+    [arrow setTextColor:[UIColor darkTextColor]];
     [arrow setFont:[UIFont systemFontOfSize:10]];
     [areaCode addSubview:arrow];
     [areaCode setFrame:CGRectMake(SIDE_PAD_2,y,80,LINE_HEIGHT)];
@@ -122,8 +124,11 @@
     
     phone = [[UITextField alloc] initWithFrame:CGRectMake(140,y,delegate.screenWidth-140-SIDE_PAD_2,LINE_HEIGHT)];
     [phone setKeyboardType:UIKeyboardTypePhonePad];
-    [phone setPlaceholder:@"手機號碼"];
+    [phone setTextColor:[UIColor darkTextColor]];
     [delegate addDoneToKeyboard:phone];
+    [delegate addPlaceHolder:phone text:TEXT_MOBILE_NO];
+    
+
     [phone setDelegate:self];
     clearPhone = [UIButton buttonWithType:UIButtonTypeCustom];
     [clearPhone setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
@@ -145,7 +150,8 @@
     password = [[UITextField alloc] initWithFrame:CGRectMake(SIDE_PAD_2,y,delegate.screenWidth-40-SIDE_PAD_2,LINE_HEIGHT)];
     [password setKeyboardType:UIKeyboardTypeDefault];
     [password setSecureTextEntry:YES];
-    [password setPlaceholder:@"密碼"];
+    [delegate addPlaceHolder:password text:TEXT_PASSWORD center:YES];
+    [password setTextColor:[UIColor darkTextColor]];
     [delegate addDoneToKeyboard:password];
     [password setDelegate:self];
     clearPassword = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -314,6 +320,7 @@
                                                 [self->delegate.preferences setObject:[data objectForKey:K_USER_GENDER] forKey:K_USER_GENDER];
                                                 [self->delegate.preferences setObject:[data objectForKey:K_USER_EMAIL] forKey:K_USER_EMAIL];
                                                 [self->delegate.preferences setObject:[data objectForKey:K_USER_TIER] forKey:K_USER_TIER];
+                                                [self->delegate.preferences setObject:[data objectForKey:K_USER_BDAY] forKey:K_USER_BDAY];
                                                 [self->delegate.preferences setObject:[data objectForKey:K_USER_NO] forKey:K_USER_NO];
                                                 [self->delegate.preferences setObject:[data objectForKey:K_USER_AVATAR] forKey:K_USER_AVATAR];
                                                 [self->delegate.preferences synchronize];
@@ -387,6 +394,7 @@
                 [self->delegate.preferences setObject:[data objectForKey:K_USER_TIER] forKey:K_USER_TIER];
                 [self->delegate.preferences setObject:[data objectForKey:K_USER_NO] forKey:K_USER_NO];
                 [self->delegate.preferences setObject:[data objectForKey:K_USER_AVATAR] forKey:K_USER_AVATAR];
+                [self->delegate.preferences setObject:[data objectForKey:K_USER_BDAY] forKey:K_USER_BDAY];
                 [self->delegate.preferences synchronize];
                 [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
                 [self->password setText:@""];

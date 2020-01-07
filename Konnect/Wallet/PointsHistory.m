@@ -185,6 +185,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"points"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:[UIColor darkTextColor]];
     if (indexPath.section==0) {
         UILabel *t2 = [[UILabel alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth-SIDE_PAD,60)];
         [t2 setText:[NSString stringWithFormat:@"結束時間 %@",SMALL_DOWN_ARROW]];

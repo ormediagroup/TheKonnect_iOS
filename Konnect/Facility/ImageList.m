@@ -49,6 +49,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PHOTO"];
+    [cell setBackgroundColor:[UIColor whiteColor]];
     /*cell.layer.borderColor = [[UIColor whiteColor] CGColor];
     cell.layer.borderWidth = 1.0f;
      */

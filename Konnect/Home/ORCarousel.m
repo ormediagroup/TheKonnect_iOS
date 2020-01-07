@@ -25,6 +25,7 @@
         [self.view addSubview:scroll];
         [self.view setClipsToBounds:YES];
         [scroll setClipsToBounds:YES];
+        scroll.showsHorizontalScrollIndicator = NO;
         [scroll setBounces:NO];
         [scroll setDelegate:self];
        // NSLog (@"OR Carousel Load d: %f",delegate.screenWidth);

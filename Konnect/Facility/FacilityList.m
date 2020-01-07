@@ -16,12 +16,13 @@
 
 @implementation FacilityList
 @synthesize title;
+
 -(void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:title];
-
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.tableView.backgroundColor = [delegate getThemeColor];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;

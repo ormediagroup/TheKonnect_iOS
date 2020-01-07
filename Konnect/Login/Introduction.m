@@ -155,7 +155,7 @@
 
         [phone setTextAlignment:NSTextAlignmentJustified];
         [phone setTextColor:[UIColor colorWithWhite:1.0 alpha:0.8]];
-        [phone setText:@"聯繫電話: (852) 12345-6789"];
+        [phone setText:@"聯繫電話: (852) 2272-3456"];
         [phone setFont:[UIFont systemFontOfSize:FONT_S]];
         [phone sizeToFit];
         [black addSubview:phone];

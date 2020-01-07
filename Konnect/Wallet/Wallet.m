@@ -169,6 +169,8 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"wallet"];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:[UIColor darkTextColor]];
     [cell.textLabel setText:[dataSrc objectAtIndex:indexPath.row]];
     return cell;
 }

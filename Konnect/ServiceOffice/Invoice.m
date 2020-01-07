@@ -83,6 +83,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                    reuseIdentifier:TEXT_INVOICE];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+    [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
     if (indexPath.section==0) {
         if (indexPath.row==[fields count]){
             if ([[datasrc objectForKey:@"status"] isEqualToString:TEXT_INVOICE_TYPE_PENDING]) {

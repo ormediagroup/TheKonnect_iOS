@@ -50,6 +50,8 @@
     remarks.layer.borderColor = [UICOLOR_LIGHT_GREY CGColor];
     remarks.layer.borderWidth = 0.5f;
     remarks.layer.cornerRadius =5.0f;
+    [remarks setBackgroundColor:[UIColor whiteColor]];
+    [remarks setTextColor:[UIColor darkTextColor]];
     UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
     [keyboardToolbar sizeToFit];
     UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
@@ -210,6 +212,12 @@
             [l setAttributedText:hS];
             [l sizeToFit];
             return l.frame.size.height+LINE_PAD+LINE_PAD;
+        } else  if (indexPath.row==1 || indexPath.row==2){
+             if ([[delegate.preferences objectForKey:K_USER_TIER]  isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_MEMBER]) {
+                 return UITableViewAutomaticDimension;
+             } else {
+                 return 0;
+             }
         } else {
             return UITableViewAutomaticDimension;
         }
@@ -226,6 +234,8 @@
     [cell setBackgroundColor:[UIColor whiteColor]];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+    [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
     if (indexPath.section==0) {
         [cell addSubview:carousel];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -238,11 +248,16 @@
             [l sizeToFit];
             [cell addSubview:l];
         } else if (indexPath.row==1) {
-            [cell.textLabel setText:TEXT_PHONE];
-            [cell.detailTextLabel setText:TEXT_K_CON_PHONE];
+            if ([[delegate.preferences objectForKey:K_USER_TIER]  isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_MEMBER]) {
+                [cell.textLabel setText:TEXT_PHONE];
+                [cell.detailTextLabel setText:TEXT_K_CON_PHONE];
+            }
         } else if (indexPath.row==2) {
-            [cell.textLabel setText:TEXT_EMAIL];
-            [cell.detailTextLabel setText:TEXT_K_CON_EMAIL];
+            if ([[delegate.preferences objectForKey:K_USER_TIER]  isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_MEMBER]) {
+
+                [cell.textLabel setText:TEXT_EMAIL];
+                [cell.detailTextLabel setText:TEXT_K_CON_EMAIL];
+            }
         }
     } else {
         if (indexPath.row==0) {

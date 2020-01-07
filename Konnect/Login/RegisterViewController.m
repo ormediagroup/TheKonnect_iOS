@@ -37,6 +37,7 @@
     UITextField *arrow = [[UITextField alloc] initWithFrame:CGRectMake(70,0,10,LINE_HEIGHT)];
     [arrow setText:DOWN_ARROW];
     [arrow setFont:[UIFont systemFontOfSize:10]];
+    [arrow setTextColor:UICOLOR_LIGHT_GREY];
     [areaCode addSubview:arrow];
     areaCode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [areaCode setFrame:CGRectMake(SIDE_PAD_2,0,80,LINE_HEIGHT)];
@@ -47,9 +48,10 @@
     
     phone = [[UITextField alloc] initWithFrame:CGRectMake(120,0,delegate.screenWidth-140-SIDE_PAD,LINE_HEIGHT)];
     [phone setKeyboardType:UIKeyboardTypePhonePad];
-    [phone setPlaceholder:@"請輸入8個位手機號碼"];
+    [delegate addPlaceHolder:phone text:TEXT_PLEASE_ENTER_8_DIGIT_PHONE center:YES];
     [phone setTextAlignment:NSTextAlignmentCenter];
     [delegate addDoneToKeyboard:phone];
+    [phone setTextColor:[UIColor darkTextColor]];
     [phone setDelegate:self];
     clearPhone = [UIButton buttonWithType:UIButtonTypeCustom];
     [clearPhone setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
@@ -72,7 +74,8 @@
     [verification setKeyboardType:UIKeyboardTypeNumberPad];
     verification.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [verification setSecureTextEntry:YES];
-    [verification setPlaceholder:@"請輸入6個位認證碼"];
+    [verification setTextColor:[UIColor darkTextColor]];
+    [delegate addPlaceHolder:verification text:TEXT_PLEASE_ENTER_6_DIGIT_VER center:YES];
     verification.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [delegate addDoneToKeyboard:verification];
     [verification setDelegate:self];
@@ -104,8 +107,9 @@
     
     email = [[UITextField alloc] initWithFrame:CGRectMake(SIDE_PAD_2,y,delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2-40,LINE_HEIGHT)];
     [email setKeyboardType:UIKeyboardTypeEmailAddress];
-    [email setPlaceholder:@"請輸入電郵地址"];
+    [delegate addPlaceHolder:email text:TEXT_PLEASE_ENTER_EMAIL center:YES];
     [email setTextAlignment:NSTextAlignmentCenter];
+    [email setTextColor:[UIColor darkTextColor]];
     [delegate addDoneToKeyboard:email];
     clearEmail = [UIButton buttonWithType:UIButtonTypeCustom];
     [clearEmail setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];

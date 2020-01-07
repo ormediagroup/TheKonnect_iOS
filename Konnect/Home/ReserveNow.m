@@ -60,6 +60,9 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TEXT_RESERVATION];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+    [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
     UIImageView *i = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,100,100)];
     [i setContentMode:UIViewContentModeScaleAspectFill];
     [i setClipsToBounds:YES];
@@ -67,6 +70,7 @@
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(110,0,delegate.screenWidth-SIDE_PAD-110,100)];
     [l setFont:[UIFont systemFontOfSize:FONT_S]];
+    [l setTextColor:[UIColor darkTextColor]];
     [cell addSubview:l];
     if (indexPath.section==0) {
         [i setImage:[delegate getImage:[[fnb objectAtIndex:indexPath.row] objectForKey:@"images"] callback:^(UIImage *image) {

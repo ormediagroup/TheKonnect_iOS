@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString * eventID;
     UIView *toolbar;
     NSDictionary *datasrc;
+    UIButton *tou;
     
 }
 @property NSString *eventID;

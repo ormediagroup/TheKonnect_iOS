@@ -11,7 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Events : ORTableViewController {
-    NSArray *datasrc;
+    NSArray *datasrc, *kevents, *vipevents, *otherevents, *pastevents;
+    CGFloat rowHeight;
 }
 
 @end

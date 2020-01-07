@@ -132,11 +132,11 @@
     CGFloat width = (delegate.screenWidth/3);
     CGFloat height = 50;
     x = 0;
-    [keyboard addSubview:[self createNumber:7 inFrame:CGRectMake(x,y,width,height)]];
+    [keyboard addSubview:[self createNumber:1 inFrame:CGRectMake(x,y,width,height)]];
     x+=width;
-    [keyboard addSubview:[self createNumber:8 inFrame:CGRectMake(x,y,width,height)]];
+    [keyboard addSubview:[self createNumber:2 inFrame:CGRectMake(x,y,width,height)]];
     x+=width;
-    [keyboard addSubview:[self createNumber:9 inFrame:CGRectMake(x,y,width,height)]];
+    [keyboard addSubview:[self createNumber:3 inFrame:CGRectMake(x,y,width,height)]];
     x = 0;
     y+=height;
     [keyboard addSubview:[self createNumber:4 inFrame:CGRectMake(x,y,width,height)]];
@@ -146,11 +146,11 @@
     [keyboard addSubview:[self createNumber:6 inFrame:CGRectMake(x,y,width,height)]];
     x = 0;
     y+=height;
-    [keyboard addSubview:[self createNumber:1 inFrame:CGRectMake(x,y,width,height)]];
+    [keyboard addSubview:[self createNumber:7 inFrame:CGRectMake(x,y,width,height)]];
     x+=width;
-    [keyboard addSubview:[self createNumber:2 inFrame:CGRectMake(x,y,width,height)]];
+    [keyboard addSubview:[self createNumber:8 inFrame:CGRectMake(x,y,width,height)]];
     x+=width;
-    [keyboard addSubview:[self createNumber:3 inFrame:CGRectMake(x,y,width,height)]];
+    [keyboard addSubview:[self createNumber:9 inFrame:CGRectMake(x,y,width,height)]];
     x = 0;
     y+=height;
     [keyboard addSubview:[self createNumber:-1 inFrame:CGRectMake(x,y,width,height)]];
@@ -316,15 +316,21 @@
                                                  interation:0
                                                    callback:^(NSDictionary *data) {
                                                        if ([[data objectForKey:@"rc"] intValue]==0) {
-                                                           [self->delegate raiseAlert:TEXT_PAYMENT_SUCCESS msg:@""];
+                                                           if ([self->vendorid isEqualToString:@"meetingroom"]) {
+                                                               [self->delegate raiseAlert:TEXT_PAYMENT_SUCCESS msg:TEXT_BOOK_MEETING_ROOM_SUCCESS];
+                                                           } else {
+                                                               [self->delegate raiseAlert:TEXT_PAYMENT_SUCCESS msg:@""];
+                                                           }
                                                            [[NSNotificationCenter defaultCenter] postNotificationName:RESTORE_BACK_BTN object:nil];
                                                            [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
                                                            if ([self->vendorid isEqualToString:@"print"]) {
                                                                 [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
                                                            }
                                                        } else if ([[data objectForKey:@"rc"] intValue]==6) {
-                                                           [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
+                                                           [self clearAll];
+                                                           [self->delegate raiseAlert:@"" msg:[data objectForKey:@"errmsg"]];
                                                        } else {
+                                                           [self clearAll];
                                                            [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
                                                        }
                                                    }];

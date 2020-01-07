@@ -24,6 +24,7 @@
     [bookingName setTextAlignment:NSTextAlignmentRight];
     [bookingName setLeftViewMode:UITextFieldViewModeAlways];
     [bookingName setPlaceholder:TEXT_BOOK_NAME];
+    [bookingName setTextColor:[UIColor darkTextColor]];
     if ([[delegate.preferences objectForKey:K_USER_NAME] isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:K_USER_NAME] isEqualToString:@""]) {
         [bookingName setText:[delegate.preferences objectForKey:K_USER_NAME]];
     }
@@ -33,6 +34,7 @@
     [bookingPhone setTextAlignment:NSTextAlignmentRight];
     [bookingPhone setLeftViewMode:UITextFieldViewModeAlways];
     [delegate addDoneToKeyboard:bookingPhone];
+    [bookingPhone setTextColor:[UIColor darkTextColor]];
     [bookingPhone setKeyboardType:UIKeyboardTypePhonePad];
     [bookingPhone setPlaceholder:TEXT_BOOK_PHONE];
     if ([[delegate.preferences objectForKey:K_USER_PHONE] isKindOfClass:[NSString class]] && ![[delegate.preferences objectForKey:K_USER_PHONE] isEqualToString:@""]) {
@@ -54,6 +56,7 @@
     UIView *toolbar = [[UIView alloc] initWithFrame:CGRectMake(0,top,delegate.screenWidth,50)];
     [toolbar setBackgroundColor:[UIColor whiteColor]];
     [pickerViewToolbar addSubview:toolbar];
+    [delegate setSystemBG:toolbar];
     
     UIButton *done = [UIButton buttonWithType:UIButtonTypeCustom];
     [done setFrame:CGRectMake(delegate.screenWidth-100,0,100,50)];
@@ -74,6 +77,8 @@
     remarks.layer.borderColor = [UICOLOR_LIGHT_GREY CGColor];
     remarks.layer.borderWidth = 0.5f;
     remarks.layer.cornerRadius =5.0f;
+    [remarks setBackgroundColor:[UIColor whiteColor]];
+    [remarks setTextColor:[UIColor darkTextColor]];
     UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
     [keyboardToolbar sizeToFit];
     UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
@@ -95,6 +100,7 @@
     inquirypicker.delegate = self;
     inquirypicker.dataSource = self;
     inquirypicker.tag = 1;
+    [delegate setSystemBG:inquirypicker];
     if ([inquirytype isEqualToString:@""]) {
         inquirytype = TEXT_INQUIRY_GENERAL;
     }
@@ -232,6 +238,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TEXT_CS];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+    [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
     if (indexPath.section ==0) {
         if (indexPath.row==0) {
             [cell.textLabel setText:TEXT_ADDRESS];

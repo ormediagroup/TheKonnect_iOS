@@ -116,6 +116,7 @@
     [cell setBackgroundColor:[UIColor whiteColor]];
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [cell.textLabel setTextColor:[UIColor darkTextColor]];
     if (indexPath.section==0) {
         [cell addSubview:carousel];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];

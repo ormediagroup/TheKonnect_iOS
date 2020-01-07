@@ -11,7 +11,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MessageDetails : ORViewController <WKNavigationDelegate> {
-     WKWebView *wkweb;
+    WKWebView *wkweb;
+    UILabel *title;
+    UILabel *ts;
+    UIView *sep;
 }
 -(void) loadMessage:(int)messageID;
 @end

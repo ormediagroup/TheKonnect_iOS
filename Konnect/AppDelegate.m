@@ -688,4 +688,24 @@
         [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
     });
 }
+-(void) addPlaceHolder:(UITextField*)f text:(NSString *)text center:(BOOL)center{
+    NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+    if (center) {
+        paragraphStyle.alignment = NSTextAlignmentCenter;
+    } else {
+        paragraphStyle.alignment = NSTextAlignmentLeft;
+    }
+    f.attributedPlaceholder = [[NSAttributedString alloc] initWithString:text attributes:@{NSForegroundColorAttributeName:UICOLOR_LIGHT_GREY,
+                                                                                           NSParagraphStyleAttributeName:paragraphStyle}];
+}
+-(void) addPlaceHolder:(UITextField*)f text:(NSString *)text {
+    [self addPlaceHolder:f text:text center:NO];
+}
+-(void) setSystemBG:(UIView *)p {
+    if (@available(iOS 13, *)) {
+        [p setBackgroundColor:[UIColor systemBackgroundColor]];
+    } else {
+        [p setBackgroundColor:[UIColor whiteColor]];
+    }
+}
 @end

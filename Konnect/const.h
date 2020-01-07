@@ -41,10 +41,12 @@
 #define TEXT_MY @"我的"
 #define TEXT_UPDATE @"更新"
 #define TEXT_EMAIL @"電郵"
+#define TEXT_PASSWORD @"密碼"
 #define TEXT_MSG @"通知"
 #define TEXT_CS @"客服"
 #define BACK_TEXT @"返回"
 #define TEXT_NO @"否"
+#define TEXT_NO_NEED @"不需要"
 #define TEXT_YES @"是"
 #define TEXT_LOGOUT @"登出"
 #define TEXT_COMPANY_INFO @"公司資料"
@@ -54,9 +56,14 @@
 #define TEXT_GO_LOGIN @"登入帳戶"
 #define TEXT_ENTER @"進入"
 #define TEXT_LOGIN_OR_REG @"登入 / 註冊"
+#define TEXT_PLEASE_ENTER_8_DIGIT_PHONE @"請輸入8個位手機號碼"
+#define TEXT_PLEASE_ENTER_6_DIGIT_VER @"請輸入6個位認證碼"
+#define TEXT_PLEASE_ENTER_EMAIL @"請輸入電郵地址"
 #define TEXT_GO_HOMEPAGE @"進入主頁面"
 #define TEXT_BACK @"返回"
+#define TEXT_MOBILE_NO @"手機號碼"
 #define TEXT_SUBMIT @"發送"
+#define TEXT_REGISTER @"註冊"
 #define TEXT_LOGIN @"登錄"
 #define TEXT_DONE @"完成"
 #define TEXT_CLOSE @"關閉"
@@ -121,9 +128,11 @@
 #define TEXT_BOOK_FB_NUMBER_PEOPLE @"訂座人數"
 #define TEXT_OTHER_MESSAGE @"其他信息"
 #define TEXT_PEOPLE @"人"
-#define TEXT_BOOK_FB_CONFIRM @"你確定訂座?"
-#define TEXT_BOOK_FB_SUCCESS @"我們已經收到你的預約，我們會有專人盡快和你聯絡。"
+#define TEXT_BOOK_FB_CONFIRM @"你確定預約?"
+#define TEXT_BOOK_FB_SUCCESS @"我們已收到你的預約，我們將會儘快與閣下聯絡以確認預約知訊。"
+#define TEXT_BOOK_MEETING_ROOM_SUCCESS @"你已成功預訂會議室"
 #define LEFT_ARROW @"\U000025C0"
+#define RIGHT_ARROW @"\U000025C1"
 #define DOWN_ARROW @"\U000025BC"
 #define SMALL_DOWN_ARROW @"\U000025BE"
 #define CLOSE_X @"\U00002715"
@@ -143,8 +152,11 @@
 #define TEXT_INQUIRY_BIZ @"商務合作"
 #define TEXT_INQUIRY_CONFIRM @"你確定發送?"
 #define TEXT_INQUIRY_SUCCESS @"感謝你的查詢，我們會盡快回復。！"
-#define TEXT_PAST_ACTIVITIES @"活動回顧"
+#define TEXT_PAST_ACTIVITIES @"回顧活動"
+#define TEXT_ALL_ACTIVITIES @"所有活動"
+#define TEXT_VIP_ACTIVITIES @"VIP & Club Legacy活動"
 #define TEXT_PAST_ACTIVITIES_PHOTO @"活動照片"
+#define TEXT_VIEW_ACTIVITIES @"瀏覽 %d 個活動"
 
 #define TEXT_INVOICE_TYPE_PAID @"已繳付"
 #define TEXT_INVOICE_TOTAL_PENDING @"尚未繳付總額"
@@ -194,12 +206,13 @@
 #define TEXT_DL_K_CORPORATE_FORM @"下載KONNECT團體會員入會登記表"
 #define TEXT_K_EVENT @"KONNECT活動"
 #define TEXT_RENT_K_SPACE @"預約場地或會議室"
+#define TEXT_INQUIRY_K_SPACE @"查詢場地或會議室"
 #define TEXT_RENT_POPUP @"Pop Up Lounge 活動場地"
 #define TEXT_RENT_EVENT_SPACE @"Polyform Event Space 活動場地"
 #define TEXT_RENT_MEETING_ROOM @"會議室"
 #define TEXT_RENT_MEETING_ROOM_NOW @"立即預約"
 #define TEXT_CANCEL_MEETING_ROOM @"取消預約"
-#define TEXT_CANNOT_CANCEL_NOW @"只能在24小時前取消"
+#define TEXT_CANNOT_CANCEL_NOW @"只能在24小時前免費取消, 已繳付的費用將不會退還"
 #define TEXT_FEE @"費用"
 #define TEXT_DATE @"日期"
 #define TEXT_TIME @"時間"
@@ -260,7 +273,12 @@
 #define TEXT_FUNCTION_NOTAVAIL @"此功能尚未開放"
 #define TEXT_UPDATE_AVAIL @"KONNECT 有新版本!"
 #define TEXT_PROCEED_TO_UPDATE @"請前往App Store更新"
-
+#define TEXT_IMPORTANT_NOTICE @"重要通知"
+#define TEXT_WEATHER_CONDITION @"天氣狀狀況"
+#define TEXT_CANCELLATION_POLICY @"取消程序"
+#define TEXT_GUARANTEE @"保證"
+#define TEXT_LIABILITY @"責任"
+#define TEXT_DISCLAIMER @"免責"
 
 #define UNCHECK_BOX @"\U00002610"
 #define CHECK_BOX @"\U00002714"
@@ -287,8 +305,9 @@
 #define K_USER_TIER @"kusertier"
 #define K_USER_NO @"kuserno"
 #define K_USER_AVATAR @"kuseravatar"
+#define K_USER_BDAY @"kuserbday"
 #define K_USER_SORRY_TIER_NOT_SUFFICIENT @"抱歉，會籍必須是 %@ 才可預約"
-
+#define TEXT_ACCEPT_TOU @"請閱讀並接受使用條款"
 #define PAYMENT_TOKEN @"paymenttoken"
 
 // User Token
@@ -376,7 +395,8 @@ typedef enum {
     VC_TYPE_CONCIERGE = 37,
     VC_TYPE_CONTACT_OFFICE = 38,
     VC_TYPE_PAST_ACTIVITIES = 39,
-    VC_TYPE_RESERVE_NOW = 40
+    VC_TYPE_RESERVE_NOW = 40,
+    VC_TYPE_EVENT_LIST = 41
 } VC_TYPE;
 
 #endif /* const_h */

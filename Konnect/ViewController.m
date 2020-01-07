@@ -53,7 +53,8 @@
 #import "ContactOffice.h"
 #import "PastEventsList.h"
 #import "ReserveNow.h"
-#define SKIP_AUTO_LOGIN 0
+#import "EventList.h"
+#define SKIP_AUTO_LOGIN 1
 @interface ViewController ()
 
 @end
@@ -507,7 +508,14 @@
             if (!pastEvents) {
                 pastEvents = [[PastEventsList alloc] initWithStyle:UITableViewStylePlain];
             }
-            [self pushOrPop:pastEvents];      
+            [self pushOrPop:pastEvents];
+        
+        } else if (type==VC_TYPE_EVENT_LIST) {
+            if (!events) {
+                events = [[EventList alloc] initWithStyle:UITableViewStylePlain];
+            }
+            events.datasrc = [notif.object objectForKey:@"datasrc"];
+            [self pushOrPop:events];
         }
         
         

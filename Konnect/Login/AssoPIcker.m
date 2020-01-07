@@ -159,6 +159,7 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"assoc"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell.textLabel setText:[fields objectAtIndex:indexPath.row]];
+    [cell.textLabel setTextColor:[UIColor darkTextColor]];
     if ([selected containsObject:[fields objectAtIndex:indexPath.row]]) {
         [cell setBackgroundColor:UICOLOR_GOLD];
     } else {

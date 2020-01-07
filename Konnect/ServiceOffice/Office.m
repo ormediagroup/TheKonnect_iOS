@@ -79,7 +79,9 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TEXT_SERVICE_OFFICE];
-    
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+    [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
     if (indexPath.section==0) {
         [cell.textLabel setText:[fields objectAtIndex:indexPath.row]];
         [cell.detailTextLabel setText:[datasrc objectForKey:[map objectAtIndex:indexPath.row]]];

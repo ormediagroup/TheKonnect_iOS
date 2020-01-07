@@ -16,6 +16,7 @@
 @synthesize facility;
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -23,7 +24,6 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     pickerViewToolbar = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.screenHeight)];
-    
     UIView *touchbg = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.screenHeight)];
     [touchbg setBackgroundColor:UICOLOR_ALPHA_BACKGROUND];
     [touchbg addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeToolbar)]];
@@ -34,6 +34,7 @@
     
     UIView *toolbar = [[UIView alloc] initWithFrame:CGRectMake(0,top,delegate.screenWidth,50)];
     [toolbar setBackgroundColor:[UIColor whiteColor]];
+    [delegate setSystemBG:toolbar];
     [pickerViewToolbar addSubview:toolbar];
     
     UIButton *done = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -55,6 +56,8 @@
     remarks.layer.borderColor = [UICOLOR_LIGHT_GREY CGColor];
     remarks.layer.borderWidth = 0.5f;
     remarks.layer.cornerRadius =5.0f;
+    remarks.backgroundColor = [UIColor whiteColor];
+    remarks.textColor = [UIColor darkTextColor];
     UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
     [keyboardToolbar sizeToFit];
     UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
@@ -69,35 +72,34 @@
     keyboardToolbar.items = @[flexBarButton, doneBarButton];
     remarks.inputAccessoryView = keyboardToolbar;
     remarks.delegate = self;
-    
-    
+        
     datepicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0,top+60,delegate.screenWidth,300)];
-    [datepicker setBackgroundColor:[UIColor whiteColor]];
     datepicker.delegate = self;
     datepicker.dataSource = self;
+    [delegate setSystemBG:datepicker];
     datepicker.tag = 1;
-    
+
     timepicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0,top+60,delegate.screenWidth,300)];
-    [timepicker setBackgroundColor:[UIColor whiteColor]];
     timepicker.delegate = self;
     timepicker.dataSource = self;
+    [delegate setSystemBG:timepicker];
     timepicker.tag = 1;
     
     peoplepicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0,top+60,delegate.screenWidth,300)];
-    [peoplepicker setBackgroundColor:[UIColor whiteColor]];
     peoplepicker.delegate = self;
     peoplepicker.dataSource = self;
+    [delegate setSystemBG:peoplepicker];
     peoplepicker.tag = 1;
     
     roompicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0,top+60,delegate.screenWidth,300)];
-    [roompicker setBackgroundColor:[UIColor whiteColor]];
     roompicker.delegate = self;
     roompicker.dataSource = self;
+    [delegate setSystemBG:roompicker];
     roompicker.tag = 1;
     
     alcoholpicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0,top+60,delegate.screenWidth,300)];
-    [alcoholpicker setBackgroundColor:[UIColor whiteColor]];
     alcoholpicker.delegate = self;
+    [delegate setSystemBG:alcoholpicker];
     alcoholpicker.dataSource = self;
     alcoholpicker.tag = 1;
     
@@ -115,16 +117,18 @@
     [bookingName setLeftViewMode:UITextFieldViewModeAlways];
     [bookingName setText:[delegate.preferences objectForKey:K_USER_NAME]];    
     [bookingName setPlaceholder:TEXT_BOOK_NAME];
+    [bookingName setTextColor:[UIColor darkTextColor]];
     [delegate addDoneToKeyboard:bookingName];
     bookingPhone = [[UITextField alloc] initWithFrame:CGRectMake(130,00,delegate.screenWidth-SIDE_PAD_2-130,46)];
     [bookingPhone setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0,0,10,50)]];
     [bookingPhone setTextAlignment:NSTextAlignmentRight];
     [bookingPhone setLeftViewMode:UITextFieldViewModeAlways];
     [delegate addDoneToKeyboard:bookingPhone];
+    [bookingPhone setTextColor:[UIColor darkTextColor]];
     [bookingPhone setText:[delegate.preferences objectForKey:K_USER_PHONE]];
     [bookingPhone setKeyboardType:UIKeyboardTypePhonePad];
     [bookingPhone setPlaceholder:TEXT_BOOK_PHONE];
-    bookRoom = TEXT_NO;
+    bookRoom = TEXT_NO_NEED;
     bookAlcohol = TEXT_NO;
     
 }
@@ -206,16 +210,17 @@
     }
     [pickerViewToolbar removeFromSuperview];
 }
+
 -(NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     if (pickerView==datepicker) {
         NSDate *now = [NSDate date];
         NSDate *newdate = [now dateByAddingTimeInterval:row*24*60*60];
         return [dateFormat stringFromDate:newdate];
     } else if (pickerView == timepicker) {
-        if (component==0) {
-            return [NSString stringWithFormat:@"%02d",(int)row+9];
+        if ([[facility objectForKey:@"timeslot"] isKindOfClass:[NSArray class]]) {
+            return [[facility objectForKey:@"timeslot"] objectAtIndex:row];
         } else {
-            return [NSString stringWithFormat:@"%02d",(int)row*30];
+            return 0;
         }
     } else if (pickerView==peoplepicker) {
         return [NSString stringWithFormat:@"%d",(int)row+1];
@@ -232,20 +237,16 @@
     }
 }
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    if (pickerView == timepicker) {
-        return 2;
-    } else {
-        return 1;
-    }
+    return 1;
 }
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     if (pickerView==datepicker) {
         return 30;
     } else if (pickerView == timepicker) {
-        if (component==0) {
-            return 12;
+        if ([[facility objectForKey:@"timeslot"] isKindOfClass:[NSArray class]]) {
+            return [[facility objectForKey:@"timeslot"] count];
         } else {
-            return 2;
+            return 0;
         }
     } else if (pickerView == peoplepicker) {
         return 23;
@@ -263,12 +264,23 @@
         NSDate *newdate = [now dateByAddingTimeInterval:row*24*60*60];
         [pickerValue setText:[dateFormat stringFromDate:newdate]];
     } else if (pickerView == timepicker) {
+        /*
         if (component==0) {
             bookTimeHr = [NSString stringWithFormat:@"%02d",(int)row+9];
         } else {
             bookTimeMin = [NSString stringWithFormat:@"%02d",(int)row*30];
         }
-        [pickerValue setText:[NSString stringWithFormat:@"%@:%@",bookTimeHr,bookTimeMin]];
+       // [pickerValue setText:[NSString stringWithFormat:@"%@:%@",bookTimeHr,bookTimeMin]];
+         */
+        if ([[facility objectForKey:@"timeslot"] isKindOfClass:[NSArray class]]) {
+
+            [pickerValue setText:[[facility objectForKey:@"timeslot"] objectAtIndex:row]];
+            NSArray *v = [pickerValue.text componentsSeparatedByString:@":"];
+            if ([v count]==2) {
+                bookTimeHr = v[0];
+                bookTimeMin = v[1];
+            }
+        }
     } else if (pickerView==peoplepicker) {
         bookPeople = [NSString stringWithFormat:@"%d",(int)row+1];
         [pickerValue setText:[NSString stringWithFormat:@"%@%@",bookPeople,TEXT_PEOPLE]];
@@ -341,18 +353,16 @@
                                                                  whiteBadge.frame.size.width-SIDE_PAD_2-(SIDE_PAD+logo.frame.origin.x + logo.frame.size.width),
                                                                  30
                                                                  )];
-    [phone setText:[facility objectForKey:@"phone_1"]];
+    [phone setText:[NSString stringWithFormat:@"%@ %@",TEXT_PHONE_INQUIRY,[facility objectForKey:@"phone_1"]]];
     [phone setFont:[UIFont systemFontOfSize:FONT_S]];
     [phone setTextColor:UICOLOR_GOLD];
     [phone setNumberOfLines:-1];
     [phone sizeToFit];
     [whiteBadge addSubview:phone];
-    
-    
+        
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,v.frame.size.height-20,delegate.screenWidth,20)];
     [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY];
     [v addSubview:line];
-    
     
     return v;
     /*
@@ -375,7 +385,9 @@
     return delegate.footerHeight;
 }
 -(UIView *) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.footerHeight)];
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.footerHeight)];
+    [v setBackgroundColor:[UIColor whiteColor]];
+    return v;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -412,9 +424,11 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TEXT_BOOK_RESTAURANT];
-    
+    [cell setBackgroundColor:[UIColor whiteColor]];
     // Configure the cell...
     [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+    [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
     if (indexPath.row==0) {
         [cell.textLabel setText:TEXT_BOOK_NAME];
         [cell addSubview:bookingName];

@@ -54,6 +54,7 @@
     UIView *toolbar = [[UIView alloc] initWithFrame:CGRectMake(0,top,delegate.screenWidth,50)];
     [toolbar setBackgroundColor:[UIColor whiteColor]];
     [pickerViewToolbar addSubview:toolbar];
+    [delegate setSystemBG:toolbar];
     
     UIButton *done = [UIButton buttonWithType:UIButtonTypeCustom];
     [done setFrame:CGRectMake(delegate.screenWidth-100,0,100,50)];
@@ -74,6 +75,7 @@
     [datepicker setBackgroundColor:[UIColor whiteColor]];
     datepicker.delegate = self;
     datepicker.dataSource = self;
+    [delegate setSystemBG:datepicker];
     datepicker.tag = 1;
     
     starttimepicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0,top+60,delegate.screenWidth,300)];
@@ -81,24 +83,56 @@
     starttimepicker.delegate = self;
     starttimepicker.dataSource = self;
     starttimepicker.tag = 1;
+    [delegate setSystemBG:starttimepicker];
     
     endtimepicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0,top+60,delegate.screenWidth,300)];
     [endtimepicker setBackgroundColor:[UIColor whiteColor]];
     endtimepicker.delegate = self;
     endtimepicker.dataSource = self;
     endtimepicker.tag = 1;
+    [delegate setSystemBG:endtimepicker];
     
     dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd"];
     
     bookDate = [dateFormat stringFromDate:[NSDate date]];
+    isToday = YES;
+    refreshDate = NO;
+    [starttimepicker selectRow:0 inComponent:0 animated:NO];
+    [endtimepicker selectRow:0 inComponent:0 animated:NO];
+    NSDateFormatter *hFormat = [[NSDateFormatter alloc] init];
+    [hFormat setDateFormat:@"HH"];
+    int hr = [[hFormat stringFromDate:[NSDate date]] intValue];
+    [hFormat setDateFormat:@"mm"];
+    int min = [[hFormat stringFromDate:[NSDate date]] intValue];
+    if (min>30) {
+        startHr = hr+1;
+        startMin = 0;
+        bookStartTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr)];
+        bookStartTimeMin = @"00";
+        bookEndTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr)];
+        bookEndTimeMin = @"30";
+        startTime = startHr+startMin;
+        endTime = startTime+0.5;
+    } else {
+        startHr = hr;
+        startMin = 0.5;
+        bookStartTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr)];
+        bookStartTimeMin = @"30";
+        bookEndTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr+1)];
+        bookEndTimeMin = @"00";
+        startTime = startHr+startMin;
+        endTime = startTime+0.5;
+    }
+    
+    /*
     bookStartTimeHr = @"09";
     bookStartTimeMin = @"00";
     bookEndTimeHr = @"10";
     bookEndTimeMin = @"00";
     startTime = 9.0;
     endTime = 10.0;
-    [starttimepicker selectRow:9 inComponent:0 animated:NO];
+     */
     // [endtimepicker selectRow:10 inComponent:0 animated:NO];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -129,45 +163,39 @@
         NSDate *newdate = [now dateByAddingTimeInterval:row*24*60*60];
         return [dateFormat stringFromDate:newdate];
     } else if (pickerView == starttimepicker) {
-        if (component==0) {
-            return [NSString stringWithFormat:@"%02d",(int)row];
-        } else {
-            return [NSString stringWithFormat:@"%02d",(int)row*30];
-        }
+        CGFloat r = (startHr+startMin+0.5*row);
+        int hr = floor(r);
+        int min = (r > floor(r))?30:0;
+        return [NSString stringWithFormat:@"%02d:%02d",hr,min];
     } else if (pickerView == endtimepicker) {
-        if (component==0) {
-            CGFloat t = floor(startTime + 0.5);
-            return [NSString stringWithFormat:@"%02d",(int)(row+t)];
-        } else {
-            return [NSString stringWithFormat:@"%02d",(int)row*30];
-        }
+        CGFloat r = (startTime+0.5+0.5*row);
+        int hr = floor(r);
+        int min = (r > floor(r))?30:0;
+        return [NSString stringWithFormat:@"%02d:%02d",hr,min];
     } else {
         return @"";
     }
 }
 -(NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    if (pickerView == starttimepicker || pickerView == endtimepicker) {
+  /*  if (pickerView == starttimepicker || pickerView == endtimepicker) {
         return 2;
     } else {
+   */
         return 1;
-    }
+    //}
 }
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     if (pickerView==datepicker) {
         return 30;
     } else if (pickerView == starttimepicker) {
-        if (component==0) {
-            return 23;
+        if (!isToday) {
+            return 48;
         } else {
-            return 2;
+            int comp = 48-(startHr+startMin)*2;
+            return comp;
         }
     } else if (pickerView == endtimepicker) {
-        if (component==0) {
-            CGFloat t = floor(startTime + 0.5);
-            return 23 - t;
-        } else {
-            return 2;
-        }
+        return 48-(startTime*2);
     }
     return 0;
 }
@@ -175,12 +203,21 @@
     if (pickerView==datepicker) {
         NSDate *now = [NSDate date];
         NSDate *newdate = [now dateByAddingTimeInterval:row*24*60*60];
+        if (row==0) {
+           isToday = YES;
+        } else {
+            if (isToday) {
+                 // switched date
+                refreshDate = YES;
+            }
+           isToday = NO;
+        }
         [pickerValue setText:[dateFormat stringFromDate:newdate]];
     } else if (pickerView == starttimepicker) {
-        if (component==0) {
-            bookStartTimeHr = [NSString stringWithFormat:@"%02d",(int)row];
-        } else {
-            bookStartTimeMin = [NSString stringWithFormat:@"%02d",(int)row*30];
+        NSArray *st = [[self pickerView:starttimepicker titleForRow:row forComponent:component] componentsSeparatedByString:@":"];
+        if ([st count]==2) {
+            bookStartTimeHr = st[0];
+            bookStartTimeMin = st[1];
         }
         [pickerValue setText:[NSString stringWithFormat:@"%@:%@",bookStartTimeHr,bookStartTimeMin]];
         startTime = [bookStartTimeHr floatValue];
@@ -189,31 +226,27 @@
         }
         [endtimepicker reloadAllComponents];
         if (startTime >= endTime) {
-            endTime = startTime + 1;
-            bookEndTimeHr = [NSString stringWithFormat:@"%02d",((int)row+1)];
-            bookEndTimeMin = bookStartTimeMin;
             [endtimepicker selectRow:0 inComponent:0 animated:NO];
-            if (floor(endTime)<endTime) {
-                [endtimepicker selectRow:1 inComponent:1 animated:NO];
+            endTime = startTime+0.5;
+            bookEndTimeHr = [NSString stringWithFormat:@"%02d",(int)floor(endTime)];
+            if (endTime > floor(endTime)) {
+                bookEndTimeMin = @"30";
             } else {
-                [endtimepicker selectRow:0 inComponent:1 animated:NO];
+                bookEndTimeMin = @"00";
             }
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:1]] withRowAnimation:UITableViewRowAnimationMiddle];
         }
-        
         
     } else if (pickerView == endtimepicker) {
-        if (component==0) {
-            CGFloat t = floor(startTime + 0.5);
-            bookEndTimeHr = [NSString stringWithFormat:@"%02d",(int)(row+t)];
-        } else {
-            bookEndTimeMin = [NSString stringWithFormat:@"%02d",(int)row*30];
+        NSArray *et = [[self pickerView:endtimepicker titleForRow:row forComponent:component] componentsSeparatedByString:@":"];
+        if ([et count]==2) {
+           bookEndTimeHr = et[0];
+           bookEndTimeMin = et[1];
         }
-        [pickerValue setText:[NSString stringWithFormat:@"%@:%@",bookEndTimeHr,bookEndTimeMin]];
-        endTime = [bookEndTimeHr floatValue];
+        endTime = [bookStartTimeHr floatValue];
         if (![bookEndTimeMin isEqualToString:@"00"]) {
-            endTime+=0.5;
+           endTime+=0.5;
         }
-    
     }
 }
 
@@ -262,6 +295,23 @@
         [v setTextColor:[UIColor darkTextColor]];
         [v setText:TEXT_BOOK_ROOM_NOW];
         [h addSubview:v];
+        
+        UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
+        [b setBackgroundColor:[delegate getThemeColor]];
+        [b setTitleColor:UICOLOR_GOLD forState: UIControlStateNormal];
+        [b.titleLabel setFont:[UIFont systemFontOfSize:FONT_S]];
+        b.layer.cornerRadius = 5.0f;
+        [b setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 30.0, 0.0, 0.0)];
+
+        [b setTitle:TEXT_INQUIRY_K_SPACE forState:UIControlStateNormal];
+        [b setFrame:CGRectMake(delegate.screenWidth-204,10,200,40)];
+        [b addTarget:self action:@selector(openEnquiryForm) forControlEvents:UIControlEventTouchUpInside];
+        [h addSubview:b];
+        
+        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(16,8,26, 26)];
+        [icon setContentMode:UIViewContentModeScaleAspectFit];
+        [icon setImage:[UIImage imageNamed:@"cs-gold.png"]];
+        [b addSubview:icon];
         return h;
     } else if (section==2) {
         UIView *h = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,60)];
@@ -317,6 +367,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:TEXT_SEARCH_MEETING_ROOM];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
+    [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
     if (indexPath.section==0) {
         UIImageView *i = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,80,80)];
         [i setContentMode:UIViewContentModeScaleAspectFill];
@@ -331,6 +384,7 @@
         {
             UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+60,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
             [l setText:[[bookedrooms objectAtIndex:indexPath.row] objectForKey:@"name_zh"]];
+            [l setTextColor:[UIColor darkTextColor]];
             [l setFont:[UIFont systemFontOfSize:FONT_S]];
             [cell addSubview:l];
             y+=LINE_HEIGHT;
@@ -338,6 +392,7 @@
         {
             UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+60,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
             [l setText:[[bookedrooms objectAtIndex:indexPath.row]  objectForKey:@"description"]];
+            [l setTextColor:[UIColor darkTextColor]];
             [l setFont:[UIFont systemFontOfSize:FONT_XS]];
             [l setTextColor:[UIColor darkTextColor]];
             [cell addSubview:l];
@@ -366,6 +421,7 @@
             {
                 UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD+60,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
                 [l setText:[NSString stringWithFormat:@"%@%@",TEXT_ONLY_SHOW,[facility objectForKey:@"name_zh"]]];
+                [l setTextColor:[UIColor darkTextColor]];
                 [l setFont:[UIFont systemFontOfSize:FONT_S]];
                 [cell addSubview:l];
                 y+=LINE_HEIGHT;
@@ -374,6 +430,7 @@
                 UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD+60,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
                 [l setText:[facility objectForKey:@"capacity"]];
                 [l setFont:[UIFont systemFontOfSize:FONT_XS]];
+                [l setTextColor:[UIColor darkTextColor]];
                 [l setTextColor:[UIColor darkTextColor]];
                 [cell addSubview:l];
             }
@@ -404,6 +461,7 @@
             {
                 UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+70,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
                 [l setText:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"name_zh"]];
+                [l setTextColor:[UIColor darkTextColor]];
                 [l setFont:[UIFont systemFontOfSize:FONT_S]];
                 [cell addSubview:l];
                 y+=LINE_HEIGHT-10;
@@ -412,6 +470,7 @@
             {
                 UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+70,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
                 [l setText:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"pricetag"]];
+                [l setTextColor:[UIColor darkTextColor]];
                 [l setFont:[UIFont systemFontOfSize:FONT_XS]];
                 [cell addSubview:l];
                 y+=LINE_HEIGHT-10;
@@ -419,6 +478,7 @@
             {
                 UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD_2+70,y,delegate.screenWidth-SIDE_PAD_2-60,LINE_HEIGHT)];
                 [l setText:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"room"] objectForKey:@"capacity"]];
+                
                 [l setFont:[UIFont systemFontOfSize:FONT_XS]];
                 [l setTextColor:[UIColor darkTextColor]];
                 [cell addSubview:l];
@@ -545,6 +605,16 @@
                                      }];
     
 }
+-(void) openEnquiryForm {
+     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@/#/inquiry?userToken=%@",domain,[delegate.preferences objectForKey:K_USER_OPENID]]] forKeys:@[@"type",@"url"]]];
+    /*
+    NSURL *touURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/#/inquiry",domain]];
+       if ([[UIApplication sharedApplication] canOpenURL:touURL]) {
+           [[UIApplication sharedApplication] openURL:touURL options:@{} completionHandler:^(BOOL success) {}];
+       }
+     */
+}
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [datepicker removeFromSuperview];
     [starttimepicker removeFromSuperview];
@@ -560,6 +630,28 @@
             [pickerValue setText:bookDate];
             [self.view.window.rootViewController.view addSubview:pickerViewToolbar];
         } else if (indexPath.row==1) {
+            if (!isToday) {
+               startHr = 0;
+               startMin = 0;
+           } else {
+               NSDateFormatter *hFormat = [[NSDateFormatter alloc] init];
+               [hFormat setDateFormat:@"HH"];
+               int hr = [[hFormat stringFromDate:[NSDate date]] intValue];
+               [hFormat setDateFormat:@"mm"];
+               int min = [[hFormat stringFromDate:[NSDate date]] intValue];
+               if (min>30) {
+                   startHr = hr+1;
+                   startMin = 0;
+               } else {
+                   startHr = hr;
+                   startMin = 0.5;
+               }
+           }
+            [starttimepicker reloadAllComponents];
+            if (!isToday && refreshDate) {
+                [starttimepicker selectRow:18 inComponent:0 animated:NO];
+                refreshDate = NO;
+            }
             [pickerViewToolbar addSubview:starttimepicker];
             [pickerValue setText:[NSString stringWithFormat:@"%@:%@",bookStartTimeHr,bookStartTimeMin]];
             [self.view.window.rootViewController.view addSubview:pickerViewToolbar];

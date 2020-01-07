@@ -35,10 +35,12 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.title = TEXT_OTHER_MESSAGE;
     delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-
+    [self.tableView setBounces:NO];
+    [self.tableView setBackgroundColor:[UIColor whiteColor]];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -79,28 +81,18 @@
     if ([datasrc count]==0) {
         return delegate.screenHeight-delegate.headerHeight-delegate.statusBarHeight-delegate.footerHeight;
     } else {
-        CGFloat y = SIDE_PAD+12;
-        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD, y, delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2,24)];
-        [title setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"title"]];
-        [title setNumberOfLines:-1];
-        [title setFont:[UIFont systemFontOfSize:FONT_M]];
-        [title sizeToFit];
+        CGFloat y = 77;
         
-        y+= title.frame.size.height+LINE_PAD;
-        
-        UILabel *body = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD, y, delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2,24)];
-        [body setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"excerpt"]];
-        [body setFont:[UIFont systemFontOfSize:FONT_S]];
-        [body setNumberOfLines:-1];
-        [body sizeToFit];
-        return y+body.frame.size.height +SIDE_PAD_2+10;
+        return y;
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"message"];
     //if (!cell) {
-        UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"message"];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    UITableViewCell * cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"message"];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    [cell.textLabel setTextColor:[UIColor darkTextColor]];
     //}
     if ([datasrc count]==0) {
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth, delegate.screenHeight-delegate.headerHeight-delegate.statusBarHeight-delegate.footerHeight)];
@@ -110,56 +102,47 @@
         [l setTextAlignment:NSTextAlignmentCenter];
         [cell addSubview:l];
     } else {
-        UIView *holder = [[UIView alloc] initWithFrame:CGRectMake(SIDE_PAD,SIDE_PAD,delegate.screenWidth-SIDE_PAD_2,100)];
+        UIView *holder = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth-SIDE_PAD-20,1)];
         [cell addSubview:holder];
-        
-        UILabel *ts = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, holder.frame.size.width-5,16)];
+        int y = 5;
+        UILabel *ts = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 1,1)];
+        [ts setBackgroundColor:[UIColor whiteColor]];
         [ts setTextAlignment:NSTextAlignmentRight];
         [ts setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"timestamp"]];
         [ts setTextColor:UICOLOR_LIGHT_GREY];
+        [ts sizeToFit];
         [ts setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [ts setFrame:CGRectMake(holder.frame.size.width-ts.frame.size.width,y,ts.frame.size.width,ts.frame.size.height)];
         [holder addSubview:ts];
-        
-        int y = SIDE_PAD+12;
-        UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,y,24,24)];
-        [icon setImage:[UIImage imageNamed:@"notificationicon.png"]];
-        [holder addSubview:icon];
-        
-        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD+30, y, holder.frame.size.width-SIDE_PAD_2-30,24)];
+                       
+        CGFloat titleWidth = ts.frame.origin.x;
+        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, y, titleWidth,24)];
         [title setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"title"]];
-        [title setTextColor:UICOLOR_DARK_GREY];
-        [title setNumberOfLines:-1];
-        [title setFont:[UIFont systemFontOfSize:FONT_M]];
-        [title sizeToFit];
+        [title setTextColor:[UIColor blackColor]];
+        [title setNumberOfLines:1];
+        [title setFont:[UIFont boldSystemFontOfSize:FONT_S]];
         [holder addSubview:title];
         
-        y+= title.frame.size.height+LINE_PAD;
+        y+= title.frame.size.height;
         
-        UILabel *body = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD, y, holder.frame.size.width-SIDE_PAD_2,24)];
+        UILabel *body = [[UILabel alloc] initWithFrame:CGRectMake(0, y, holder.frame.size.width, 24)];
         [body setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"excerpt"]];
-        [body setFont:[UIFont systemFontOfSize:FONT_S]];
+        [body setFont:[UIFont systemFontOfSize:FONT_XS]];
         [body setTextColor:UICOLOR_DARK_GREY];
-        [body setNumberOfLines:-1];
-        [body sizeToFit];
+        [body setNumberOfLines:2];
         [holder addSubview:body];
+        y+=body.frame.size.height+LINE_PAD;
         
-        [holder setFrame:CGRectMake(SIDE_PAD,SIDE_PAD,delegate.screenWidth-SIDE_PAD_2,y+body.frame.size.height+LINE_PAD)];
-        
-        holder.layer.shadowRadius  = 1.5f;
-        holder.layer.shadowColor   = [UICOLOR_LIGHT_GREY CGColor];
-        holder.layer.shadowOffset  = CGSizeMake(0.0f, 0.0f);
-        holder.layer.shadowOpacity = 0.9f;
-        holder.layer.masksToBounds = NO;
-        [holder setBackgroundColor:[UIColor whiteColor]];
-        UIEdgeInsets shadowInsets     = UIEdgeInsetsMake(0, 0, -1.5f, 0);
-        UIBezierPath *shadowPath      = [UIBezierPath bezierPathWithRect:UIEdgeInsetsInsetRect(holder.bounds, shadowInsets)];
-        holder.layer.shadowPath    = shadowPath.CGPath;
+        [holder setFrame:CGRectMake(20,0,delegate.screenWidth-SIDE_PAD-20, y)];
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,y,delegate.screenWidth,1)];
+        [holder addSubview:line];
+        [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY_BORDER];
         
         if ([[[datasrc objectAtIndex:indexPath.row] objectForKey:@"opened"] isEqualToString:@"0"]) {
-            UIView *dot = [[UIView alloc] initWithFrame:CGRectMake(5,5,10,10)];
-            [dot setBackgroundColor:[UIColor redColor]];
+            UIView *dot = [[UIView alloc] initWithFrame:CGRectMake(4,12,10,10)];
+            [dot setBackgroundColor:UICOLOR_BLUE];
             [dot.layer setCornerRadius:5.0f];
-            [holder addSubview:dot];
+            [cell addSubview:dot];
         }
         
     }

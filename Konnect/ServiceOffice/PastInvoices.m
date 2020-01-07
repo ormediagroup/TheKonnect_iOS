@@ -96,12 +96,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                    reuseIdentifier:TEXT_INVOICE];
+    [cell setBackgroundColor:[UIColor whiteColor]];
     if ([datasrc count]==0) {
         [cell.textLabel setText:TEXT_NO_INVOICE];
     } else {
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         UILabel *inv = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth-SIDE_PAD_2,40)];
         [inv setFont:[UIFont systemFontOfSize:FONT_L]];
+        [inv setTextColor:[UIColor darkTextColor]];
         [inv setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"invoice_no"]];
         [cell addSubview:inv];
       
@@ -109,6 +111,7 @@
         [amt setFont:[UIFont systemFontOfSize:FONT_L]];
         [amt setTextAlignment:NSTextAlignmentRight];
         [amt setText:[NSString stringWithFormat:@"$%@",[[datasrc objectAtIndex:indexPath.row] objectForKey:@"amount"]]];
+        [amt setTextColor:[UIColor darkTextColor]];
         [cell addSubview:amt];
         
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,40,delegate.screenWidth-SIDE_PAD_2,16)];
@@ -120,6 +123,7 @@
                     [[datasrc objectAtIndex:indexPath.row] objectForKey:@"settlement_date"],
                     TEXT_PAY
                     ]];
+        [l setTextColor:[UIColor darkTextColor]];
         [cell addSubview:l];
     }
     

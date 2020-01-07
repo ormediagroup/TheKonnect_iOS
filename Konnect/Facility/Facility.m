@@ -179,9 +179,9 @@
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(100,y+4,delegate.screenWidth-SIDE_PAD-100,LINE_HEIGHT)];
         [l setNumberOfLines:-1];
         NSAttributedString *hS;
-        if (![[d objectForKey:@"phone_2"] isEqualToString:@"0"]) {
+        if (![[d objectForKey:@"phone_2"] isEqualToString:@""] && ![[d objectForKey:@"phone_2"] isEqualToString:@"0"]) {
             hS = [[NSAttributedString alloc] initWithData:[[NSString stringWithFormat:@"<html><body style='font-size:%dpx;font-color:#333;font-family:Arial'>%@<p>%@</p></body></html>",FONT_S,[d objectForKey:@"phone_1"],[d objectForKey:@"phone_2"]] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-        } else if (![[d objectForKey:@"phone_1"] isEqualToString:@"0"]) {
+        } else if (![[d objectForKey:@"phone_1"] isEqualToString:@""] && ![[d objectForKey:@"phone_1"] isEqualToString:@"0"]) {
             hS = [[NSAttributedString alloc] initWithData:[[NSString stringWithFormat:@"<html><body style='font-size:%dpx;font-color:#333;font-family:Arial'>%@</body></html>",FONT_S,[d objectForKey:@"phone_1"]] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
         }
         if (hS) {
@@ -204,7 +204,7 @@
         
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(100,y+4,delegate.screenWidth-SIDE_PAD-100,LINE_HEIGHT)];
         [l setNumberOfLines:-1];
-        NSAttributedString *hS = [[NSAttributedString alloc] initWithData:[[NSString stringWithFormat:@"<html><body style='font-size:%dpx;line-height:150%%;font-color:#333;font-family:Arial'>%@</body></html>",FONT_S,[d objectForKey:@"hours"]] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+        NSAttributedString *hS = [[NSAttributedString alloc] initWithData:[[NSString stringWithFormat:@"<html><body style='padding:0;font-size:%dpx;line-height:150%%;font-color:#333;font-family:Arial'>%@</body></html>",FONT_S,[d objectForKey:@"hours"]] dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
         [l setAttributedText:hS];
         [l sizeToFit];
         [scroll addSubview:l];
@@ -246,6 +246,7 @@
         [l setNumberOfLines:-1];
         [l setFont:[UIFont systemFontOfSize:FONT_S]];
         [l setTextAlignment:NSTextAlignmentLeft];
+        [l setTextColor:[UIColor darkTextColor]];
         [l setText:[d objectForKey:@"description_zh"]];
         [l sizeToFit];
         [scroll addSubview:l];

@@ -16,8 +16,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
-    
+    delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [self.tableView setBackgroundColor:[UIColor whiteColor]];
+    [self.tableView setBounces:NO];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     

@@ -6,6 +6,20 @@
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
 /* TODO : Invoice Create per item details
+ Version 1.8
+ 1) Added support for dark theme
+ 2) Revised notification layout
+ 3) Fixed birthday for user
+ 4) Enhanced Meeting Room Booking Mechanism
+ 5) Add Meeting Room TOU
+ 6) Added Meeting Room Inquiry
+ 7) Hide Concerige Number from non-vip members
+ 8) Removed Carousel bottom bar
+ 9) Changed Event List Structure
+ 
+ Verion 1.7
+ 1) Minor Text Fix
+ 
  Version 1.6
  1) 2nd Fixed a bug with unknown member tier
  2) Changed layout to fit an iPad simulator screen
@@ -163,6 +177,9 @@ version 0.5
 -(void) networkError;
 -(void) logout;
 -(BOOL) checkLogin;
+-(void) addPlaceHolder:(UITextField*)f text:(NSString *)text;
+-(void) addPlaceHolder:(UITextField*)f text:(NSString *)text center:(BOOL)center;
+-(void) setSystemBG:(UIView *)p;
 -(UIColor *) getThemeColor;
 
 @end
