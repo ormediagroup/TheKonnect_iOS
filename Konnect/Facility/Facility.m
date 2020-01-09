@@ -100,6 +100,7 @@
     }
 }
 -(void) viewWillAppear:(BOOL)animated {
+    [scroll scrollRectToVisible:CGRectMake(0,0,1,1) animated:NO];
     if (facilityid && ![facilityid isEqualToString:@""]) {
         [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-home",K_API_ENDPOINT] param:
          [[NSDictionary alloc] initWithObjects:@[
@@ -108,7 +109,7 @@
                                                  ]
                                        forKeys:@[
                                                  @"action",
-                                                 @"faciltiyid"
+                                                 @"facilityid"
                                                  ]]
          
                                          interation:0 callback:^(NSDictionary *data) {
@@ -132,12 +133,14 @@
     if ([[d objectForKey:@"images"] isKindOfClass:[NSString class]] && [[d objectForKey:@"images"] length]>0) {
         UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,300)];
         [v setContentMode:UIViewContentModeScaleAspectFill];
+        [v setClipsToBounds:YES];
         [v setImage:[delegate getImage:[d objectForKey:@"images"] callback:^(UIImage *image) {
             [v setImage:image];
         }]];
         [scroll addSubview:v];
     }
     int y = 300+LINE_PAD;
+    
     {
         UILabel *p = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT)];
         [p setTextColor:[UIColor blackColor]];
@@ -149,6 +152,7 @@
         [scroll addSubview:p];
         y+=p.frame.size.height + LINE_PAD;
     }
+    
     {
         UILabel *p = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT)];
         [p setTextColor:UICOLOR_LIGHT_GREY];
@@ -214,7 +218,8 @@
         [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY_BORDER];
         [scroll addSubview:line];
         y+=LINE_PAD;
-    }    
+    }
+    
     {
         if ([[d objectForKey:@"ads"] isKindOfClass:[NSArray class]] && [[d objectForKey:@"ads"] count]>0) {
             for (NSString *url in [d objectForKey:@"ads"]) {
@@ -293,8 +298,9 @@
         
         }
         y+=h;
+        y+=LINE_PAD;
     }
-    y+=LINE_PAD;
+    
     if ([[d objectForKey:@"foodimages"] isKindOfClass:[NSArray class]] && [[d objectForKey:@"foodimages"] count]>0) {
         {
             UILabel *p = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT)];
@@ -319,7 +325,7 @@
             [v setImage:[delegate getImage:src callback:^(UIImage *image) {
                 [v setImage:image];
             }]];
-            [scroll addSubview:v];
+         //   [scroll addSubview:v];
             x+=w+SIDE_PAD;
             if (x >= delegate.screenWidth-SIDE_PAD) {
                 x = SIDE_PAD;
@@ -384,7 +390,7 @@
 }
 -(void) foodImagePressed {
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_IMAGE_GALLERY],[datasrc objectForKey:@"foodimagers"]] forKeys:@[@"type",@"images"]]];
+     [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_IMAGE_GALLERY],[datasrc objectForKey:@"foodimages"]] forKeys:@[@"type",@"images"]]];
     
 }
 @end

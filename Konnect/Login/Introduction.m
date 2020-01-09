@@ -69,7 +69,7 @@
         [desc setNumberOfLines:0];
         [desc setTextAlignment:NSTextAlignmentJustified];
         [desc setTextColor:[UIColor colorWithWhite:1.0 alpha:0.8]];
-        NSString *string = @"KONNECT位於香港最繁華的中心地帶，旨在實現最大舒適度和生產力，擁有設備齊全的服務式辦公室，是建立和經營不同業務的絕佳地點。";
+        NSString *string = @"KONNECT位於香港最繁華的中心地帶，旨在實現最大舒適度和生產力，擁有設備齊全的服務式辦公室，是建立和經營不同業務的絕佳地點。";            
         desc.attributedText = [[NSAttributedString alloc] initWithString:string
                                                               attributes:attributtes];
         [desc setFont:[UIFont systemFontOfSize:FONT_S]];

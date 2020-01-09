@@ -6,7 +6,13 @@
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
 /* TODO : Invoice Create per item details
- Version 1.8
+ Version 1.10
+ 
+ Version 1.9 (9/1/2020)
+ 1) Fixed a crash on FNB food images
+ 2) Minor Change to set scroll to top on facility
+ 
+ Version 1.8 (7/1/2020)
  1) Added support for dark theme
  2) Revised notification layout
  3) Fixed birthday for user
