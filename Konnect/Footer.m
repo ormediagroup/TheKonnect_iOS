@@ -28,10 +28,21 @@
     [self.view addSubview:[self makeBtn:0 withImageSrc:@"home.png" andText:TEXT_HOME]];
     [self.view addSubview:[self makeBtn:1 withImageSrc:@"me.png" andText:TEXT_MY]];
     [self.view addSubview:[self makeBtn:2 withImageSrc:@"scanqr.png" andText:@""]];
-    [self.view addSubview:[self makeBtn:3 withImageSrc:@"msg.png" andText:TEXT_MSG]];
+    msgBtn = [self makeBtn:3 withImageSrc:@"msg.png" andText:TEXT_MSG];
+    [self.view addSubview:msgBtn];
     [self.view addSubview:[self makeBtn:4 withImageSrc:@"cs.png" andText:TEXT_CS]];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMsgBadge) name:UPDATE_MSG_BADGE object:nil];
    
+}
+-(void) updateMsgBadge {
+    if (delegate.msgBadge>0) {
+        [msgBadge setText:[NSString stringWithFormat:@"%d",delegate.msgBadge]];
+        [msgBtn addSubview:msgBadge];
+        [msgBtn setNeedsDisplay];
+    } else {
+        [msgBadge removeFromSuperview];
+    }
+    
 }
 -(UIButton *) makeBtn:(int) tag withImageSrc:(NSString *)imageSrc andText:(NSString *)lbl {
     CGFloat bottomPad =0;
@@ -59,6 +70,15 @@
         [btnText setFont:[UIFont boldSystemFontOfSize:FONT_XS]];
         [btnText setTextColor:[UIColor lightGrayColor]];
         [b1 addSubview:btnText];
+    }
+    if (tag==3) {
+        msgBadge = [[UILabel alloc] initWithFrame:CGRectMake(b1.frame.size.width-24,2,20,20)];
+        [msgBadge setBackgroundColor:[UIColor redColor]];
+        [msgBadge setTextAlignment:NSTextAlignmentCenter];
+        [msgBadge setTextColor:[UIColor whiteColor]];
+        msgBadge.layer.cornerRadius=10.0f;
+        [msgBadge setClipsToBounds:YES];
+        [msgBadge setFont:[UIFont boldSystemFontOfSize:10]];
     }
     return b1;
 }

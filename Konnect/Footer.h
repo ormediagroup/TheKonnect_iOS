@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Footer : UIViewController {
     AppDelegate *delegate;
     ViewController __weak *parent;
+    UILabel *msgBadge;
+    UIButton *msgBtn;
 
 }
 @property (weak) ViewController *parent;

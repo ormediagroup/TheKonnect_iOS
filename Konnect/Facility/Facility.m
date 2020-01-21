@@ -288,7 +288,7 @@
             }]];
             [scroll addSubview:v];
             x+=w+SIDE_PAD;
-            if (x >= delegate.screenWidth-SIDE_PAD) {
+            if (x >= delegate.screenWidth-SIDE_PAD && curr < 5) {
                 x = SIDE_PAD;
                 y+=h+LINE_PAD;
             }
@@ -325,9 +325,9 @@
             [v setImage:[delegate getImage:src callback:^(UIImage *image) {
                 [v setImage:image];
             }]];
-         //   [scroll addSubview:v];
+            [scroll addSubview:v];
             x+=w+SIDE_PAD;
-            if (x >= delegate.screenWidth-SIDE_PAD) {
+            if (x >= delegate.screenWidth-SIDE_PAD && curr < 5) {
                 x = SIDE_PAD;
                 y+=h+LINE_PAD;
             }

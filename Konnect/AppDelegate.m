@@ -15,7 +15,7 @@
 
 @implementation AppDelegate
 @synthesize screenWidth, screenHeight, headerHeight, footerHeight, preferences, statusBarHeight;
-@synthesize  isX;
+@synthesize  isX, msgBadge;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     screenWidth  = [UIScreen mainScreen].bounds.size.width;
@@ -24,8 +24,9 @@
     // is X
     footerHeight=60;
     statusBarHeight = 20;
+    msgBadge = 0;
     [WXApiManager sharedManager].delegate = self;
-    
+    NSLog(@"WX API Version: %@",[WXApi getApiVersion]);
     [WXApi registerApp:WX_APP_ID enableMTA:YES];
     imageCache = [[NSCache alloc] init];
     
@@ -75,7 +76,8 @@
         [application registerUserNotificationSettings:settings];
     }
     
-    [application registerForRemoteNotifications];
+    // [application registerForRemoteNotifications];
+    /*
     [[FIRInstanceID instanceID] instanceIDWithHandler:^(FIRInstanceIDResult * _Nullable result,
                                                         NSError * _Nullable error) {
         if (error != nil) {
@@ -87,9 +89,26 @@
            // self.instanceIDTokenMessage.text = message;
         }
     }];
+     */
+    
     // first login to K site
+    JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+    entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound|JPAuthorizationOptionProvidesAppNotificationSettings;
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+      // 可以添加自定义 categories
+      // NSSet<UNNotificationCategory *> *categories for iOS10 or later
+      // NSSet<UIUserNotificationCategory *> *categories for iOS8 and iOS9
+    }
+    [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
+
+     // Required
+     // init Push
     
-    
+     // notice: 2.1.5 版本的 SDK 新增的注册方法，改成可上报 IDFA，如果没有使用 IDFA 直接传 nil
+     [JPUSHService setupWithOption:launchOptions appKey:JPUSH_APP_KEY
+                           channel:@"iOS"
+                  apsForProduction:YES
+             advertisingIdentifier:nil];
     
     // 1) Check if user is registered with Konnect
     // 2)     if yes - check if it's registered with WeChat
@@ -147,6 +166,8 @@
      */
     return YES;
 }
+
+
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
     NSLog(@"FCM registration token: %@", fcmToken);
     // Notify about received token.
@@ -156,7 +177,43 @@
     // TODO: If necessary send token to application server.
     // Note: This callback is fired at each app startup and whenever a new token is generated.
 }
-
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+  /// Required - 注册 DeviceToken
+    [JPUSHService registerDeviceToken:deviceToken];
+    NSString *dToken = JPUSHService.registrationID;
+    
+     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-server",domain] param:
+        [[NSDictionary alloc] initWithObjects:@[
+                                                @"Jpush",
+                                                @"uploadPhoneInfo",
+                                                @"upload",
+                                                dToken,
+                                                @"ios",
+                                                [preferences objectForKey:K_USER_OPENID]
+                                                ]
+                                      forKeys:@[
+                                                @"c",
+                                                @"a",
+                                                @"action",
+                                                @"registrationID",
+                                                @"phoneType",
+                                                @"userToken"
+                                                ]]
+        
+                                        interation:0 callback:^(NSDictionary *data) {
+                                            //NSLog(@"Wallet %@",data);
+                                            NSLog(@"JPush Service registration: %@ %@", [data objectForKey:@"msg"], [self->preferences objectForKey:K_USER_OPENID]);
+                                            if ([[data objectForKey:@"rc"] intValue]==0) {
+                                            } else {
+                                                NSLog(@"JPush Service registration: %@", [data objectForKey:@"msg"]);
+                                            }
+                                        }];
+    
+}
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+  //Optional
+  NSLog(@"did Fail To Register For Remote Notifications With Error: %@", error);
+}
 -(void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"AD Message User Info: %@",[userInfo description]);
     if ( application.applicationState == UIApplicationStateInactive || application.applicationState == UIApplicationStateBackground) {
@@ -197,9 +254,9 @@
 }
 -(UIColor *) getThemeColor {
     if ([[preferences objectForKey:K_USER_TIER]  isKindOfClass:[NSString class]] && [[preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_LEGACY]) {
-        return UICOLOR_GREEN;
-    } else {
         return UICOLOR_PURPLE;
+    } else {
+        return UICOLOR_GREEN;
     }
 }
 
@@ -380,7 +437,6 @@
     req.state = @"1234567890";
     //第三方向微信终端发送一个SendAuthReq消息结构
     //  [WXApi sendReq:req];
-    
     [WXApi sendAuthReq:req viewController:self.window.rootViewController delegate:[WXApiManager sharedManager]];
 }
 - (void)managerDidRecvAuthResponse:(SendAuthResp *)response {
@@ -624,6 +680,51 @@
     }
     [data2 writeToFile:outputFilePath atomically:YES];
 }
+
+#pragma mark- JPUSHRegisterDelegate
+
+// iOS 12 Support
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center openSettingsForNotification:(UNNotification *)notification{
+  if (notification && [notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+    //从通知界面直接进入应用
+  }else{
+    //从通知设置界面进入应用
+  }
+}
+
+// iOS 10 Support
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(NSInteger))completionHandler {
+  // Required
+  NSDictionary * userInfo = notification.request.content.userInfo;
+  if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+    [JPUSHService handleRemoteNotification:userInfo];
+  }
+  completionHandler(UNNotificationPresentationOptionAlert); // 需要执行这个方法，选择是否提醒用户，有 Badge、Sound、Alert 三种类型可以选择设置
+}
+
+// iOS 10 Support
+- (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
+    [self updateMsgBadge];
+  NSDictionary * userInfo = response.notification.request.content.userInfo;
+  if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        [JPUSHService handleRemoteNotification:userInfo];
+  }
+    if ([@"message" isEqualToString:[userInfo objectForKey:@"type"]]) {
+        if ([[userInfo objectForKey:@"ID"] isKindOfClass:[NSString class]] && ![@"" isEqualToString:[userInfo objectForKey:@"ID"]]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                   [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_MESSAGE_DETAIL],[userInfo objectForKey:@"ID"]] forKeys:@[@"type",@"messageID"]]];
+        }
+    }
+  completionHandler();  // 系统要求执行这个方法
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+
+  // Required, iOS 7 Support
+  [JPUSHService handleRemoteNotification:userInfo];
+  completionHandler(UIBackgroundFetchResultNewData);
+}
+
 -(void) startLoading {
     [self startLoading:self.window.rootViewController];
 }
@@ -708,4 +809,29 @@
         [p setBackgroundColor:[UIColor whiteColor]];
     }
 }
+-(void) updateMsgBadge {
+    [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-message",K_API_ENDPOINT] param:
+      [[NSDictionary alloc] initWithObjects:@[
+                                              @"get_unread",
+                                              ]
+                                    forKeys:@[
+                                              @"action",
+                                              ]]
+      
+                                      interation:0 callback:^(NSDictionary *data) {
+                                          //NSLog(@"Wallet %@",data);
+                                          if ([[data objectForKey:@"rc"] intValue]==0) {
+                                              self->msgBadge = [[data objectForKey:@"data"] intValue];
+                                              [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MSG_BADGE object:nil];
+                                          } else {
+                                              [self raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
+                                          }
+                                      }];
+    //
+}
+-(void) clearMsgBadge {
+    self->msgBadge = 0;
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MSG_BADGE object:nil];
+}
 @end
+

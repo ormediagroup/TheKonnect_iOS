@@ -158,10 +158,11 @@
     UIEdgeInsets inset = aScrollView.contentInset;
     float y = offset.y + bounds.size.height - inset.bottom;
     float h = size.height;
+    float reload_distance = -60;
     if ([datasrc count]>=10 && !loadingMore) {
         loadingMore = YES;
-      //  NSLog(@"loading more %f %f",y,h);
-        if(h > 0 && y > h) {
+         NSLog(@"loading more %f %f",y,h);
+        if(h > 0 && y > h + reload_distance) {
           //  NSLog(@"startloading more");
             [delegate startLoading];
             [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-message",K_API_ENDPOINT]  param:

@@ -21,6 +21,7 @@
 
 }
 -(void) loadMessage:(int)messageID {
+    [delegate updateMsgBadge];
     if (!wkweb) {
         delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         wkweb = [[WKWebView alloc] initWithFrame:CGRectMake(0,delegate.headerHeight, delegate.screenWidth, delegate.screenHeight-delegate.headerHeight-delegate.footerHeight)];

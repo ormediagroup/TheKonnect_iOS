@@ -119,7 +119,7 @@
                     [self->delegate.preferences setObject:[data objectForKey:K_USER_GENDER] forKey:K_USER_GENDER];
                     [self->delegate.preferences setObject:[data objectForKey:K_USER_AVATAR] forKey:K_USER_AVATAR];
                     [self->delegate.preferences synchronize];
-
+                    [self->delegate updateMsgBadge];
                     [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
                 } else {
                     // cannot find login ID
@@ -152,7 +152,7 @@
                        [self->delegate.preferences setObject:[data objectForKey:K_USER_GENDER] forKey:K_USER_GENDER];
                        [self->delegate.preferences setObject:[data objectForKey:K_USER_AVATAR] forKey:K_USER_AVATAR];
                        [self->delegate.preferences synchronize];
-
+                       [self->delegate updateMsgBadge];
                        [[NSNotificationCenter defaultCenter] postNotificationName:LOGIN_SUCCESS object:nil];
                    } else {
                        // cannot find login ID
@@ -193,9 +193,11 @@
     [nav setNavigationBarHidden:YES];
     [nav setToolbarHidden:YES];
     nav.delegate = self;;
+    [delegate clearMsgBadge];
     [self.view addSubview:nav.view];
     [header.view removeFromSuperview];
     [footer.view removeFromSuperview];
+    
 }
 -(void) goLogin {
     nav = [[UINavigationController alloc] initWithRootViewController:lc];

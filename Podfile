@@ -10,9 +10,11 @@ target 'Konnect' do
   pod 'Crashlytics', '~> 3.14.0'
 
   # Pods for Konnect
-  pod 'WechatOpenSDK'
+  pod 'WechatOpenSDK', '= 1.8.5'
   pod 'Firebase/Analytics'
   pod 'Firebase/Messaging'
+  pod 'JCore'
+  pod 'JPush'
 
 
 end

@@ -554,7 +554,7 @@
                                          interation:0 callback:^(NSDictionary *data) {
                                              //NSLog(@"Wallet %@",data);
                                              if ([[data objectForKey:@"rc"] intValue]==0) {
-                                                 [self->delegate raiseAlert:TEXT_BOOK_FB_SUCCESS msg:[NSString stringWithFormat:@"%@ %@ %@:%@ %@%@",[self->facility objectForKey:@"name_zh"],self->bookDate, self->bookTimeHr, self->bookTimeMin, self->bookPeople, TEXT_PEOPLE]];
+                                                 [self->delegate raiseAlert:[NSString stringWithFormat:TEXT_BOOK_FB_SUCCESS_1,[self->facility objectForKey:@"name_zh"],self->bookDate, self->bookTimeHr, self->bookTimeMin] msg:TEXT_BOOK_FB_SUCCESS_2];
                                                  [self->remarks setText:@""];
                                                  [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
                                              } else {

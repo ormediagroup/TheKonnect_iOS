@@ -6,7 +6,14 @@
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
 /* TODO : Invoice Create per item details
+ TODO:
  Version 1.10
+ 1) Changed Alignment Issue on FNB Page
+ 2) Changed to use JIGUANG notification
+ 3) Added Message Badge
+ 4) Changed Theme Color
+ 5) Changed Notification Message
+ 6) Need to fix Notification MEssage Scrolling
  
  Version 1.9 (9/1/2020)
  1) Fixed a crash on FNB food images
@@ -150,19 +157,26 @@ version 0.5
 #define OAUTH_TOKEN_ENDPOINT @"/oauth/token"
 
 
+#define JPUSH_APP_KEY @"c95d89ad4650afcc11edaf6c"
+#define JPUSH_DEVICE_TOKEN @"jpush_device_token"
 
 #import <UIKit/UIKit.h>
 #import "const.h"
 #import "WXApiManager.h"
 #import "KApiManager.h"
+#import "JPUSHService.h"
+#ifdef NSFoundationVersionNumber_iOS_9_x_Max
+#import <UserNotifications/UserNotifications.h>
+#endif
 @import Firebase;
-@interface AppDelegate : UIResponder <UIApplicationDelegate, WXApiManagerDelegate, FIRMessagingDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate, WXApiManagerDelegate, FIRMessagingDelegate, JPUSHRegisterDelegate> {
     CGFloat screenWidth, screenHeight;
     CGFloat headerHeight, footerHeight, statusBarHeight;
     NSCache *imageCache;
     NSUserDefaults *preferences;
     UIActivityIndicatorView *loading;
     BOOL WXisRegistration, isX, AppleIsRegistration;
+    int msgBadge;
 }
 -(BOOL) isLoggedIn;
 -(void) addDoneToKeyboard:(UITextField *)t;
@@ -173,6 +187,7 @@ version 0.5
 @property (strong, nonatomic) UIWindow *window;
 @property CGFloat screenWidth, screenHeight, headerHeight, footerHeight, statusBarHeight;
 @property (strong, nonatomic) NSUserDefaults *preferences;
+@property int msgBadge;
 @property BOOL isX;
 -(void) startLoading:(UIViewController *)vc;
 -(void) startLoading;
@@ -186,6 +201,8 @@ version 0.5
 -(void) addPlaceHolder:(UITextField*)f text:(NSString *)text;
 -(void) addPlaceHolder:(UITextField*)f text:(NSString *)text center:(BOOL)center;
 -(void) setSystemBG:(UIView *)p;
+-(void) updateMsgBadge;
+-(void) clearMsgBadge;
 -(UIColor *) getThemeColor;
 
 @end

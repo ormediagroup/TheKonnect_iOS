@@ -335,7 +335,7 @@
                                                                    whiteBadge.frame.size.width-SIDE_PAD_2-(SIDE_PAD+logo.frame.origin.x + logo.frame.size.width),
                                                                    30
                                                                    )];
-        [bookingdate setText:[[fbs objectAtIndex:indexPath.row] objectForKey:@"bookingdate"]];
+        [bookingdate setText:[NSString stringWithFormat:@"%@ %@",[[fbs objectAtIndex:indexPath.row] objectForKey:@"bookingdate"],[[fbs objectAtIndex:indexPath.row] objectForKey:@"bookingtime"]]];
         [bookingdate setFont:[UIFont systemFontOfSize:FONT_S]];
         [bookingdate setTextColor:UICOLOR_GOLD];
         [bookingdate setNumberOfLines:-1];
@@ -350,9 +350,9 @@
                                                                          whiteBadge.frame.size.width-SIDE_PAD_2-(SIDE_PAD+logo.frame.origin.x + logo.frame.size.width),
                                                                          30
                                                                          )];
-        [bookingtime setText:[[fbs objectAtIndex:indexPath.row] objectForKey:@"bookingtime"]];
-        [bookingtime setFont:[UIFont systemFontOfSize:FONT_S]];
-        [bookingtime setTextColor:UICOLOR_GOLD];
+        [bookingtime setText:[[fbs objectAtIndex:indexPath.row] objectForKey:@"status"]];
+        [bookingtime setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [bookingtime setTextColor:[UIColor darkTextColor]];
         [bookingtime setNumberOfLines:-1];
         [bookingtime sizeToFit];
         [whiteBadge addSubview:bookingtime];
@@ -365,8 +365,8 @@
                                                                          30
                                                                          )];
         [bookingppl setText:[NSString stringWithFormat:@"%@ %@%@",TEXT_CAPACITY,[[fbs objectAtIndex:indexPath.row] objectForKey:@"reservation"],TEXT_PEOPLE]];
-        [bookingppl setFont:[UIFont systemFontOfSize:FONT_S]];
-        [bookingppl setTextColor:UICOLOR_GOLD];
+        [bookingppl setFont:[UIFont systemFontOfSize:FONT_XS]];
+        [bookingppl setTextColor:[UIColor darkTextColor]];
         [bookingppl setNumberOfLines:-1];
         [bookingppl sizeToFit];
         [whiteBadge addSubview:bookingppl];
@@ -413,7 +413,7 @@
                                                                          whiteBadge.frame.size.width-SIDE_PAD_2-(SIDE_PAD+logo.frame.origin.x + logo.frame.size.width),
                                                                          30
                                                                          )];
-        [bookingdate setText:[[events objectAtIndex:indexPath.row] objectForKey:@"datestring"]];
+        [bookingdate setText:[NSString stringWithFormat:@"%@ %@",[[events objectAtIndex:indexPath.row] objectForKey:@"datestring"], [[events objectAtIndex:indexPath.row] objectForKey:@"timestring"]]];
         [bookingdate setFont:[UIFont systemFontOfSize:FONT_S]];
         [bookingdate setTextColor:UICOLOR_GOLD];
         [bookingdate setNumberOfLines:-1];
@@ -428,7 +428,7 @@
                                                                          whiteBadge.frame.size.width-SIDE_PAD_2-(SIDE_PAD+logo.frame.origin.x + logo.frame.size.width),
                                                                          30
                                                                          )];
-        [bookingtime setText:[[events objectAtIndex:indexPath.row] objectForKey:@"timestring"]];
+        [bookingtime setText:[[events objectAtIndex:indexPath.row] objectForKey:@"status"]];
         [bookingtime setFont:[UIFont systemFontOfSize:FONT_S]];
         [bookingtime setTextColor:UICOLOR_GOLD];
         [bookingtime setNumberOfLines:-1];
@@ -525,15 +525,62 @@
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==0) {
     } else if (indexPath.section==1) {
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:TEXT_SELECT_ACTION
-                                                                              message:nil
-                                                                       preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                              message:TEXT_SELECT_ACTION
+                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
                
                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_SHARE style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                   
+                   NSString *content = [NSString stringWithFormat:@"KONNECT %@ %@",TEXT_SHARE_FNB_BOOKING_INFO,[[self->fbs objectAtIndex:indexPath.row] objectForKey:@"name_zh"]];
+                   NSString *content2 = [NSString stringWithFormat:@"%@ %@ %@ %@",
+                                         [[self->fbs objectAtIndex:indexPath.row] objectForKey:@"bookingdate"],
+                                         [[self->fbs objectAtIndex:indexPath.row] objectForKey:@"bookingtime"],
+                                         TEXT_K_ADDRESS,
+                                         [[self->fbs objectAtIndex:indexPath.row] objectForKey:@"address"]
+                                         ];
+                   NSURL *u = [NSURL URLWithString:[domain stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                   NSArray* sharedObjects=[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@ %@",content,content2], u,nil];
+                   UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:sharedObjects applicationActivities:nil];
+                   activityViewController.popoverPresentationController.sourceView = self.view;
+                   [self presentViewController:activityViewController animated:YES completion:nil];
                }];
                [alert addAction:defaultAction];
-               [alert addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+               [alert addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL_MEETING_ROOM style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+                   UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                                    message:TEXT_CONFIRM_CANCEL
+                                                                             preferredStyle:UIAlertControllerStyleAlert];
+                                                             
+                     [alert addAction:[UIAlertAction actionWithTitle:TEXT_CANCEL_MEETING_ROOM style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+                         [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-booking",K_API_ENDPOINT] param:
+                             [[NSDictionary alloc] initWithObjects:@[
+                                                                     @"cancel-fnb",
+                                                                     [[self->fbs objectAtIndex:indexPath.row] objectForKey:@"bookingid"]
+                                                                     ]
+                                                           forKeys:@[
+                                                                     @"action",
+                                                                     @"bookingid"
+                                                                     ]]
+                                                             interation:0 callback:^(NSDictionary *data) {
+                                                                 //NSLog(@"Wallet %@",data);
+                                                                 if ([[data objectForKey:@"rc"] intValue]==0) {
+                                                                     [self->delegate raiseAlert:TEXT_CANCEL_SUCCESS msg:@""];
+                                                                     [self viewWillAppear:NO];
+                                                                 } else {
+                                                                     [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
+                                                                 }
+                                                             }];
+                         
+                         
+                         
+                     }]];
+                      [alert addAction:[UIAlertAction actionWithTitle:TEXT_BACK style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
+                     });
+                   
+                   
+                   
+               }]];
+                [alert addAction:[UIAlertAction actionWithTitle:TEXT_BACK style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
                dispatch_async(dispatch_get_main_queue(), ^{
                    [self.view.window.rootViewController presentViewController:alert animated:YES completion:nil];
                });
