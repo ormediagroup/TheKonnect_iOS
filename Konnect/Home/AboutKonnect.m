@@ -21,6 +21,7 @@
                                      interation:0 callback:^(NSDictionary *data) {
                                          if ([data isKindOfClass:[NSDictionary class]] && [[data objectForKey:@"rc"] intValue]==0) {
                                              self->datasrc = [data objectForKey:@"data"];
+                                             self->marketingKit = [data objectForKey:@"marketingkit"];
                                              [self.tableView reloadData];
                                          } else {
                                              [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
@@ -61,7 +62,7 @@
     if (indexPath.section==0) {
         CGFloat w = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:1] floatValue];
         CGFloat h = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:2] floatValue];
-        CGFloat newg = h/w*(delegate.screenWidth-SIDE_PAD_2);
+        CGFloat newg = h/w*(delegate.screenWidth);
         return newg;
     } else {
         return UITableViewAutomaticDimension;
@@ -78,7 +79,7 @@
         CGFloat w = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:1] floatValue];
         CGFloat h = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:2] floatValue];
         CGFloat newg = h/w*(delegate.screenWidth-SIDE_PAD_2);
-        UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth-SIDE_PAD_2,newg)];
+        UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,newg)];
         [v setImage:[delegate getImage:[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:0] callback:^(UIImage *image) {
             [v setImage:image];
         }]];
@@ -108,7 +109,7 @@
     // Configure the cell...
 }
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *pURL1 = @"http://thekonnect.com.hk/wp-content/uploads/2019/10/Privacy-Statement-Chi-Version_20191015.pdf";
+    NSString *pURL1 = self->marketingKit;
     NSString *pURL2 = @"http://thekonnect.com.hk/wp-content/uploads/2019/10/Privacy-Statement-EngVersion_20191015.pdf";
     if (indexPath.section==1) {
         if (indexPath.row==0) {

@@ -33,6 +33,36 @@
         self->bookedrooms = @[];
         [self.tableView reloadData];
     }
+    
+    bookDate = [dateFormat stringFromDate:[NSDate date]];
+    isToday = YES;
+    refreshDate = NO;
+    [starttimepicker selectRow:0 inComponent:0 animated:NO];
+    [endtimepicker selectRow:0 inComponent:0 animated:NO];
+    NSDateFormatter *hFormat = [[NSDateFormatter alloc] init];
+    [hFormat setDateFormat:@"HH"];
+    int hr = [[hFormat stringFromDate:[NSDate date]] intValue];
+    [hFormat setDateFormat:@"mm"];
+    int min = [[hFormat stringFromDate:[NSDate date]] intValue];
+    if (min>30) {
+        startHr = hr+1;
+        startMin = 0;
+        bookStartTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr)];
+        bookStartTimeMin = @"00";
+        bookEndTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr)];
+        bookEndTimeMin = @"30";
+        startTime = startHr+startMin;
+        endTime = startTime+0.5;
+    } else {
+        startHr = hr;
+        startMin = 0.5;
+        bookStartTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr)];
+        bookStartTimeMin = @"30";
+        bookEndTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr+1)];
+        bookEndTimeMin = @"00";
+        startTime = startHr+startMin;
+        endTime = startTime+0.5;
+    }
 }
 -(void) viewWillDisappear:(BOOL)animated {
   //  datasrc = @[];    
@@ -94,36 +124,7 @@
     
     dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd"];
-    
-    bookDate = [dateFormat stringFromDate:[NSDate date]];
-    isToday = YES;
-    refreshDate = NO;
-    [starttimepicker selectRow:0 inComponent:0 animated:NO];
-    [endtimepicker selectRow:0 inComponent:0 animated:NO];
-    NSDateFormatter *hFormat = [[NSDateFormatter alloc] init];
-    [hFormat setDateFormat:@"HH"];
-    int hr = [[hFormat stringFromDate:[NSDate date]] intValue];
-    [hFormat setDateFormat:@"mm"];
-    int min = [[hFormat stringFromDate:[NSDate date]] intValue];
-    if (min>30) {
-        startHr = hr+1;
-        startMin = 0;
-        bookStartTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr)];
-        bookStartTimeMin = @"00";
-        bookEndTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr)];
-        bookEndTimeMin = @"30";
-        startTime = startHr+startMin;
-        endTime = startTime+0.5;
-    } else {
-        startHr = hr;
-        startMin = 0.5;
-        bookStartTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr)];
-        bookStartTimeMin = @"30";
-        bookEndTimeHr = [NSString stringWithFormat:@"%d",(int)floor(startHr+1)];
-        bookEndTimeMin = @"00";
-        startTime = startHr+startMin;
-        endTime = startTime+0.5;
-    }
+}
     
     /*
     bookStartTimeHr = @"09";
@@ -139,7 +140,7 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
+
 -(void) removeToolbar {
     [pickerViewToolbar removeFromSuperview];
 }
@@ -607,7 +608,7 @@
 }
 -(void) openEnquiryForm {
      [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
-                [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@/#/inquiry?userToken=%@",domain,[delegate.preferences objectForKey:K_USER_OPENID]]] forKeys:@[@"type",@"url"]]];
+                [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@/#/enquiry?userToken=%@",domain,[delegate.preferences objectForKey:K_USER_OPENID]]] forKeys:@[@"type",@"url"]]];
     /*
     NSURL *touURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/#/inquiry",domain]];
        if ([[UIApplication sharedApplication] canOpenURL:touURL]) {

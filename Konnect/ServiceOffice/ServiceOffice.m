@@ -68,7 +68,7 @@
         return [[datasrc objectForKey:@"office"] count];
     } else if (section==3) {*/
     if (section==1) {
-        return 9;
+        return 11;
     }
     return 1;
 }
@@ -85,7 +85,7 @@
     }
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section==2) {
+    if (section==1) {
         return delegate.footerHeight;
     }
     return 0;
@@ -136,14 +136,18 @@
         } else if (indexPath.row==3) {
             [cell.textLabel setText:TEXT_BOOK_MEETING_ROOM];
         } else if (indexPath.row==4) {
-            [cell.textLabel setText:TEXT_PROMO];
+            [cell.textLabel setText:TEXT_BOOK_POPUP_LOUNGE];
         } else if (indexPath.row==5) {
-            [cell.textLabel setText:TEXT_INVOICE];
+            [cell.textLabel setText:TEXT_BOOK_POLYFORM_EVENT];
         } else if (indexPath.row==6) {
-            [cell.textLabel setText:TEXT_CS];
+            [cell.textLabel setText:TEXT_PROMO];
         } else if (indexPath.row==7) {
-            [cell.textLabel setText:TEXT_SERVICE_OFFICE_TOU];
+            [cell.textLabel setText:TEXT_INVOICE];
         } else if (indexPath.row==8) {
+            [cell.textLabel setText:TEXT_CS];
+        } else if (indexPath.row==9) {
+            [cell.textLabel setText:TEXT_SERVICE_OFFICE_TOU];
+        } else if (indexPath.row==10) {
             [cell.textLabel setText:TEXT_SERVICE_VIRTUAL_TOU];
         }
     }
@@ -194,24 +198,38 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SEARCH_MEETING_ROOM]] forKeys:@[@"type"]]];
         } else if (indexPath.row==4) {
-            
+             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                        [[NSDictionary alloc] initWithObjects:@[
+                                                                [NSNumber numberWithInt:VC_TYPE_MEETING_ROOM],
+                                                                TEXT_POPUP_LOUNGE_ID,
+                                                                @"view"
+                                                                ]
+                                                      forKeys:@[@"type",@"facilityID",@"queryType"]]];
+        } else if (indexPath.row==5) {            
+                        [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+                                   [[NSDictionary alloc] initWithObjects:@[
+                                                                           [NSNumber numberWithInt:VC_TYPE_MEETING_ROOM],
+                                                                           TEXT_POLYFORM_EVENT_ID,
+                                                                           @"view"
+                                                                           ]
+                                                                 forKeys:@[@"type",@"facilityID",@"queryType"]]];
+        } else if (indexPath.row==6) {
             // promo
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE_PROMO]] forKeys:@[@"type"]]];
             
-        } else if (indexPath.row==5) {
+        } else if (indexPath.row==7) {
             if ([delegate checkLogin]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
                  [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_INVOICES],TEXT_INVOICE_TYPE_PENDING] forKeys:@[@"type",@"status"]]];
             }
-        } else if (indexPath.row==6) {
+        } else if (indexPath.row==8) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONTACT_OFFICE],TEXT_INQUIRY_SERVICE_OFFICE_SUPPORT] forKeys:@[@"type",@"inquirytype"]]];
-        } else if (indexPath.row==7) {
+        } else if (indexPath.row==9) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@service-office-house-rules/",domain]] forKeys:@[@"type",@"url"]]];
-        } else if (indexPath.row==8) {
+        } else if (indexPath.row==10) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@virtual-office-house-rules/",domain]] forKeys:@[@"type",@"url"]]];
             

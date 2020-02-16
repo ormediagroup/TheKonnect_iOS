@@ -17,6 +17,7 @@
     CGFloat startTime, endTime;
     NSDictionary *bookingInfo;
     UIButton *tou;
+    UIView *toolbar;
     int cost;
 }
 @property NSString *facilityID;

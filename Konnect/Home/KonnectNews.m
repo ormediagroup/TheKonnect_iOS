@@ -21,7 +21,18 @@
                                      interation:0 callback:^(NSDictionary *data) {
                                          if ([data isKindOfClass:[NSDictionary class]] && [[data objectForKey:@"rc"] intValue]==0) {
                                              self->datasrc = [data objectForKey:@"data"];
-                                             [self.tableView reloadData];
+                                             self->images = [[NSMutableArray alloc] init];
+                                             int __block j = 0;
+                                             for (int i = 0;i < [self->datasrc count]; i++) {
+                                                 [self->images setObject:[[UIImage alloc] init] atIndexedSubscript:i];
+                                                 [self->delegate getImage:[[[self->datasrc objectAtIndex:i] objectForKey:@"thumbnail"] objectAtIndex:0] callback:^(UIImage *image) {
+                                                     [self->images setObject:image atIndexedSubscript:i];
+                                                     j++;
+                                                     if (j == [self->datasrc count]) {
+                                                         [self.tableView reloadData];
+                                                     }
+                                                 }];
+                                             }
                                          } else {
                                              [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
                                          }
@@ -48,6 +59,7 @@
     return [datasrc count];
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    /*
     CGFloat w = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:1] floatValue];
     CGFloat h = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:2] floatValue];
     UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth,LINE_HEIGHT)];
@@ -60,6 +72,9 @@
     [m sizeToFit];
     CGFloat newg = h/w*(delegate.screenWidth-SIDE_PAD_2);
     return l.frame.size.height + m.frame.size.height + newg + LINE_PAD+LINE_PAD+LINE_PAD;
+     */
+    //return UITableViewAutomaticDimension;
+    return 100;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -68,6 +83,21 @@
     [cell.textLabel setTextColor:UICOLOR_DARK_GREY];
     [cell.detailTextLabel setTextColor:[UIColor darkTextColor]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    
+    [cell.imageView setImage:[images objectAtIndex:indexPath.row]];
+    [cell.textLabel setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"title"]];
+    // [cell.detailTextLabel setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"modified"]];
+        
+    
+    UILabel *m = [[UILabel alloc] initWithFrame:CGRectMake(0,4,delegate.screenWidth-SIDE_PAD,LINE_HEIGHT)];
+    [m setFont:[UIFont systemFontOfSize:FONT_S]];
+    [m setTextColor:UICOLOR_LIGHT_GREY];
+    [m setTextAlignment:NSTextAlignmentRight];
+    [m setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"modified"]];
+    [cell addSubview:m];
+    
+    /*
+     
     int y = LINE_PAD;
     UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,0,delegate.screenWidth,LINE_HEIGHT)];
     [l setFont:[UIFont systemFontOfSize:FONT_M]];
@@ -77,12 +107,7 @@
     [cell addSubview:l];
     y+=l.frame.size.height;
     
-    UILabel *m = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth,LINE_HEIGHT)];
-    [m setFont:[UIFont systemFontOfSize:FONT_S]];
-    [m setTextColor:UICOLOR_LIGHT_GREY];
-    [m setText:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"modified"]];
-    [m sizeToFit];
-    [cell addSubview:m];
+    
     y+=m.frame.size.height + LINE_PAD;
     
     CGFloat w = [[[[datasrc objectAtIndex:indexPath.row] objectForKey:@"image"] objectAtIndex:1] floatValue];
@@ -93,12 +118,15 @@
         [v setImage:image];
     }]];
     [cell addSubview:v];
-    
+    */
     // Configure the cell...
     
     return cell;
 }
-
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+            [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_NEWS_DETAILS], [[datasrc objectAtIndex:indexPath.row] objectForKey:@"ID"]] forKeys:@[@"type",@"messageID"]]];
+}
 
 /*
 // Override to support conditional editing of the table view.

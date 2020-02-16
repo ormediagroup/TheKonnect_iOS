@@ -40,9 +40,12 @@
                 CLUB_17,
                 CLUB_18,
                 CLUB_19,
-                CLUB_20,
+                CLUB_20,CLUB_21,CLUB_22,CLUB_23,CLUB_24,CLUB_25,CLUB_26,CLUB_27,CLUB_28,CLUB_29,
+                CLUB_30,CLUB_31,CLUB_32,CLUB_33,CLUB_34,CLUB_35,CLUB_36,CLUB_37,CLUB_38,CLUB_39,
+                CLUB_40,CLUB_41,CLUB_42,CLUB_43,CLUB_44,CLUB_45,CLUB_46,CLUB_47,
                 nil
                ];
+    filteredFields = [fields mutableCopy];
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -61,7 +64,7 @@
         UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_SELECT_AGAIN style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
         [alert addAction:defaultAction];
         UIAlertAction* cal = [UIAlertAction actionWithTitle:TEXT_NOT_ASSOC_MEMBER style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            parent.assoc.text = [selected componentsJoinedByString: @","];
+            self->parent.assoc.text = [selected componentsJoinedByString: @","];
             [self.view.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
         }];
         [alert addAction:cal];
@@ -79,8 +82,11 @@
     
     return 1;
 }
+-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return delegate.headerHeight-delegate.statusBarHeight+30;
+}
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.headerHeight-delegate.statusBarHeight)];
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.headerHeight-delegate.statusBarHeight+30)];
     [v setBackgroundColor:[delegate getThemeColor]];
     
     UIButton *back = [UIButton  buttonWithType:UIButtonTypeCustom];
@@ -114,7 +120,30 @@
     [add addTarget:self action:@selector(addAssoc) forControlEvents:UIControlEventTouchUpInside];
     
     [v addSubview:add];
+    
+    filter = [[UITextField alloc] initWithFrame:CGRectMake(SIDE_PAD,delegate.headerHeight-delegate.statusBarHeight , delegate.screenWidth-SIDE_PAD_2, 25)];
+    [filter setBackgroundColor:[UIColor whiteColor]];
+    [filter setPlaceholder:TEXT_ASSOC_NAME];
+    [filter setLeftViewMode:UITextFieldViewModeAlways];
+    [filter addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [filter setLeftView:[[UIView alloc] initWithFrame:CGRectMake(0,0, 10, 25)]];
+    [v addSubview:filter];
     return v;
+}
+-(void)textFieldDidChange :(UITextField *) textField{
+    //your code
+    [filteredFields removeAllObjects];
+    if ([textField.text isEqualToString:@""]) {
+        filteredFields = [fields mutableCopy];
+    } else {
+        for (NSString *s in fields) {
+            if ([s containsString:textField.text]) {
+                [filteredFields addObject:s];
+            }
+        }
+    }
+    [self.tableView reloadData];
+    
 }
 -(void) addAssoc {
     if ([selected count]>=3) {
@@ -129,8 +158,12 @@
                                                    handler:^(UIAlertAction * action){
                                                        //Do Some action here
                                                        [self->fields addObject:alert.textFields[0].text];
+                                                        self->filteredFields = [self->fields mutableCopy];
+                                                        [self.tableView reloadData];
+                                                        /*
                                                        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:([self->fields count]-1) inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
-                                                       [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:([self->fields count]-1) inSection:0] animated:YES scrollPosition:UITableViewScrollPositionBottom];
+                                                         */
+                                                       [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:([self->filteredFields count]-1) inSection:0] animated:YES scrollPosition:UITableViewScrollPositionBottom];
                                                    }];
         UIAlertAction* cancel = [UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
@@ -150,7 +183,7 @@
     }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section==0) return [fields count];
+    if (section==0) return [filteredFields count];
     else return 0;
 }
 
@@ -158,9 +191,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"assoc"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell.textLabel setText:[fields objectAtIndex:indexPath.row]];
+    [cell.textLabel setText:[filteredFields objectAtIndex:indexPath.row]];
     [cell.textLabel setTextColor:[UIColor darkTextColor]];
-    if ([selected containsObject:[fields objectAtIndex:indexPath.row]]) {
+    if ([selected containsObject:[filteredFields objectAtIndex:indexPath.row]]) {
         [cell setBackgroundColor:UICOLOR_GOLD];
     } else {
         [cell setBackgroundColor:[UIColor whiteColor]];
@@ -175,13 +208,13 @@
         [self.view.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
         
     } else {
-        if ([selected containsObject:[fields objectAtIndex:indexPath.row]]) {
-            [selected removeObject:[fields objectAtIndex:indexPath.row]];
+        if ([selected containsObject:[filteredFields objectAtIndex:indexPath.row]]) {
+            [selected removeObject:[filteredFields objectAtIndex:indexPath.row]];
         } else {
             if ([selected count]>=3) {
                 [delegate raiseAlert:TEXT_MAX_3 msg:@"" inViewController:self];
             } else {
-                [selected addObject:[fields objectAtIndex:indexPath.row]];
+                [selected addObject:[filteredFields objectAtIndex:indexPath.row]];
             }
         }
         [self.tableView  reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];

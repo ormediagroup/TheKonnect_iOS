@@ -12,6 +12,7 @@
 @class RegisterViewController;
 @class RegisterPassword;
 @class TieWeChat;
+@class ResetPassword;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
     TieWeChat *tieWechat;
     UIButton *submit;
     UIImageView *regFlow;
+    ResetPassword *resetpw;
 }
 @property (weak) Introduction *parent;
 -(void) RegStage2;

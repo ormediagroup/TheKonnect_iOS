@@ -79,6 +79,7 @@
 		4E18D7CA234743C000039811 /* ORTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E18D7C9234743C000039811 /* ORTableViewController.m */; };
 		4E3CA9F823248DE100FE655B /* KApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CA9F723248DE100FE655B /* KApiManager.m */; };
 		4E3CA9FC2329F60300FE655B /* RegisterPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CA9FB2329F60300FE655B /* RegisterPassword.m */; };
+		4E3DA51D23F3196D0087562E /* ResetPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3DA51C23F3196D0087562E /* ResetPassword.m */; };
 		4E6F69772355B0DF003B52D3 /* phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E6F69762355B0DE003B52D3 /* phone.png */; };
 		4E6F69792355B34E003B52D3 /* wechatshare.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E6F69782355B34E003B52D3 /* wechatshare.png */; };
 		4E88652B23D6B1A6009330CF /* membertierlegacy.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E88652823D6B1A5009330CF /* membertierlegacy.png */; };
@@ -100,6 +101,7 @@
 		4E9FBBDF23503B2A006890DB /* AuthKey_2R84QJ3BPG.p8 in Resources */ = {isa = PBXBuildFile; fileRef = 4E9FBBDE23503B2A006890DB /* AuthKey_2R84QJ3BPG.p8 */; };
 		4EAE167523C1D08E0024E7FC /* cs-gold.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EAE167423C1D08D0024E7FC /* cs-gold.png */; };
 		4EAE167E23C431080024E7FC /* EventList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EAE167D23C431080024E7FC /* EventList.m */; };
+		4EB78F2323F977B200866279 /* NewsDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EB78F2223F977B200866279 /* NewsDetails.m */; };
 		4EC621302348F89D00F4DCD9 /* Wallet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EC6212F2348F89D00F4DCD9 /* Wallet.m */; };
 		4EC621322349A47200F4DCD9 /* 300goldbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EC621312349A47200F4DCD9 /* 300goldbg.png */; };
 		4EC621342349CC1800F4DCD9 /* barcode.png in Resources */ = {isa = PBXBuildFile; fileRef = 4EC621332349CC1800F4DCD9 /* barcode.png */; };
@@ -250,6 +252,8 @@
 		4E3CA9F923248DEA00FE655B /* KApiManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KApiManager.h; sourceTree = "<group>"; };
 		4E3CA9FA2329F60300FE655B /* RegisterPassword.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterPassword.h; sourceTree = "<group>"; };
 		4E3CA9FB2329F60300FE655B /* RegisterPassword.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegisterPassword.m; sourceTree = "<group>"; };
+		4E3DA51B23F3196D0087562E /* ResetPassword.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResetPassword.h; sourceTree = "<group>"; };
+		4E3DA51C23F3196D0087562E /* ResetPassword.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResetPassword.m; sourceTree = "<group>"; };
 		4E6F69762355B0DE003B52D3 /* phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = phone.png; sourceTree = "<group>"; };
 		4E6F69782355B34E003B52D3 /* wechatshare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wechatshare.png; sourceTree = "<group>"; };
 		4E88652823D6B1A5009330CF /* membertierlegacy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = membertierlegacy.png; sourceTree = "<group>"; };
@@ -286,6 +290,8 @@
 		4EAE167423C1D08D0024E7FC /* cs-gold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cs-gold.png"; sourceTree = "<group>"; };
 		4EAE167C23C431080024E7FC /* EventList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventList.h; sourceTree = "<group>"; };
 		4EAE167D23C431080024E7FC /* EventList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EventList.m; sourceTree = "<group>"; };
+		4EB78F2123F977B200866279 /* NewsDetails.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewsDetails.h; sourceTree = "<group>"; };
+		4EB78F2223F977B200866279 /* NewsDetails.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewsDetails.m; sourceTree = "<group>"; };
 		4EC6212E2348F89D00F4DCD9 /* Wallet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Wallet.h; sourceTree = "<group>"; };
 		4EC6212F2348F89D00F4DCD9 /* Wallet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Wallet.m; sourceTree = "<group>"; };
 		4EC621312349A47200F4DCD9 /* 300goldbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 300goldbg.png; sourceTree = "<group>"; };
@@ -450,6 +456,8 @@
 				4E3CA9FB2329F60300FE655B /* RegisterPassword.m */,
 				4E167252237A503400F6FD8E /* AssoPIcker.h */,
 				4E167253237A503400F6FD8E /* AssoPIcker.m */,
+				4E3DA51B23F3196D0087562E /* ResetPassword.h */,
+				4E3DA51C23F3196D0087562E /* ResetPassword.m */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -685,6 +693,8 @@
 				4E1672402377F2BF00F6FD8E /* AboutKonnect.m */,
 				4EDB50C4239E6EAE004247CD /* ReserveNow.h */,
 				4EDB50C5239E6EAE004247CD /* ReserveNow.m */,
+				4EB78F2123F977B200866279 /* NewsDetails.h */,
+				4EB78F2223F977B200866279 /* NewsDetails.m */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -896,6 +906,7 @@
 				4E16724423781C9B00F6FD8E /* Events.m in Sources */,
 				4E167251237A4FF000F6FD8E /* BuyPrintQuota.m in Sources */,
 				4E9C0FA7235432E4005285A4 /* ImageList.m in Sources */,
+				4EB78F2323F977B200866279 /* NewsDetails.m in Sources */,
 				4E18D7AA234700B400039811 /* ScanQR.m in Sources */,
 				4EEB844A233CB36C00853E76 /* Header.m in Sources */,
 				4EEB844D233DE0E200853E76 /* Footer.m in Sources */,
@@ -936,6 +947,7 @@
 				4E9C0FA02350EB46005285A4 /* Facility.m in Sources */,
 				4E9F7CC823752AD7005EB150 /* ContactUs.m in Sources */,
 				4EE24A3D234F34A600E2C651 /* PaymentCodeDigit.m in Sources */,
+				4E3DA51D23F3196D0087562E /* ResetPassword.m in Sources */,
 				4E9F7CD423757827005EB150 /* RefereralQR.m in Sources */,
 				4E16723B2376943900F6FD8E /* SearchMeetingRoom.m in Sources */,
 				4E1672412377F2BF00F6FD8E /* AboutKonnect.m in Sources */,
@@ -1102,7 +1114,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.10;
+				MARKETING_VERSION = 1.12;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1146,7 +1158,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.10;
+				MARKETING_VERSION = 1.12;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

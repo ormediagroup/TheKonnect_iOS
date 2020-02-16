@@ -26,8 +26,8 @@
             timestampString = "597660735.698869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "464"
-            endingLineNumber = "464"
+            startingLineNumber = "506"
+            endingLineNumber = "506"
             landmarkName = "-checkWXAccessToken"
             landmarkType = "7">
          </BreakpointContent>
@@ -35,16 +35,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "473E97D7-9DD6-4585-9788-F1CB76B7AF23"
+            uuid = "EFB268AB-FEB0-461A-B302-679FDD941878"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Konnect/Events/Events.m"
+            filePath = "Konnect/AppDelegate.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
-            landmarkName = "-viewCurrentEvent:"
+            startingLineNumber = "688"
+            endingLineNumber = "688"
+            landmarkName = "AppDelegate"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6A14AC32-22FA-4D10-88C8-3BC1D30FB37E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Konnect/Wallet/PaymentCode.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "297"
+            endingLineNumber = "297"
+            landmarkName = "-submit"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

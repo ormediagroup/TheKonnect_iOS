@@ -180,9 +180,10 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
   /// Required - 注册 DeviceToken
     [JPUSHService registerDeviceToken:deviceToken];
-    NSString *dToken = JPUSHService.registrationID;
     
-     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-server",domain] param:
+    NSString *dToken = JPUSHService.registrationID;
+    if ([dToken isKindOfClass:[NSString class]] && ![@"" isEqualToString:dToken]) {
+    [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-server",domain] param:
         [[NSDictionary alloc] initWithObjects:@[
                                                 @"Jpush",
                                                 @"uploadPhoneInfo",
@@ -208,6 +209,7 @@
                                                 NSLog(@"JPush Service registration: %@", [data objectForKey:@"msg"]);
                                             }
                                         }];
+    }
     
 }
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {

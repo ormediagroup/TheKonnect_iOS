@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AboutKonnect : ORTableViewController {
     NSArray *datasrc;
+    NSString *marketingKit;
 
 }
 

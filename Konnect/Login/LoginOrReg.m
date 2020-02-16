@@ -13,6 +13,7 @@
 #import "const.h"
 #import "RegisterViewController.h"
 #import "RegisterPassword.h"
+#import "ResetPassword.h"
 @interface LoginOrReg ()
 
 @end
@@ -122,7 +123,7 @@
     [loginView.view addSubview:areaCode];
     
     
-    phone = [[UITextField alloc] initWithFrame:CGRectMake(140,y,delegate.screenWidth-140-SIDE_PAD_2,LINE_HEIGHT)];
+    phone = [[UITextField alloc] initWithFrame:CGRectMake(140,y,delegate.screenWidth-170-SIDE_PAD_2,LINE_HEIGHT)];
     [phone setKeyboardType:UIKeyboardTypePhonePad];
     [phone setTextColor:[UIColor darkTextColor]];
     [delegate addDoneToKeyboard:phone];
@@ -212,18 +213,18 @@
     
     {
         UIButton *fop = [UIButton buttonWithType:UIButtonTypeCustom];
-        [fop setFrame:CGRectMake(SIDE_PAD_2,y,delegate.screenWidth-100,LINE_HEIGHT)];
+        [fop setFrame:CGRectMake(SIDE_PAD_2,y,100,LINE_HEIGHT)];
         fop.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [fop setTitle:TEXT_FORGOT_PASSWORD forState:UIControlStateNormal];
         [fop setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [fop.titleLabel setFont:[UIFont systemFontOfSize:FONT_S]];
-        [fop addTarget:self action:@selector(forgotPassword) forControlEvents:UIControlEventTouchUpInside];
+        [fop addTarget:self action:@selector(forgotPassword) forControlEvents:UIControlEventTouchUpInside];\
         [loginView.view addSubview:fop];
         
         
         UIButton *skip = [UIButton buttonWithType:UIButtonTypeCustom];
        [skip setTitle:TEXT_GO_HOMEPAGE forState:UIControlStateNormal];
-       [skip setFrame:CGRectMake(delegate.screenWidth/2-158, y, 316, LINE_HEIGHT)];
+       [skip setFrame:CGRectMake(delegate.screenWidth/2-50, y, 100, LINE_HEIGHT)];
        [skip setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
        [self.view addSubview:skip];
        [skip addTarget:self action:@selector(skip) forControlEvents:UIControlEventTouchUpInside];
@@ -407,6 +408,15 @@
     });
 }
 -(void) forgotPassword {
+    if (!resetpw) {
+        resetpw = [[ResetPassword alloc] initWithNibName:nil bundle:nil];
+    }
+    if ([nav.viewControllers containsObject:resetpw]) {
+        [nav popToViewController:resetpw animated:YES];
+    } else {
+        [nav pushViewController:resetpw animated:YES];
+    }
+        
 }
 -(void)wxRegister {
     regView.regType = REG_TYPE_WECHAT;

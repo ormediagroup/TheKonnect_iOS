@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
     UIView *bottom;
     UILabel *nameLbl;
     UIButton *submit;
+    UIView *bg;
 }
 @end
 

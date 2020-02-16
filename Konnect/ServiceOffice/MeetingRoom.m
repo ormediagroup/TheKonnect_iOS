@@ -175,6 +175,7 @@
     for (UIView *v in scroll.subviews) {
         [v removeFromSuperview];
     }
+    [toolbar removeFromSuperview];
     datasrc = d;
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:[d objectForKey:@"name_zh"]];
     if ([[d objectForKey:@"images"] isKindOfClass:[NSString class]] && [[d objectForKey:@"images"] length]>0) {
@@ -476,14 +477,19 @@
     if (bookingInfo) {
     } else if (bookDate && ![bookDate isEqualToString:@""]) {
     } else {
-        UIView *toolbar = [[UIView alloc] initWithFrame:CGRectMake(0,delegate.screenHeight-delegate.footerHeight-60,delegate.screenWidth,60)];
+        toolbar = [[UIView alloc] initWithFrame:CGRectMake(0,delegate.screenHeight-delegate.footerHeight-60,delegate.screenWidth,60)];
         [toolbar setBackgroundColor:[UIColor whiteColor]];
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,1)];
         [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY_BORDER];
         [toolbar addSubview:line];
         {
             UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
-            [b setTitle:TEXT_RENT_MEETING_ROOM_NOW forState:UIControlStateNormal];
+            if ([[datasrc objectForKey:@"ID"] isEqualToString:TEXT_POPUP_LOUNGE_ID] ||
+                [[datasrc objectForKey:@"ID"] isEqualToString:TEXT_POLYFORM_EVENT_ID]) {
+                [b setTitle:TEXT_INQUIRY forState:UIControlStateNormal];
+            } else {
+                [b setTitle:TEXT_RENT_MEETING_ROOM_NOW forState:UIControlStateNormal];
+            }
             [b setBackgroundColor:[delegate getThemeColor]];
             b.tag=99;
             [b setFrame:CGRectMake(0,0,delegate.screenWidth,60)];
@@ -514,8 +520,12 @@
     }
 }
 -(void) makeBooking{
+   [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
+    [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@/#/meeting-room-enquiry?userToken=%@",domain,[delegate.preferences objectForKey:K_USER_OPENID]]] forKeys:@[@"type",@"url"]]];
+    /*
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
      [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SEARCH_MEETING_ROOM],@"search",datasrc] forKeys:@[@"type",@"action",@"facility"]]];
+     */
 }
 -(void) book{
     /// [self->delegate raiseAlert:TEXT_BOOK_ROOM_SUCCESS msg:[NSString stringWithFormat:@"%@ %@:%@ - %@:%@",self->bookDate,self->bookStartTimeHr,self->bookStartTimeMin,self->bookStartTimeHr,self->bookStartTimeHr]];

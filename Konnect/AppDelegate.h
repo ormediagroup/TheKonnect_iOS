@@ -6,7 +6,21 @@
 //  Copyright © 2019 Jacky Mok. All rights reserved.
 //
 /* TODO : Invoice Create per item details
- TODO:
+ TODO: Check Login Validity
+ 
+ Version 1.12 (16/2/2020)
+ 1) Added Search Filters to Association Selection
+ 2) Added reset password
+ 3) Fixed Login (Clear Phone)
+ 4) Updated About Page & link to marketing kit
+ 5) Add / Open link in Office Promotion
+ 6) Add News Details
+ 7) Splitted Polyform event space / pop up lounge from meeting rooms
+ 8) Created separated flow for event space and popup lounge
+ 
+ Version 1.11
+ 1) Code Guarded a JPUSH registration error (test)
+ 
  Version 1.10
  1) Changed Alignment Issue on FNB Page
  2) Changed to use JIGUANG notification

@@ -74,9 +74,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"facilities"];
     if ([[[datasrc objectAtIndex:indexPath.row] objectForKey:@"type"] containsString:@"fnblegacy"]) {
-        [cell setBackgroundColor:UICOLOR_GREEN];
+        //[cell setBackgroundColor:UICOLOR_PURPLE];
     } else {
-        [cell setBackgroundColor:UICOLOR_PURPLE];
+        //[cell setBackgroundColor:UICOLOR_GREEN];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     UIImageView *i = [[UIImageView alloc] initWithFrame:CGRectMake(SIDE_PAD,SIDE_PAD,delegate.screenWidth-SIDE_PAD_2,FACILITIY_ROW_HEIGHT-SIDE_PAD)];
@@ -107,6 +107,11 @@
     {
         UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,i.frame.size.height-LINE_HEIGHT,i.frame.size.width,LINE_HEIGHT)];
         [v setBackgroundColor:[UIColor whiteColor]];
+        if ([[[datasrc objectAtIndex:indexPath.row] objectForKey:@"type"] containsString:@"fnblegacy"]) {
+               [v setBackgroundColor:UICOLOR_PURPLE];
+           } else {
+               [v setBackgroundColor:UICOLOR_GREEN];
+           }
         [i addSubview:v];
         
         UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,i.frame.size.height-LINE_HEIGHT,i.frame.size.width-SIDE_PAD_2,LINE_HEIGHT)];

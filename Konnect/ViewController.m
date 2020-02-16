@@ -37,6 +37,7 @@
 #import "Office.h"
 #import "SearchMeetingRoom.h"
 #import "KonnectNews.h"
+#import "NewsDetails.h"
 #import "AboutKonnect.h"
 #import "Events.h"
 #import "EventDetails.h"
@@ -391,6 +392,12 @@
                 knews = [[KonnectNews alloc] initWithStyle:UITableViewStylePlain];
             }
             [self pushOrPop:knews];
+        } else if (type==VC_TYPE_NEWS_DETAILS) {
+            if (!newsDetails) {
+                newsDetails = [[NewsDetails alloc] initWithNibName:nil bundle:nil];
+            }
+            [newsDetails loadMessage:[[notif.object objectForKey:@"messageID"] intValue]];
+            [self pushOrPop:newsDetails];
         } else if (type==VC_TYPE_ABOUT_KONNECT) {
             if (!about) {
                 about = [[AboutKonnect alloc] initWithStyle:UITableViewStylePlain];

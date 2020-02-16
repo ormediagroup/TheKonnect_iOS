@@ -72,6 +72,17 @@
     
     // Configure the cell...
 }
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([[[datasrc objectAtIndex:indexPath.row] objectForKey:@"url"] isKindOfClass:[NSString class]] &&
+        ![[[datasrc objectAtIndex:indexPath.row] objectForKey:@"url"] isEqualToString:@""]
+        ) {
+        if( [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"url"]]])
+           //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:pURL1]];
+           [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[datasrc objectAtIndex:indexPath.row] objectForKey:@"url"]] options:@{} completionHandler:^(BOOL success) {
+           
+       }];
+    }
+}
 /*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];

@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *bookOthers;
     NSString *bookRoom;
     NSString *bookAlcohol;
-    UITextField *bookingName, *bookingPhone;
+    UITextField *bookingName, *bookingPhone, *bookingPhone2;
     UIPickerView *datepicker,*timepicker,*peoplepicker, *roompicker, *alcoholpicker;
     NSDateFormatter *dateFormat;
     UIView *pickerViewToolbar;

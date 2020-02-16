@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableArray *fields;
     RegisterViewController __weak *parent;
     NSMutableArray *selected;
+    NSMutableArray *filteredFields;
+    UITextField *filter;
 }
 @property (weak) RegisterViewController *parent;
 @end

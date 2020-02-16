@@ -37,6 +37,7 @@
 @class Office;
 @class SearchMeetingRoom;
 @class KonnectNews;
+@class NewsDetails;
 @class AboutKonnect;
 @class Events;
 @class EventDetails;
@@ -54,6 +55,7 @@
 @class PastEventsList;
 @class ReserveNow;
 @class EventList;
+
 @interface ViewController : UIViewController <UINavigationControllerDelegate> {
     Introduction *lc;
     BOOL showingController;
@@ -87,6 +89,7 @@
     Office *office;
     SearchMeetingRoom *searchroom;
     KonnectNews *knews;
+    NewsDetails *newsDetails;
     AboutKonnect *about;
     Events *event;
     EventDetails *eventdetails;

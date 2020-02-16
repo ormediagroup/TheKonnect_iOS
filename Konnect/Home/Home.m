@@ -23,7 +23,7 @@
     delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:scroll];
-    UIView *bg = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,140)];
+    bg = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,140)];
     [bg setBackgroundColor:[delegate getThemeColor]];
     [scroll addSubview:bg];
     
@@ -225,6 +225,9 @@
      */
     [[NSNotificationCenter defaultCenter] postNotificationName:HIDE_BACK_BTN object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@""];
+    [bg setBackgroundColor:[delegate getThemeColor]];
+    UIView *con = [bottom viewWithTag:3];
+    [con setHidden:NO];
     if ([delegate isLoggedIn]) {
         if ([[delegate.preferences objectForKey:K_USER_NAME] isKindOfClass:[NSString class]]) {
             [nameLbl setText:[delegate.preferences objectForKey:K_USER_NAME]];
@@ -240,10 +243,12 @@
         } else if ([[delegate.preferences objectForKey:K_USER_TIER] isKindOfClass:[NSString class]] && [[delegate.preferences objectForKey:K_USER_TIER] isEqualToString:TEXT_MEMBERTIER_VIP]) {
             [memberTier setImage:[UIImage imageNamed:@"membertiervip.png"]];
         } else {
+            [con setHidden:YES];
             [memberTier setImage:[UIImage imageNamed:@"membertiermember.png"]];
         }
         [submit addSubview:memberTier];
     } else {
+        [con setHidden:YES];
         [nameLbl setText:TEXT_VISITOR];
         [nameLbl sizeToFit];
         [nameLbl setFrame:CGRectMake(10,0,nameLbl.frame.size.width,34)];
