@@ -20,9 +20,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self.view setBackgroundColor:[delegate getThemeColor]];
     delegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     backEnabled = YES;
-    [self.view setBackgroundColor:[delegate getThemeColor]];
 
     back = [UIButton  buttonWithType:UIButtonTypeCustom];
     [back setFrame:CGRectMake(SIDE_PAD,delegate.headerHeight-30,24,24)];
@@ -53,6 +53,9 @@
 
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeTitle:) name:CHANGE_TITLE object:nil];
+}
+-(void) viewWillAppear:(BOOL)animated {
+    [self.view setBackgroundColor:[delegate getThemeColor]];
 }
 -(void) redirectBackBtn:(NSNotification *)t {
     [back removeTarget:self action:@selector(onBackPressed) forControlEvents:UIControlEventAllEvents];

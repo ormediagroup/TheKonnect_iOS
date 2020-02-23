@@ -35,7 +35,7 @@
         [nav.view setFrame:CGRectMake(0,0,delegate.screenWidth,delegate.screenHeight-PANEL_HEIGHT)];
         [self.view addSubview:nav.view];
         
-        panel = [[UIScrollView alloc] initWithFrame:CGRectMake(0,delegate.screenHeight-PANEL_HEIGHT,delegate.screenWidth,PANEL_HEIGHT)];
+        panel = [[UIScrollView alloc] initWithFrame:CGRectMake(0,delegate.screenHeight-PANEL_HEIGHT-delegate.footerHeight,delegate.screenWidth,PANEL_HEIGHT)];
         [panel setBackgroundColor:[UIColor colorWithWhite:0.98 alpha:1.0]];
         [self.view addSubview:panel];
         

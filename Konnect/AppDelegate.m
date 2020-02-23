@@ -182,7 +182,9 @@
     [JPUSHService registerDeviceToken:deviceToken];
     
     NSString *dToken = JPUSHService.registrationID;
-    if ([dToken isKindOfClass:[NSString class]] && ![@"" isEqualToString:dToken]) {
+    if ([dToken isKindOfClass:[NSString class]] && ![@"" isEqualToString:dToken] &&
+        [[preferences objectForKey:K_USER_OPENID] isKindOfClass:[NSString class]] && ![[preferences objectForKey:K_USER_OPENID] isEqualToString:@""]
+        ) {
     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-server",domain] param:
         [[NSDictionary alloc] initWithObjects:@[
                                                 @"Jpush",

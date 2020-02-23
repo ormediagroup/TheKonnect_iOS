@@ -174,10 +174,12 @@
 -(void) addBottomPart:(NSArray *)data {
     CGFloat x = SIDE_PAD;
     CGFloat y = 0;
-    CGFloat width = (delegate.screenWidth-SIDE_PAD_2-SIDE_PAD)/2;
+    //CGFloat width = (delegate.screenWidth-SIDE_PAD_2-SIDE_PAD)/2;
+    CGFloat width = (delegate.screenWidth-SIDE_PAD_2-SIDE_PAD_2)/3;
+    CGFloat height = width / 315 * 360;
     int k = 0;
     for (NSDictionary *d in data) {
-        UIImageView *v =[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,80)];
+        UIImageView *v =[[UIImageView alloc] initWithFrame:CGRectMake(x,y,width,height)];
         [v setUserInteractionEnabled:YES];
         v.tag = k;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adpressed:)];
@@ -190,7 +192,7 @@
         x+= SIDE_PAD + width;
         if ((x+width) > delegate.screenWidth) {
             x = SIDE_PAD;
-            y+=70+LINE_PAD;
+            y+=height+LINE_PAD;
         }
         [bottom addSubview:v];
         

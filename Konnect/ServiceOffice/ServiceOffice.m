@@ -133,21 +133,23 @@
             [cell.textLabel setText:TEXT_MY_VIRTUAL_OFFICE];
         } else if (indexPath.row==2) {
             [cell.textLabel setText:TEXT_KONNECT_CONCERIGE];
+            /*
         } else if (indexPath.row==3) {
             [cell.textLabel setText:TEXT_BOOK_MEETING_ROOM];
         } else if (indexPath.row==4) {
             [cell.textLabel setText:TEXT_BOOK_POPUP_LOUNGE];
-        } else if (indexPath.row==5) {
-            [cell.textLabel setText:TEXT_BOOK_POLYFORM_EVENT];
-        } else if (indexPath.row==6) {
+             */
+        } else if (indexPath.row==3) {
+            [cell.textLabel setText:TEXT_BOOK_MEETING_ROOM];
+        } else if (indexPath.row==4) {
             [cell.textLabel setText:TEXT_PROMO];
-        } else if (indexPath.row==7) {
+        } else if (indexPath.row==5) {
             [cell.textLabel setText:TEXT_INVOICE];
-        } else if (indexPath.row==8) {
+        } else if (indexPath.row==6) {
             [cell.textLabel setText:TEXT_CS];
-        } else if (indexPath.row==9) {
+        } else if (indexPath.row==7) {
             [cell.textLabel setText:TEXT_SERVICE_OFFICE_TOU];
-        } else if (indexPath.row==10) {
+        } else if (indexPath.row==8) {
             [cell.textLabel setText:TEXT_SERVICE_VIRTUAL_TOU];
         }
     }
@@ -194,6 +196,7 @@
         } else if (indexPath.row==2) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONCIERGE]] forKeys:@[@"type"]]];
+            /*
         } else if (indexPath.row==3) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SEARCH_MEETING_ROOM]] forKeys:@[@"type"]]];
@@ -205,7 +208,8 @@
                                                                 @"view"
                                                                 ]
                                                       forKeys:@[@"type",@"facilityID",@"queryType"]]];
-        } else if (indexPath.row==5) {            
+             */
+        } else if (indexPath.row==3) {
                         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
                                    [[NSDictionary alloc] initWithObjects:@[
                                                                            [NSNumber numberWithInt:VC_TYPE_MEETING_ROOM],
@@ -213,23 +217,23 @@
                                                                            @"view"
                                                                            ]
                                                                  forKeys:@[@"type",@"facilityID",@"queryType"]]];
-        } else if (indexPath.row==6) {
+        } else if (indexPath.row==4) {
             // promo
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_OFFICE_PROMO]] forKeys:@[@"type"]]];
             
-        } else if (indexPath.row==7) {
+        } else if (indexPath.row==5) {
             if ([delegate checkLogin]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
                  [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_INVOICES],TEXT_INVOICE_TYPE_PENDING] forKeys:@[@"type",@"status"]]];
             }
-        } else if (indexPath.row==8) {
+        } else if (indexPath.row==6) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONTACT_OFFICE],TEXT_INQUIRY_SERVICE_OFFICE_SUPPORT] forKeys:@[@"type",@"inquirytype"]]];
-        } else if (indexPath.row==9) {
+        } else if (indexPath.row==7) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@service-office-house-rules/",domain]] forKeys:@[@"type",@"url"]]];
-        } else if (indexPath.row==10) {
+        } else if (indexPath.row==8) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_TOU],[NSString stringWithFormat:@"%@virtual-office-house-rules/",domain]] forKeys:@[@"type",@"url"]]];
             

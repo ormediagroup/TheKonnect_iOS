@@ -204,11 +204,11 @@
     UIPickerView *picker = [pickerViewToolbar viewWithTag:1];
     if (picker==datepicker) {
         bookDate = pickerValue.text;
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (picker==timepicker){
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (picker==peoplepicker){
+    } else if (picker==timepicker){
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:4 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    } else if (picker==peoplepicker){
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     } else if (picker==roompicker){
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:7 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     } else if (picker==alcoholpicker){

@@ -77,7 +77,7 @@
     //[base setContentSize:CGSizeMake(img.size.width,img.size.height)];
     [base scrollRectToVisible:CGRectMake(0,0,1,1) animated:NO];
     
-    image.center = CGPointMake(delegate.screenWidth/2, delegate.screenHeight/2-72);
+    image.center = CGPointMake(delegate.screenWidth/2, (delegate.screenHeight-delegate.footerHeight)/2-72);
     /*
     CGFloat scaleX = 1.0f* self.view.frame.size.width / img.size.width;
     CGFloat scaleY = 1.0f* self.view.frame.size.height / img.size.height;

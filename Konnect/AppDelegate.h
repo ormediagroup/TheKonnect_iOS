@@ -7,6 +7,16 @@
 //
 /* TODO : Invoice Create per item details
  TODO: Check Login Validity
+ Version 1.14
+ 1) Changed App Icon
+ 2) Updated Homepage Icons
+ 3) changed Homepage layout
+ 4) Removed Meeting room booking and replaced with Polyform space booking form
+ 5) Fixed reservation now page
+ 6) Fixed layout for image gallery
+ 
+ Version 1.13 (16/2/2020)
+ 1) Second patch for Guarded a JPUSH registration error (test)
  
  Version 1.12 (16/2/2020)
  1) Added Search Filters to Association Selection

@@ -58,9 +58,6 @@
 		4E18D7902341FAA300039811 /* backbtnwhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D78F2341FAA300039811 /* backbtnwhite.png */; };
 		4E18D7922342130800039811 /* normalmember.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7912342130800039811 /* normalmember.png */; };
 		4E18D7942342F5F400039811 /* rightarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7932342F5F400039811 /* rightarrow.png */; };
-		4E18D79B2344567F00039811 /* restauranticon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7982344567F00039811 /* restauranticon.png */; };
-		4E18D79C2344567F00039811 /* officeicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7992344567F00039811 /* officeicon.png */; };
-		4E18D79D2344567F00039811 /* conferenceicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D79A2344567F00039811 /* conferenceicon.png */; };
 		4E18D7A12345C21700039811 /* MessageList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E18D7A02345C21700039811 /* MessageList.m */; };
 		4E18D7A32345D7E700039811 /* notificationicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7A22345D7E700039811 /* notificationicon.png */; };
 		4E18D7A62345FF3D00039811 /* MessageDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E18D7A52345FF3C00039811 /* MessageDetails.m */; };
@@ -77,6 +74,9 @@
 		4E18D7C423472D1000039811 /* waller.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E18D7BE23472D1000039811 /* waller.png */; };
 		4E18D7C72347429C00039811 /* EditInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E18D7C62347429C00039811 /* EditInfo.m */; };
 		4E18D7CA234743C000039811 /* ORTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E18D7C9234743C000039811 /* ORTableViewController.m */; };
+		4E1ADBD823FFA7660017DBB7 /* restauranticon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E1ADBD523FFA7660017DBB7 /* restauranticon.png */; };
+		4E1ADBD923FFA7660017DBB7 /* conferenceicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E1ADBD623FFA7660017DBB7 /* conferenceicon.png */; };
+		4E1ADBDA23FFA7660017DBB7 /* officeicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4E1ADBD723FFA7660017DBB7 /* officeicon.png */; };
 		4E3CA9F823248DE100FE655B /* KApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CA9F723248DE100FE655B /* KApiManager.m */; };
 		4E3CA9FC2329F60300FE655B /* RegisterPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3CA9FB2329F60300FE655B /* RegisterPassword.m */; };
 		4E3DA51D23F3196D0087562E /* ResetPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3DA51C23F3196D0087562E /* ResetPassword.m */; };
@@ -222,9 +222,6 @@
 		4E18D78F2341FAA300039811 /* backbtnwhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backbtnwhite.png; sourceTree = "<group>"; };
 		4E18D7912342130800039811 /* normalmember.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = normalmember.png; sourceTree = "<group>"; };
 		4E18D7932342F5F400039811 /* rightarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rightarrow.png; sourceTree = "<group>"; };
-		4E18D7982344567F00039811 /* restauranticon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restauranticon.png; sourceTree = "<group>"; };
-		4E18D7992344567F00039811 /* officeicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = officeicon.png; sourceTree = "<group>"; };
-		4E18D79A2344567F00039811 /* conferenceicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = conferenceicon.png; sourceTree = "<group>"; };
 		4E18D79F2345C21700039811 /* MessageList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageList.h; sourceTree = "<group>"; };
 		4E18D7A02345C21700039811 /* MessageList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageList.m; sourceTree = "<group>"; };
 		4E18D7A22345D7E700039811 /* notificationicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notificationicon.png; sourceTree = "<group>"; };
@@ -248,6 +245,9 @@
 		4E18D7C62347429C00039811 /* EditInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditInfo.m; sourceTree = "<group>"; };
 		4E18D7C8234743C000039811 /* ORTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORTableViewController.h; sourceTree = "<group>"; };
 		4E18D7C9234743C000039811 /* ORTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ORTableViewController.m; sourceTree = "<group>"; };
+		4E1ADBD523FFA7660017DBB7 /* restauranticon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restauranticon.png; sourceTree = "<group>"; };
+		4E1ADBD623FFA7660017DBB7 /* conferenceicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = conferenceicon.png; sourceTree = "<group>"; };
+		4E1ADBD723FFA7660017DBB7 /* officeicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = officeicon.png; sourceTree = "<group>"; };
 		4E3CA9F723248DE100FE655B /* KApiManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KApiManager.m; sourceTree = "<group>"; };
 		4E3CA9F923248DEA00FE655B /* KApiManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KApiManager.h; sourceTree = "<group>"; };
 		4E3CA9FA2329F60300FE655B /* RegisterPassword.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterPassword.h; sourceTree = "<group>"; };
@@ -465,6 +465,9 @@
 		4E12D79923229C1400D4A545 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				4E1ADBD623FFA7660017DBB7 /* conferenceicon.png */,
+				4E1ADBD723FFA7660017DBB7 /* officeicon.png */,
+				4E1ADBD523FFA7660017DBB7 /* restauranticon.png */,
 				4E88652823D6B1A5009330CF /* membertierlegacy.png */,
 				4E88652923D6B1A5009330CF /* membertiermember.png */,
 				4E88652A23D6B1A6009330CF /* membertiervip.png */,
@@ -483,9 +486,6 @@
 				4E18D7BC23472D1000039811 /* referral.png */,
 				4E18D7BE23472D1000039811 /* waller.png */,
 				4E18D7A22345D7E700039811 /* notificationicon.png */,
-				4E18D79A2344567F00039811 /* conferenceicon.png */,
-				4E18D7992344567F00039811 /* officeicon.png */,
-				4E18D7982344567F00039811 /* restauranticon.png */,
 				4E18D7932342F5F400039811 /* rightarrow.png */,
 				4E18D7912342130800039811 /* normalmember.png */,
 				4E02E22D237285490006379B /* LOGO */,
@@ -795,7 +795,6 @@
 				4EEA626B238E50BA0051A72D /* logo_qr-012.png in Resources */,
 				4EC621362349D7FB00F4DCD9 /* dollaricon.png in Resources */,
 				4EEA6249238BA3470051A72D /* logo_qr-01.png in Resources */,
-				4E18D79C2344567F00039811 /* officeicon.png in Resources */,
 				4E18D7C123472D1000039811 /* pointshistory.png in Resources */,
 				4E18D78E2341EAA600039811 /* cs.png in Resources */,
 				4EEB846B233E08FC00853E76 /* backbtn.png in Resources */,
@@ -812,15 +811,14 @@
 				4E6F69792355B34E003B52D3 /* wechatshare.png in Resources */,
 				4E02E227237267720006379B /* intro2.png in Resources */,
 				4E6F69772355B0DF003B52D3 /* phone.png in Resources */,
+				4E1ADBDA23FFA7660017DBB7 /* officeicon.png in Resources */,
 				4E18D7C423472D1000039811 /* waller.png in Resources */,
 				4E18D7C323472D1000039811 /* office.png in Resources */,
 				4EE24A33234DD26B00E2C651 /* paybywechat.png in Resources */,
 				4E18D7922342130800039811 /* normalmember.png in Resources */,
-				4E18D79B2344567F00039811 /* restauranticon.png in Resources */,
 				4E9FBBDF23503B2A006890DB /* AuthKey_2R84QJ3BPG.p8 in Resources */,
 				4EEB84712340397D00853E76 /* launchscreen.png in Resources */,
 				4E02E221237267180006379B /* intro1.png in Resources */,
-				4E18D79D2344567F00039811 /* conferenceicon.png in Resources */,
 				4E02E228237267720006379B /* intro3.png in Resources */,
 				4E88652D23D6B1A6009330CF /* membertiervip.png in Resources */,
 				4E16725F237BCAC500F6FD8E /* GoldBg.png in Resources */,
@@ -834,12 +832,14 @@
 				4EEB8469233E01A500853E76 /* goldbutton.png in Resources */,
 				4EEB846F233E0BC000853E76 /* addricon.png in Resources */,
 				4E18D78B2341EAA600039811 /* msg.png in Resources */,
+				4E1ADBD923FFA7660017DBB7 /* conferenceicon.png in Resources */,
 				4EE24A3F23502EF200E2C651 /* GoogleService-Info.plist in Resources */,
 				4EEB84772340A2BD00853E76 /* regflow1.png in Resources */,
 				4E18D7BF23472D1000039811 /* coupons.png in Resources */,
 				4E12D7892320D93E00D4A545 /* README.txt in Resources */,
 				4E06573B231E7F9300884D79 /* Main.storyboard in Resources */,
 				4EC621342349CC1800F4DCD9 /* barcode.png in Resources */,
+				4E1ADBD823FFA7660017DBB7 /* restauranticon.png in Resources */,
 				4E18D7842341EA5B00039811 /* logo-small.png in Resources */,
 				4EEB847C2340A82500853E76 /* checked.png in Resources */,
 				4E88652B23D6B1A6009330CF /* membertierlegacy.png in Resources */,
@@ -1114,7 +1114,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.12;
+				MARKETING_VERSION = 1.14;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1158,7 +1158,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.12;
+				MARKETING_VERSION = 1.14;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
