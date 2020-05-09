@@ -26,6 +26,7 @@
             if ([data isKindOfClass:[NSDictionary class]] && [[data objectForKey:@"rc"] intValue]==0) {
                 self->datasrc = data;
             } else {
+                
             }
             [self.tableView reloadData];
         }];
@@ -196,10 +197,11 @@
         } else if (indexPath.row==2) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_CONCIERGE]] forKeys:@[@"type"]]];
-            /*
+            
         } else if (indexPath.row==3) {
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
              [[NSDictionary alloc] initWithObjects:@[[NSNumber numberWithInt:VC_TYPE_SEARCH_MEETING_ROOM]] forKeys:@[@"type"]]];
+            /*
         } else if (indexPath.row==4) {
              [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
                         [[NSDictionary alloc] initWithObjects:@[
@@ -208,7 +210,7 @@
                                                                 @"view"
                                                                 ]
                                                       forKeys:@[@"type",@"facilityID",@"queryType"]]];
-             */
+             
         } else if (indexPath.row==3) {
                         [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:
                                    [[NSDictionary alloc] initWithObjects:@[
@@ -217,6 +219,7 @@
                                                                            @"view"
                                                                            ]
                                                                  forKeys:@[@"type",@"facilityID",@"queryType"]]];
+             */
         } else if (indexPath.row==4) {
             // promo
             [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:

@@ -7,7 +7,19 @@
 //
 /* TODO : Invoice Create per item details
  TODO: Check Login Validity
- Version 1.14
+ Version 1.17
+ 1) Text Change under wallet page
+ 2) Fixed scrolling issue on message lists
+ 3) Added delete button to messages
+ 4) Added mark all as read to messages
+ 
+ Version 1.16 (8/5/2020)
+ 1) Minor Bug fixes
+ 
+ Version 1.15 (22/4/2020)
+ 1) Change referrer URL format to include refname and refid
+ 2) Added reading referrer QR code during registration
+ Version 1.14 (23/2/2020)
  1) Changed App Icon
  2) Updated Homepage Icons
  3) changed Homepage layout
@@ -160,8 +172,8 @@ version 0.5
  */
 
  // HK Domain
-#define domain @"http://thekonnect.com.hk/"
-#define K_API_ENDPOINT @"http://thekonnect.com.hk/app/"
+#define domain @"https://thekonnect.com.hk/"
+#define K_API_ENDPOINT @"https://thekonnect.com.hk/app/"
 #define OAUTH_CLIENT_ID @"WrLzj4dYnEhk43qVohbnWAlTCcRZs1BosmXLraJP"
 #define OAUTH_CLIENT_SECRET @"P09U4zQsR2QNCcHfozfRAQf2ddOFoyuezD8DdY64"
 #define WX_APP_ID @"wxe777ccc4f64f1c9e"

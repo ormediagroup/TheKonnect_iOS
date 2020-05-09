@@ -69,7 +69,7 @@
     
     
     [v addSubview:qrImageView];
-    [self genQRCode:[NSString stringWithFormat:@"%@earlyregistration/?qr_code=%@",domain,[delegate.preferences objectForKey:K_USER_OPENID]]];
+    [self genQRCode:[NSString stringWithFormat:@"%@earlyregistration/?refname=%@&refid=%@",domain,[delegate.preferences objectForKey:K_USER_NAME],[delegate.preferences objectForKey:K_USER_OPENID]]];
 }
 -(void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:TEXT_REFERRAL_QR];

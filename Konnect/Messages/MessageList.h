@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
     AppDelegate *delegate;
     NSMutableArray *datasrc;
     BOOL loadingMore;
+    UIButton *markRead;
 }
 
 @end

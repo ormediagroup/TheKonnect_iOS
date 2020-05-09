@@ -362,6 +362,7 @@
                                     dispatch_queue_t createQueue = dispatch_queue_create("SerialQueue", nil);
                                     dispatch_async(createQueue, ^(){
                                         NSDictionary *data = [[KApiManager sharedManager] logWithWeChat:[self->preferences objectForKey:WX_USER_UNION_ID]];
+                                        NSLog(@"AppDelegate: pref WX %@",[self->preferences objectForKey:WX_USER_UNION_ID]);
                                         dispatch_async(dispatch_get_main_queue(), ^(){
                                             if ([[data objectForKey:@"rc"] intValue]==0) {
                                                 [self->preferences setObject:[data objectForKey:K_USER_OPENID] forKey:K_USER_OPENID];

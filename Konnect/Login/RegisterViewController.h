@@ -72,9 +72,10 @@ typedef enum {
     UIButton *tou;
     UIButton *isAssoc;
     NSTimer *timer;
+    UIButton *scanRefQR;
     AssoPIcker *assocPicker;
     UILabel *assoc;
-    REG_TYPE regType;    
+    REG_TYPE regType;
     LoginOrReg __weak *parent;
     BOOL showWXMessage;
     BOOL phoneOK;
@@ -84,6 +85,7 @@ typedef enum {
 @property BOOL showWXMessage;
 @property REG_TYPE regType;
 @property UILabel  *assoc;
+@property UIButton *scanRefQR;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSArray *dataSrc;
     PaymentQR *paymentQR;
     CGFloat balance;
+    CGFloat points;
     
 }
 

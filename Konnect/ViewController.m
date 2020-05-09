@@ -55,7 +55,7 @@
 #import "PastEventsList.h"
 #import "ReserveNow.h"
 #import "EventList.h"
-#define SKIP_AUTO_LOGIN 1
+#define SKIP_AUTO_LOGIN 1 //  1 is normal
 @interface ViewController ()
 
 @end

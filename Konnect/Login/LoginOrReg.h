@@ -13,10 +13,11 @@
 @class RegisterPassword;
 @class TieWeChat;
 @class ResetPassword;
+@class ScanReferralQR;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LoginOrReg : ORViewController <UITextFieldDelegate, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding> {
+@interface LoginOrReg : ORViewController <UITextFieldDelegate, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding,UIImagePickerControllerDelegate,UINavigationControllerDelegate> {
     Introduction __weak *parent;
     UIButton *login, *reg;
     UINavigationController *nav;
@@ -28,18 +29,26 @@ NS_ASSUME_NONNULL_BEGIN
     UIButton *clearPhone, *clearPassword;
     UIView *phoneLine, *passwordLine;
     UIView *topLine;
-    UIImageView *profile;
+    UIImageView *profile;    
     RegisterViewController *regView;
     TieWeChat *tieWechat;
     UIButton *submit;
     UIImageView *regFlow;
     ResetPassword *resetpw;
+    ScanReferralQR *scanQR;
+    NSString *referrer;
+    NSString *refid;
+    UIImagePickerController *imgpicker;
 }
 @property (weak) Introduction *parent;
+@property NSString *referrer, *refid;
 -(void) RegStage2;
 -(void) RegStage1;
 -(void) changeRegFlowState:(int)state;
-
-
+-(void) scanReferralQR;
+-(void) chooseFromAlbum;
+-(void) backPressed;
+-(void) setReferrer:(NSString *) ref withID:(NSString *)refid;
+-(void) killRefScan;
 @end
 NS_ASSUME_NONNULL_END

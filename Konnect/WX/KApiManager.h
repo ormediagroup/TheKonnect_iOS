@@ -14,7 +14,7 @@
 
 + (instancetype)sharedManager;
 -(void) getResultAsync:(NSString *)urlS param:(NSDictionary *)params interation:(int)i callback:(void (^)(NSDictionary *data))callback;
--(NSDictionary *) verifyRegUser:(NSString *)username verification:(NSString *)code withEmail:(NSString *) email andReferer:(NSString *)assoc;
+-(id) verifyRegUser:(NSString *)username verification:(NSString *)code  withEmail:(NSString *) email andAssoc:(NSString *)assoc andReferrer:(NSString *) referrer;
 -(NSDictionary *) verifyWXUser:(NSString *)username verification:(NSString *)code unionID:(NSString *)unionid;
 -(NSDictionary *) verifyAppleUser:(NSString *)username verification:(NSString *)code appleID:(NSString *)appleid;
 -(id) setPassword:(NSString *)userToken password:(NSString *)password;

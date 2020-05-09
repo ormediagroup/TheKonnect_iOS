@@ -8,6 +8,8 @@
 
 #import "EditInfo.h"
 #import "AppDelegate.h"
+#include <unicode/utf8.h>
+
 @interface EditInfo ()
 
 @end
@@ -84,6 +86,11 @@
     [delegate setSystemBG:bday];
     [bday addTarget:self action:@selector(bdayselect:) forControlEvents:UIControlEventValueChanged];
     bdate = [delegate.preferences objectForKey:K_USER_BDAY];
+    if (!bdate) {
+        bdate=@"";
+        [delegate.preferences setObject:@"" forKey:K_USER_BDAY];
+        [delegate.preferences synchronize];
+    }
 }
 -(void) bdayselect:(UIDatePicker *)p {
     NSDateFormatter *f = [[NSDateFormatter alloc] init];
@@ -118,7 +125,7 @@
                                                                                 @"update-user-info",
                                                                                 [delegate.preferences objectForKey:K_USER_NAME],
                                                                                 [delegate.preferences objectForKey:K_USER_GENDER],
-                                                                                [delegate.preferences objectForKey:K_USER_EMAIL], [delegate.preferences objectForKey:K_USER_BDAY]
+                                                                                [delegate.preferences objectForKey:K_USER_EMAIL],[delegate.preferences objectForKey:K_USER_BDAY]
                                                                                 ]
                                                                       forKeys:@[
                                                                                 @"action",
@@ -186,7 +193,8 @@
                 [self->delegate.preferences setObject:[self->delegate.preferences objectForKey:K_USER_PHONE]
                                          forKey:K_USER_NAME];
             } else {
-                [self->delegate.preferences setObject:namefield.text
+               // NSLog(@"Edit Info: %@ %@",namefield.text, [self stringByRemovingEmoji:namefield.text]);
+                [self->delegate.preferences setObject:[self stringByRemovingEmoji:namefield.text]
                                          forKey:K_USER_NAME];
             }
             self->edited = YES;
@@ -254,6 +262,23 @@
     NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
     return [emailTest evaluateWithObject:checkString];
+}
+                                    
+- (NSString *)stringByRemovingEmoji:(NSString *)text {
+    NSData *d = [text dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
+    if(!d) return nil;
+    const char *buf = d.bytes;
+    unsigned int len = [d length];
+    char *s = (char *)malloc(len);
+    unsigned int ii = 0, oi = 0; // in index, out index
+    UChar32 uc;
+    while (ii < len) {
+        U8_NEXT_UNSAFE(buf, ii, uc);
+        if(0x2100 <= uc && uc <= 0x26ff) continue;
+        if(0x1d000 <= uc && uc <= 0x1f77f) continue;
+        U8_APPEND_UNSAFE(s, oi, uc);
+    }
+    return [[NSString alloc] initWithBytesNoCopy:s length:oi encoding:NSUTF8StringEncoding freeWhenDone:YES];
 }
 /*
 // Override to support conditional editing of the table view.

@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.tableView.backgroundColor = [delegate getThemeColor];
+    self.tableView.backgroundColor = [UIColor whiteColor];   
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -59,13 +59,13 @@
     return 1;
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return delegate.footerHeight-delegate.headerHeight+delegate.statusBarHeight;
+    return delegate.footerHeight+LINE_PAD;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [datasrc count];
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return FACILITIY_ROW_HEIGHT+SIDE_PAD_2;
+    return FACILITIY_ROW_HEIGHT;
 }
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [[NSNotificationCenter defaultCenter] postNotificationName:GO_SLIDE object:

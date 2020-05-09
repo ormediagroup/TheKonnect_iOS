@@ -50,6 +50,7 @@
             NSLog(@"OAuth getAuthCode: %@",s);
             return ERR_CONNECTION;
         } else {
+            NSLog(@"OAuth getAuthCode Success: %@",[jsondata objectForKey:@"code"]);
             return [jsondata objectForKey:@"code"];
         }
     }
@@ -137,8 +138,9 @@
     NSUserDefaults *pref = [NSUserDefaults standardUserDefaults];
     // set the content-length
     [urlRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [urlRequest setValue:@"ios" forHTTPHeaderField:@"ReferrerOS"];
     [urlRequest setValue:[NSString stringWithFormat:@"Bearer %@",[pref objectForKey:K_ACCESS_TOKEN_KEY]] forHTTPHeaderField:@"authorization"];
-    
+    NSLog(@"KAPIManager %@",[pref objectForKey:K_ACCESS_TOKEN_KEY]);
     [urlRequest setValue:@"no-cache" forHTTPHeaderField:@"cache-control"];
     [urlRequest setURL:url];
     NSURLResponse *resp = nil;
@@ -235,10 +237,10 @@
 -(NSDictionary *) login:(NSString *)username pw:(NSString *)pw {
     return [self getResultSync:@"" param:[NSDictionary dictionaryWithObjects:@[username, pw] forKeys:@[@"username",@"pw"]] interation:0];
 }
--(id) verifyRegUser:(NSString *)username verification:(NSString *)code  withEmail:(NSString *) email andReferer:(NSString *)assoc{
+-(id) verifyRegUser:(NSString *)username verification:(NSString *)code  withEmail:(NSString *) email andAssoc:(NSString *)assoc andReferrer:(NSString *) referrer{
     return [self getResultSync:[NSString stringWithFormat:@"%@app-reg-user",K_API_ENDPOINT]
                          param:[NSDictionary dictionaryWithObjects:
-                                    @[username, code, email,assoc, @"verifycode"] forKeys:@[@"username",@"code",@"emailaddr",@"assoc",@"action"]]
+                                    @[username, code, email,assoc,referrer, @"verifycode"] forKeys:@[@"username",@"code",@"emailaddr",@"assoc",@"refid",@"action"]]
                     interation:0];
 }
 -(NSDictionary *) verifyWXUser:(NSString *)username verification:(NSString *)code unionID:(NSString *)unionid{

@@ -110,7 +110,7 @@
 }
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *pURL1 = self->marketingKit;
-    NSString *pURL2 = @"http://thekonnect.com.hk/wp-content/uploads/2019/10/Privacy-Statement-EngVersion_20191015.pdf";
+    NSString *pURL2 = @"https://thekonnect.com.hk/wp-content/uploads/2019/10/Privacy-Statement-EngVersion_20191015.pdf";
     if (indexPath.section==1) {
         if (indexPath.row==0) {
             if( [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:pURL1]])

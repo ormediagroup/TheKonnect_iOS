@@ -404,7 +404,7 @@
     [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY_BORDER];
     [scroll addSubview:line];
     y+=LINE_PAD;
-    {
+    if ([[d objectForKey:@"description_zh"] isKindOfClass:[NSString class]] && ![[d objectForKey:@"description_zh"] isEqualToString:@""]){
         UILabel *p = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,y,delegate.screenWidth-SIDE_PAD_2,LINE_HEIGHT)];
         [p setTextColor:UICOLOR_GOLD];
         [p setFont:[UIFont systemFontOfSize:FONT_S]];
@@ -464,14 +464,15 @@
             }
         }
         y+=h;
+        y+=LINE_PAD;
+        {
+          UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,y-1,delegate.screenWidth,1)];
+          [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY_BORDER];
+          [scroll addSubview:line];
+        }
+        y+=LINE_PAD;
     }
-    y+=LINE_PAD;
-    {
-        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0,y-1,delegate.screenWidth,1)];
-        [line setBackgroundColor:UICOLOR_VERY_LIGHT_GREY_BORDER];
-        [scroll addSubview:line];
-    }
-    y+=LINE_PAD;
+  
    
     
     if (bookingInfo) {
@@ -532,13 +533,15 @@
     if (tou.tag==0) {
         [delegate raiseAlert:TEXT_ACCEPT_TOU msg:@""];
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
         [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-meeting-room",K_API_ENDPOINT] param:
          [[NSDictionary alloc] initWithObjects:@[bookDate,[NSNumber numberWithFloat:startTime],[NSNumber numberWithFloat:endTime],
                                                  facilityID,@"book"
                                                  ]
-                                       forKeys:@[@"bookingdate",@"bookingstarttime",@"bookingendtime",@"vendor_id",@"action"]]
+                                       forKeys:@[@"bookingdate",@"bookingstarttime",@"bookingendtime",@"vendor_id", @"action"]]
                                          interation:0 callback:^(NSDictionary *bookdata) {
+                                            NSLog(@"Meeting Room %@",[bookdata description]);
+                                            [[NSNotificationCenter defaultCenter] postNotificationName:ON_BACK_PRESSED object:nil];
+
                                              if ([bookdata isKindOfClass:[NSDictionary class]] && [[bookdata objectForKey:@"rc"] intValue]==0) {
                                                  [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-payment-token",K_API_ENDPOINT]
                                                                                        param:[[NSDictionary alloc] initWithObjects:@[@"get-token"]

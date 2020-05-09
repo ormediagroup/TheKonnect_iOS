@@ -14,17 +14,19 @@
 #import "RegisterViewController.h"
 #import "RegisterPassword.h"
 #import "ResetPassword.h"
+#import "ScanReferralQR.h"
 @interface LoginOrReg ()
 
 @end
 
 @implementation LoginOrReg
 @synthesize parent;
-
+@synthesize referrer, refid;
 - (void)viewDidLoad {
     [super viewDidLoad];
-        
-    
+    [scroll setFrame:CGRectMake(0,0,delegate.screenWidth,delegate.screenHeight)];
+    referrer = @"";
+    refid = @"";
     UIButton *back = [UIButton buttonWithType:UIButtonTypeCustom];
     [back setFrame:CGRectMake(SIDE_PAD,0,36,36)];
     [back setImage:[UIImage imageNamed:@"backbtn.png"] forState:UIControlStateNormal];
@@ -75,7 +77,10 @@
     regView = [[RegisterViewController alloc] initWithNibName:nil bundle:nil];
     regView.parent = self;    
     nav = [[UINavigationController alloc] initWithRootViewController:loginView];
-    [nav.view setFrame:CGRectMake(0,y,delegate.screenWidth,delegate.screenHeight-y)];
+    
+    [nav.view setFrame:CGRectMake(0,y,delegate.screenWidth,scroll.frame.size.height-y)];
+    [scroll setContentSize:CGSizeMake(delegate.screenWidth,delegate.screenHeight-y)];
+
     [nav setNavigationBarHidden:YES];
     [nav setToolbarHidden:YES];
     [scroll addSubview:nav.view];
@@ -91,7 +96,28 @@
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
 }
-
+-(void) scanReferralQR {
+    if (!scanQR) {
+        scanQR = [[ScanReferralQR alloc] initWithNibName:nil bundle:nil];
+        scanQR.parent = self;
+    }
+    if ([regView.scanRefQR.titleLabel.text isEqualToString:TEXT_SCAN_REFERRAL_QR]) {
+        if ([[nav viewControllers] containsObject:scanQR]) {
+           [nav popToViewController:scanQR animated:YES];
+       } else {
+           [nav pushViewController:scanQR animated:YES];
+       }
+    } else {
+        [regView.scanRefQR setTitle:TEXT_SCAN_REFERRAL_QR forState:UIControlStateNormal];
+    }
+   
+}
+-(void) killRefScan {
+    if ([[nav viewControllers] containsObject:scanQR]) {
+        [nav popViewControllerAnimated:YES];
+    }
+        
+}
 -(void) viewWillDisappear:(BOOL)animated {
     [self.view endEditing:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -104,11 +130,20 @@
         [parent backToIntro];
     }
 }
+-(void) setReferrer:(NSString *) ref withID:(NSString *)_id{
+    if (![ref isEqualToString:@""]) {
+        referrer = ref;
+        refid = _id;
+        [regView.scanRefQR setTitle:[NSString stringWithFormat:@"%@: %@ %@",TEXT_REFERRER, ref,CLOSE_X] forState:UIControlStateNormal];
+    } else {
+        referrer = @"";
+        refid=@"";
+        [regView.scanRefQR setTitle:TEXT_SCAN_REFERRAL_QR forState:UIControlStateNormal];
+    }
+}
 
 -(void) setupLogin {
     int y = 0;
-    
-    
     areaCode = [UIButton buttonWithType:UIButtonTypeCustom];
     [areaCode setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [areaCode setTitle:@"852" forState:UIControlStateNormal];
@@ -538,6 +573,35 @@
             [regFlow setImage:[UIImage imageNamed:@"regflow3.png"]];
         }
     }
+}
+-(void) chooseFromAlbum {
+    imgpicker = [[UIImagePickerController alloc] init];
+    imgpicker.delegate = self;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        [imgpicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [delegate.window.rootViewController presentViewController:imgpicker animated:YES completion:^{
+            
+        }];
+        
+    }
+}
+- (void) imagePickerControllerDidCancel: (UIImagePickerController *) picker {
+    [delegate.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+}
+// For responding to the user accepting a newly-captured picture or movie
+- (void) imagePickerController: (UIImagePickerController *) picker
+ didFinishPickingMediaWithInfo: (NSDictionary *) info {
+    if ([info objectForKey:@"UIImagePickerControllerOriginalImage"]!=nil) {
+        // add params (all params are strings)
+        UIImage* uimg =[info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        if (scanQR) {
+            [scanQR setImage:uimg];
+        }
+            
+        //        CGFloat h = uimg.size.height / uimg.size.width * 800;
+        // UIImageWriteToSavedPhotosAlbum(uimg, nil,nil,nil);
+    }
+    [delegate.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
 /*
 #pragma mark - Navigation

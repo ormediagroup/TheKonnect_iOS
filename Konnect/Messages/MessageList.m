@@ -16,22 +16,24 @@
 @implementation MessageList
 - (void) viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@"消息中心"];
-    
+   
+}
+-(void) reloadMessage {
     [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-message",K_API_ENDPOINT]  param:
-     @{
-       @"action":@"",
-       @"ap":[NSNumber numberWithInteger:0]
-       } interation:0 callback:^(NSDictionary *data) {
-           if ([[data objectForKey:@"errcode"] intValue]==0) {
-               if ([[data objectForKey:@"rc"] intValue]==0) {
-                   self->datasrc = [[data objectForKey:@"data"] mutableCopy];
-                   self->loadingMore = NO;
-                   [self.tableView reloadData];
-               }
-           } else {
-               [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
-           }
-       }];
+    @{
+      @"action":@"",
+      @"ap":[NSNumber numberWithInteger:0]
+      } interation:0 callback:^(NSDictionary *data) {
+          if ([[data objectForKey:@"errcode"] intValue]==0) {
+              if ([[data objectForKey:@"rc"] intValue]==0) {
+                  self->datasrc = [[data objectForKey:@"data"] mutableCopy];
+                  self->loadingMore = NO;
+                  [self.tableView reloadData];
+              }
+          } else {
+              [self->delegate raiseAlert:TEXT_NETWORK_ERROR msg:[data objectForKey:@"errmsg"]];
+          }
+      }];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,12 +43,51 @@
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.tableView setBounces:NO];
     [self.tableView setBackgroundColor:[UIColor whiteColor]];
-
+    [self reloadMessage];
+    
+   
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+-(void) markasread:(UIButton *)b {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                 message:TEXT_CONFIRM_MARK_ALL_READ
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+  
+      UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
+      [alert addAction:defaultAction];
+      UIAlertAction* cal = [UIAlertAction actionWithTitle:TEXT_CONFIRM style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+      [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-message",K_API_ENDPOINT]  param:
+              @{
+                @"action":@"markallread"
+                } interation:0 callback:^(NSDictionary *data) {
+                if ([[data objectForKey:@"rc"] intValue]==0) {
+                    [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-message",K_API_ENDPOINT]  param:
+                                @{
+                                  @"action":@"getmessages",
+                                  @"al":[NSNumber numberWithInteger:[self->datasrc count]]
+                                  } interation:0 callback:^(NSDictionary *data) {
+                                      if ([[data objectForKey:@"errcode"] intValue]==0) {
+                                          if ([[data objectForKey:@"rc"] intValue]==0) {
+                                              NSMutableArray *append = [[data objectForKey:@"data"] mutableCopy];
+                                              self->datasrc = append;
+                                              delegate.msgBadge = 0;
+                                              [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MSG_BADGE object:nil];
+                                              [self.tableView reloadData];
+                                          }
+                                      }
+                    }];
+                }
+      }];
+      [self.view.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+  }];
+  [alert addAction:cal];
+  dispatch_async(dispatch_get_main_queue(), ^{
+      [self presentViewController:alert animated:YES completion:nil];
+  });
 }
 
 #pragma mark - Table view data source
@@ -60,10 +101,19 @@
     return MAX([datasrc count],1);
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return delegate.headerHeight-delegate.statusBarHeight;
+    return delegate.headerHeight-delegate.statusBarHeight+30;
 }
 -(UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.headerHeight-delegate.statusBarHeight)];
+    UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0,0,delegate.screenWidth,delegate.headerHeight-delegate.statusBarHeight+30)];
+    UIButton *markRead = [UIButton buttonWithType:UIButtonTypeCustom];
+    [v setBackgroundColor:[delegate getThemeColor ]];
+    [markRead setTitle:TEXT_MARK_ALL_READ forState:UIControlStateNormal];
+    [markRead setTitleColor:UICOLOR_GOLD forState:UIControlStateNormal];
+    [markRead.titleLabel setFont:[UIFont boldSystemFontOfSize:FONT_S]];
+    [markRead addTarget:self action:@selector(markasread:) forControlEvents:UIControlEventTouchUpInside];
+    [markRead setFrame:CGRectMake(delegate.screenWidth-100,delegate.headerHeight-delegate.statusBarHeight,100,30)];
+    [v addSubview:markRead];
+    return v;
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return delegate.footerHeight;
@@ -150,7 +200,39 @@
     // Configure the cell...    
     return cell;
 }
-
+-(BOOL) tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                              message:TEXT_CONFIRM_DELETE_MSG
+                                                                       preferredStyle:UIAlertControllerStyleAlert];
+               
+               UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:TEXT_CANCEL style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}];
+               [alert addAction:defaultAction];
+               UIAlertAction* cal = [UIAlertAction actionWithTitle:TEXT_DELETE style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+                   [[KApiManager sharedManager] getResultAsync:[NSString stringWithFormat:@"%@app-get-message",K_API_ENDPOINT]  param:
+                   @{
+                     @"action":@"deletemessage",
+                     @"messageID":[[self->datasrc objectAtIndex:indexPath.row] objectForKey:@"ID"]
+                     } interation:0 callback:^(NSDictionary *data) {
+                       if ([[data objectForKey:@"rc"] intValue]==0) {
+                           [self->datasrc removeObjectAtIndex:indexPath.row];
+                           [self.tableView beginUpdates];
+                           [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                           [self.tableView endUpdates];
+                       }
+                   }];
+               [self.view.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+               }];
+               [alert addAction:cal];
+               dispatch_async(dispatch_get_main_queue(), ^{
+                   [self presentViewController:alert animated:YES completion:nil];
+               });
+        
+    }
+}
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
     CGPoint offset = aScrollView.contentOffset;
     CGRect bounds = aScrollView.bounds;
@@ -161,7 +243,7 @@
     float reload_distance = -60;
     if ([datasrc count]>=10 && !loadingMore) {
         loadingMore = YES;
-         NSLog(@"loading more %f %f",y,h);
+        // NSLog(@"loading more %f %f",y,h);
         if(h > 0 && y > h + reload_distance) {
           //  NSLog(@"startloading more");
             [delegate startLoading];
@@ -178,9 +260,19 @@
                                [self.tableView reloadData];
                            } else {
                                if ([append count]>0) {
-                                   [self->datasrc addObjectsFromArray:append];
-                                   [self.tableView reloadData];
+                                   // tell the table view to update (at all of the inserted index paths)
+                                   NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:[append count]];
+                                   for (int i = 0; i < [append count]; i++) {
+                                       [indexPaths addObject:[NSIndexPath indexPathForRow:[self->datasrc count] inSection:0]];
+                                       [self->datasrc addObject:[append objectAtIndex:i]];
+                                   }
+                                   dispatch_async(dispatch_get_main_queue(),^{
+                                       [self.tableView beginUpdates];
+                                       [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                       [self.tableView endUpdates];
+                                   });
                                }
+                                                  
                            }
                            [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:NO block:^(NSTimer * _Nonnull timer) {
                                self->loadingMore = NO;

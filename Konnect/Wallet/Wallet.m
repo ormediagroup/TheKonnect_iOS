@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    dataSrc = @[TEXT_COUPON,TEXT_INVOICE];
+    dataSrc = @[TEXT_POINTS_HISTORY, TEXT_COUPON,TEXT_INVOICE];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -42,6 +42,7 @@
                                          //NSLog(@"Wallet %@",data);
                                          if ([[data objectForKey:@"rc"] intValue]==0) {
                                              self->balance = [[data objectForKey:@"balance"] floatValue];
+                                             self->points = [[data objectForKey:@"points"] floatValue];
                                              [self.tableView reloadData];
                                               [super viewWillAppear:animated];
                                          } else if ([[data objectForKey:@"rc"] intValue]==1) {
@@ -76,22 +77,41 @@
     [v addSubview:bg];
     
     
-    UILabel *pttitle = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,46,gold.frame.size.width-SIDE_PAD_2,14)];
+    UILabel *pttitle = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,40,gold.frame.size.width-SIDE_PAD_2,14)];
     [pttitle setFont:[UIFont systemFontOfSize:FONT_M]];
     [pttitle setTextColor:[UIColor whiteColor]];
-    [pttitle setText:TEXT_MY_POINTS];
+    [pttitle setText:TEXT_MY_WALLET];
     [pttitle setTextAlignment:NSTextAlignmentLeft];
     [gold addSubview:pttitle];
     
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
     
-    UILabel *points = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,50,gold.frame.size.width-SIDE_PAD_2,100)];
-    [points setFont:[UIFont boldSystemFontOfSize:46]];
-    [points setTextColor:[UIColor whiteColor]];
-    [points setTextAlignment:NSTextAlignmentLeft];
-    [points setText:[numberFormatter stringFromNumber:[NSNumber numberWithFloat:balance]]];
-    [gold addSubview:points];
+    UILabel *lpoints = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,20,gold.frame.size.width-SIDE_PAD_2,100)];
+    [lpoints setFont:[UIFont boldSystemFontOfSize:40]];
+    [lpoints setTextColor:[UIColor whiteColor]];
+    [lpoints setTextAlignment:NSTextAlignmentRight];
+    [lpoints setText:[numberFormatter stringFromNumber:[NSNumber numberWithFloat:balance]]];
+    [gold addSubview:lpoints];
+    
+    {
+        UILabel *pttitle = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,100,gold.frame.size.width-SIDE_PAD_2,14)];
+        [pttitle setFont:[UIFont systemFontOfSize:FONT_M]];
+        [pttitle setTextColor:[delegate getThemeColor]];
+        [pttitle setText:TEXT_MY_POINTS];
+        [pttitle setTextAlignment:NSTextAlignmentLeft];
+        [gold addSubview:pttitle];
+       
+        NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
+       
+        UILabel *lpoints = [[UILabel alloc] initWithFrame:CGRectMake(SIDE_PAD,80,gold.frame.size.width-SIDE_PAD_2,100)];
+        [lpoints setFont:[UIFont boldSystemFontOfSize:30]];
+        [lpoints setTextColor:[delegate getThemeColor]];
+        [lpoints setTextAlignment:NSTextAlignmentRight];
+        [lpoints setText:[numberFormatter stringFromNumber:[NSNumber numberWithFloat:points]]];
+        [gold addSubview:lpoints];
+    }
     /*
     UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
     [b setFrame:CGRectMake(gold.frame.size.width-SIDE_PAD-90,85,90,30)];
@@ -113,7 +133,7 @@
         [title setFont:[UIFont systemFontOfSize:FONT_S]];
         [title setTextColor:[UIColor darkTextColor]];
         [title setTextAlignment:NSTextAlignmentLeft];
-        [title setText:@"積分付款"];
+        [title setText:TEXT_PAY_WITH_WALLET];
         [b1 addSubview:title];
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(title.frame.origin.x-40,15,30,30)];
         [icon setContentMode:UIViewContentModeScaleAspectFit];
@@ -131,7 +151,7 @@
         [title setFont:[UIFont systemFontOfSize:FONT_S]];
         [title setTextColor:[UIColor darkTextColor]];
         [title setTextAlignment:NSTextAlignmentLeft];
-        [title setText:@"積分記錄"];
+        [title setText:TEXT_WALLET_HISTORY];
         [b1 addSubview:title];
         UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(title.frame.origin.x-40,15,30,30)];
         [icon setContentMode:UIViewContentModeScaleAspectFit];

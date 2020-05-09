@@ -73,6 +73,7 @@
     }
 }
 -(void) viewWillAppear:(BOOL)animated {
+    [self.view setBackgroundColor:[delegate getThemeColor]]; 
     [[NSNotificationCenter defaultCenter] postNotificationName:CHANGE_TITLE object:@"我的"];
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     [self.tableView reloadData];    

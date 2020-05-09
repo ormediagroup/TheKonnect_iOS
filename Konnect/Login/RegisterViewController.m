@@ -11,12 +11,13 @@
 #import "AppDelegate.h"
 #import "LoginOrReg.h"
 #import "AssoPIcker.h"
+#import "ScanQR.h"
 @interface RegisterViewController ()
 
 @end
 
 @implementation RegisterViewController
-@synthesize parent, regType, showWXMessage, assoc;
+@synthesize parent, regType, showWXMessage, assoc, scanRefQR;
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil
                                bundle:nibBundleOrNil]) {
@@ -132,6 +133,16 @@
     [self.view addSubview:errorMessage];
     y+=LINE_HEIGHT+LINE_HEIGHT;
     
+    {
+        scanRefQR = [UIButton buttonWithType:UIButtonTypeCustom];
+        [scanRefQR setTitle:TEXT_SCAN_REFERRAL_QR forState:UIControlStateNormal];
+        [scanRefQR setFrame:CGRectMake(0,y,delegate.screenWidth,30)];
+        [self.view addSubview:scanRefQR];
+        [scanRefQR addTarget:parent action:@selector(scanReferralQR) forControlEvents:UIControlEventTouchUpInside];
+        [scanRefQR setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
+        y+=30+LINE_HEIGHT;
+    }
+    
     UIView *h = [[UIView alloc] initWithFrame:CGRectMake(delegate.screenWidth/2-120,y,240,LINE_HEIGHT)];
     [self.view addSubview:h];
     tou = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -189,9 +200,6 @@
     [self.view addSubview:assoc];
     
     y+=LINE_HEIGHT+LINE_HEIGHT+LINE_HEIGHT;
-     
-    
-    
     
     UIButton *submit = [UIButton buttonWithType:UIButtonTypeCustom];
     [submit setImage:[UIImage imageNamed:@"goldbutton.png"] forState:UIControlStateNormal];
@@ -208,11 +216,6 @@
     [self.view addSubview:submit];
     
     y+= 36+LINE_HEIGHT;
-    
-    
-  
-
-   
     
 }
 -(void) checkAssoc:(UIButton *)b{
@@ -327,7 +330,7 @@
     dispatch_queue_t createQueue = dispatch_queue_create("SerialQueue", nil);
     if (regType == REG_TYPE_PHONE) {
         dispatch_async(createQueue, ^(){
-            NSObject *data = [[KApiManager sharedManager] verifyRegUser:[NSString stringWithFormat:@"%@%@",areacodetext,phonetext] verification:vtext withEmail:emailtext andReferer:self->assoc];
+            NSObject *data = [[KApiManager sharedManager] verifyRegUser:[NSString stringWithFormat:@"%@%@",areacodetext,phonetext] verification:vtext withEmail:emailtext andAssoc:self->assoc andReferrer:parent.refid];                        
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self->delegate stopLoading];
                 [self submitComplete:data];
