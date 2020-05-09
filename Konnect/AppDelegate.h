@@ -7,11 +7,13 @@
 //
 /* TODO : Invoice Create per item details
  TODO: Check Login Validity
- Version 1.17
+ Version 1.17 (9/5/2020)
  1) Text Change under wallet page
  2) Fixed scrolling issue on message lists
  3) Added delete button to messages
  4) Added mark all as read to messages
+ 5) Add "K Points"
+ 6) Added "REFERREROS" to header field in login
  
  Version 1.16 (8/5/2020)
  1) Minor Bug fixes
